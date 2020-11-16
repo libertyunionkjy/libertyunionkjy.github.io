@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://jyke.xyz/posts/63098.html</loc>
+    <lastmod>2020-11-16</lastmod>
+  </url>
+  <url>
     <loc>https://jyke.xyz/posts/37773.html</loc>
     <lastmod>2020-11-16</lastmod>
   </url>
@@ -10,10 +14,6 @@
   </url>
   <url>
     <loc>https://jyke.xyz/posts/4072.html</loc>
-    <lastmod>2020-08-27</lastmod>
-  </url>
-  <url>
-    <loc>https://jyke.xyz/posts/63098.html</loc>
     <lastmod>2020-08-27</lastmod>
   </url>
   <url>
@@ -109,11 +109,11 @@
     <lastmod>2020-05-12</lastmod>
   </url>
   <url>
-    <loc>https://jyke.xyz/posts/20563.html</loc>
+    <loc>https://jyke.xyz/posts/21194.html</loc>
     <lastmod>2020-05-12</lastmod>
   </url>
   <url>
-    <loc>https://jyke.xyz/posts/21194.html</loc>
+    <loc>https://jyke.xyz/posts/20563.html</loc>
     <lastmod>2020-05-12</lastmod>
   </url>
 </urlset> 
