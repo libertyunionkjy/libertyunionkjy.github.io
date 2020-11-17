@@ -243,16 +243,13 @@
       
         <p>firewalld是Linux操作系统的防火墙管理工具。它通过充当Linux内核的netfilter框架的前端来提供防火墙功能，就像iptables一样。</p>
 <a id="more"></a>
-<h3 id="安装firewalld">安装firewalld</h3>
-<p>默认情况下CentOS 7可能已经安装了firewalld服务，若确实没有安装直接使用<code>yum</code>命令安装即可：</p>
+<h3 id="安装firewalld"><a href="#安装firewalld" class="headerlink" title="安装firewalld"></a>安装firewalld</h3><p>默认情况下CentOS 7可能已经安装了firewalld服务，若确实没有安装直接使用<code>yum</code>命令安装即可：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#安装firewalld</span></span><br><span class="line">yum -y install firewalld</span><br></pre></td></tr></table></figure>
-<h3 id="常用命令">常用命令</h3>
-<p>安装完成后firewalld并没有运行，有必要先来熟悉下基本的命令：</p>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><p>安装完成后firewalld并没有运行，有必要先来熟悉下基本的命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看运行状态</span></span><br><span class="line">firewall-cmd --state</span><br><span class="line"><span class="comment">#启动firewall</span></span><br><span class="line">systemctl start firewalld</span><br><span class="line"><span class="comment">#设置开机自启</span></span><br><span class="line">systemctl <span class="built_in">enable</span> firewalld</span><br><span class="line"><span class="comment">#删除开机自启</span></span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld</span><br><span class="line"><span class="comment">#停止firewall</span></span><br><span class="line">systemctl stop firewalld</span><br></pre></td></tr></table></figure>
 <p>如果您在启动的时候提示<strong>“Failed to start firewalld.service: Unit firewalld.service is masked.”</strong>，输入下面的命令可解决：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl unmask firewalld.service</span><br></pre></td></tr></table></figure>
-<h3 id="一些常用的列子">一些常用的列子</h3>
-<p>放行某个指定的TCP端口，如放行80端口：</p>
+<h3 id="一些常用的列子"><a href="#一些常用的列子" class="headerlink" title="一些常用的列子"></a>一些常用的列子</h3><p>放行某个指定的TCP端口，如放行80端口：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=80/tcp --permanent</span><br></pre></td></tr></table></figure>
 <p>放行端口范围（8000-9000）：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=8000-9000/tcp --permanent</span><br></pre></td></tr></table></figure>

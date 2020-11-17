@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="KVM KVM实际是linux内核提供的虚拟化架构，可将内核直接充当hypervisor来使用。KVM需要处理器硬件本身支持虚拟化扩展，如intel VT 和AMD AMD-V技术。KVM本身不实现任何模拟，仅仅是暴露了一个&#x2F;dev&#x2F;kvm接口，这个接口可被宿主机用来主要负责vCPU的创建，虚拟内存的地址空间分配，vCPU寄存器的读写以及vCPU的运行。 有了KVM以后，guest os的CPU">
+  <meta name="description" content="KVMKVM实际是linux内核提供的虚拟化架构，可将内核直接充当hypervisor来使用。KVM需要处理器硬件本身支持虚拟化扩展，如intel VT 和AMD AMD-V技术。KVM本身不实现任何模拟，仅仅是暴露了一个&#x2F;dev&#x2F;kvm接口，这个接口可被宿主机用来主要负责vCPU的创建，虚拟内存的地址空间分配，vCPU寄存器的读写以及vCPU的运行。 有了KVM以后，guest os的CPU指令">
 <meta property="og:type" content="article">
 <meta property="og:title" content="什么是KVM和QEMU">
 <meta property="og:url" content="https://jyke.xyz/posts/20354.html">
 <meta property="og:site_name" content="柯柯的博客">
-<meta property="og:description" content="KVM KVM实际是linux内核提供的虚拟化架构，可将内核直接充当hypervisor来使用。KVM需要处理器硬件本身支持虚拟化扩展，如intel VT 和AMD AMD-V技术。KVM本身不实现任何模拟，仅仅是暴露了一个&#x2F;dev&#x2F;kvm接口，这个接口可被宿主机用来主要负责vCPU的创建，虚拟内存的地址空间分配，vCPU寄存器的读写以及vCPU的运行。 有了KVM以后，guest os的CPU">
+<meta property="og:description" content="KVMKVM实际是linux内核提供的虚拟化架构，可将内核直接充当hypervisor来使用。KVM需要处理器硬件本身支持虚拟化扩展，如intel VT 和AMD AMD-V技术。KVM本身不实现任何模拟，仅仅是暴露了一个&#x2F;dev&#x2F;kvm接口，这个接口可被宿主机用来主要负责vCPU的创建，虚拟内存的地址空间分配，vCPU寄存器的读写以及vCPU的运行。 有了KVM以后，guest os的CPU指令">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200724134422.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200724134411.png">
@@ -35,9 +35,9 @@
 <meta property="article:modified_time" content="2020-07-24T07:44:06.000Z">
 <meta property="article:author" content="Keke">
 <meta property="article:tag" content="学习">
+<meta property="article:tag" content="分布式与云计算">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="虚拟化">
-<meta property="article:tag" content="分布式与云计算">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200724134422.png">
 
@@ -253,15 +253,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="kvm">KVM</h1>
-<p>KVM实际是linux内核提供的虚拟化架构，可将内核直接充当hypervisor来使用。KVM需要处理器硬件本身支持虚拟化扩展，如intel VT 和AMD AMD-V技术。KVM本身不实现任何模拟，仅仅是暴露了一个/dev/kvm接口，这个接口可被宿主机用来主要负责vCPU的创建，虚拟内存的地址空间分配，vCPU寄存器的读写以及vCPU的运行。 有了KVM以后，guest os的CPU指令不用再经过QEMU来转译便可直接运行，大大提高了运行速度。但KVM的kvm.ko本身只提供了CPU和内存的虚拟化，所以它必须结合QEMU才能构成一个完整的虚拟化技术，</p>
+        <h1 id="KVM"><a href="#KVM" class="headerlink" title="KVM"></a>KVM</h1><p>KVM实际是linux内核提供的虚拟化架构，可将内核直接充当hypervisor来使用。KVM需要处理器硬件本身支持虚拟化扩展，如intel VT 和AMD AMD-V技术。KVM本身不实现任何模拟，仅仅是暴露了一个/dev/kvm接口，这个接口可被宿主机用来主要负责vCPU的创建，虚拟内存的地址空间分配，vCPU寄存器的读写以及vCPU的运行。<br> 有了KVM以后，guest os的CPU指令不用再经过QEMU来转译便可直接运行，大大提高了运行速度。但KVM的kvm.ko本身只提供了CPU和内存的虚拟化，所以它必须结合QEMU才能构成一个完整的虚拟化技术，</p>
 <a id="more"></a>
-<h1 id="qemu">QEMU</h1>
-<p>QEMU是一个主机上的VMM（virtual machine monitor）,通过动态二进制转换来模拟CPU，并提供一系列的硬件模型，使guest os认为自己和硬件直接打交道，其实是同QEMU模拟出来的硬件打交道，QEMU再将这些指令翻译给真正硬件进行操作。 通过这种模式，guest os可以和主机上的硬盘，网卡，CPU，CD-ROM，音频设备和USB设备进行交互。但由于所有指令都需要经过QEMU来翻译，因而性能会比较差：</p>
-<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200724134422.png" /></p>
-<h1 id="qemukvm">QEMU+KVM</h1>
-<p>综上QEMU其实可以完整的模拟一台服务器，但是因为guest os的指令都要经过QEMU的翻译才能够执行，所以效率比较低。而KVM是linux内核提供的虚拟化架构，KVM负责cpu虚拟化+内存虚拟化，实现了cpu和内存的虚拟化，但kvm并不能模拟其他设备。还必须有个运行在用户空间的工具才行，KVM的开发者选择了比较成熟的开源虚拟化软件QEMU来作为这个工具，QEMU模拟IO设备（网卡，磁盘等），对其进行了修改，最后形成了QEMU-KVM。KVM加上QEMU后就是完整意义上的服务器虚拟化。</p>
-<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200724134411.png" /></p>
+<h1 id="QEMU"><a href="#QEMU" class="headerlink" title="QEMU"></a>QEMU</h1><p>QEMU是一个主机上的VMM（virtual machine monitor）,通过动态二进制转换来模拟CPU，并提供一系列的硬件模型，使guest os认为自己和硬件直接打交道，其实是同QEMU模拟出来的硬件打交道，QEMU再将这些指令翻译给真正硬件进行操作。<br>通过这种模式，guest os可以和主机上的硬盘，网卡，CPU，CD-ROM，音频设备和USB设备进行交互。但由于所有指令都需要经过QEMU来翻译，因而性能会比较差：</p>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200724134422.png" alt=""></p>
+<h1 id="QEMU-KVM"><a href="#QEMU-KVM" class="headerlink" title="QEMU+KVM"></a>QEMU+KVM</h1><p>综上QEMU其实可以完整的模拟一台服务器，但是因为guest os的指令都要经过QEMU的翻译才能够执行，所以效率比较低。而KVM是linux内核提供的虚拟化架构，KVM负责cpu虚拟化+内存虚拟化，实现了cpu和内存的虚拟化，但kvm并不能模拟其他设备。还必须有个运行在用户空间的工具才行，KVM的开发者选择了比较成熟的开源虚拟化软件QEMU来作为这个工具，QEMU模拟IO设备（网卡，磁盘等），对其进行了修改，最后形成了QEMU-KVM。KVM加上QEMU后就是完整意义上的服务器虚拟化。</p>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200724134411.png" alt=""></p>
 
     </div>
 
@@ -272,9 +269,9 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"># 学习</a>
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag"># 分布式与云计算</a>
               <a href="/tags/linux/" rel="tag"># linux</a>
               <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag"># 虚拟化</a>
-              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag"># 分布式与云计算</a>
           </div>
 
         
@@ -349,7 +346,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#kvm"><span class="nav-number">1.</span> <span class="nav-text">KVM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#qemu"><span class="nav-number">2.</span> <span class="nav-text">QEMU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#qemukvm"><span class="nav-number">3.</span> <span class="nav-text">QEMU+KVM</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#KVM"><span class="nav-number">1.</span> <span class="nav-text">KVM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#QEMU"><span class="nav-number">2.</span> <span class="nav-text">QEMU</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#QEMU-KVM"><span class="nav-number">3.</span> <span class="nav-text">QEMU+KVM</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

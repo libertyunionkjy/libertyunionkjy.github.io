@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2020-11-16T16:43:45.203Z</updated>
+  <updated>2020-11-17T14:39:10.535Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -17,25 +17,25 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>测试</title>
-    <link href="https://jyke.xyz/posts/37773.html"/>
-    <id>https://jyke.xyz/posts/37773.html</id>
-    <published>2020-11-16T16:40:41.000Z</published>
-    <updated>2020-11-16T16:43:45.203Z</updated>
+    <title>LightDM, GDM, GNOME, KDE等的区别与联系</title>
+    <link href="https://jyke.xyz/posts/60263.html"/>
+    <id>https://jyke.xyz/posts/60263.html</id>
+    <published>2020-11-17T14:37:13.000Z</published>
+    <updated>2020-11-17T14:39:10.535Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;h1
-        
-      
+      &lt;p&gt;&lt;a href=&quot;linux lightdm gdm gnome kde等的区别于联系(桌面环境 窗口管理器 显示管理器&quot;&gt;参考链接&lt;/a&gt;)&lt;/p&gt;
+&lt;h1 id=&quot;linux窗口管理器（WM）&quot;&gt;&lt;a href=&quot;#linux窗口管理器（WM）&quot; class=&quot;headerlink&quot; title=&quot;linux窗口管理器（WM）&quot;&gt;&lt;/a&gt;linux窗口管理器（WM）&lt;/h1&gt;&lt;p&gt;窗口管理器（Window Manager）是&lt;strong&gt;控制窗口行为与位置&lt;/strong&gt;的软件。&lt;/p&gt;
+&lt;h1 id=&quot;linux桌面环境&quot;&gt;&lt;a href=&quot;#linux桌面环境&quot; class=&quot;headerlink&quot; title=&quot;linux桌面环境&quot;&gt;&lt;/a&gt;linux桌面环境&lt;/h1&gt;&lt;p&gt;桌面环境可能仅仅是一个简单的窗口管理器， 也可能是一个像 KDE 或者 GNOME这样的完整桌面应用程序套件。&lt;/p&gt;
     
     </summary>
     
     
+      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
     
   </entry>
   
@@ -65,8 +65,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;cloud-init&quot;&gt;Cloud-init&lt;/h1&gt;
-&lt;p&gt;&lt;strong&gt;cloud-init是云平台为Linux操作系统的虚拟机做系统初始化配置的开源服务软件。&lt;/strong&gt;&lt;/p&gt;
+      &lt;h1 id=&quot;Cloud-init&quot;&gt;&lt;a href=&quot;#Cloud-init&quot; class=&quot;headerlink&quot; title=&quot;Cloud-init&quot;&gt;&lt;/a&gt;Cloud-init&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;cloud-init是云平台为Linux操作系统的虚拟机做系统初始化配置的开源服务软件。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;目前大部分公有云（openstack, AWS, Aliyun）都在使用cloud-init, 已经成为虚拟机元数据管理和OS系统配置初始化的事实标准。&lt;/p&gt;
 &lt;p&gt;可以完成包括但不限于以下的工作：&lt;/p&gt;
 &lt;ul&gt;
@@ -99,8 +98,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;git&quot;&gt;Git&lt;/h1&gt;
-&lt;p&gt;Git和代码托管中心&lt;/p&gt;
+      &lt;h1 id=&quot;Git&quot;&gt;&lt;a href=&quot;#Git&quot; class=&quot;headerlink&quot; title=&quot;Git&quot;&gt;&lt;/a&gt;Git&lt;/h1&gt;&lt;p&gt;Git和代码托管中心&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;代码托管中心：维护远程库&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;局域网环境下：gitlab&lt;/li&gt;
@@ -122,8 +120,7 @@
     
     <summary type="html">
     
-      &lt;h2 id=&quot;正则表达式&quot;&gt;正则表达式&lt;/h2&gt;
-&lt;p&gt;正则表达式可以用&lt;strong&gt;字符串&lt;/strong&gt;来描述规则，并用来匹配字符串。&lt;/p&gt;
+      &lt;h2 id=&quot;正则表达式&quot;&gt;&lt;a href=&quot;#正则表达式&quot; class=&quot;headerlink&quot; title=&quot;正则表达式&quot;&gt;&lt;/a&gt;正则表达式&lt;/h2&gt;&lt;p&gt;正则表达式可以用&lt;strong&gt;字符串&lt;/strong&gt;来描述规则，并用来匹配字符串。&lt;/p&gt;
 &lt;p&gt;正则表达式是一套标准，它可以用于任何语言。&lt;/p&gt;
 &lt;p&gt;正则表达式是一串字符串。&lt;/p&gt;
 &lt;p&gt;在JAVA中使用正则表达式匹配：&lt;/p&gt;
@@ -165,11 +162,9 @@
     
     <summary type="html">
     
-      &lt;h3 id=&quot;中断线程&quot;&gt;中断线程&lt;/h3&gt;
-&lt;h4 id=&quot;interrupt方法&quot;&gt;interrupt()方法&lt;/h4&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Main&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String[] args)&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; InterruptedException &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Thread t = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; MyThread();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        t.start();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Thread.sleep(&lt;span class=&quot;number&quot;&gt;1000&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        t.interrupt(); &lt;span class=&quot;comment&quot;&gt;// 中断t线程&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        t.join(); &lt;span class=&quot;comment&quot;&gt;// 等待t线程结束&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;end&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MyThread&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Thread&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Thread hello = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; HelloThread();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        hello.start(); &lt;span class=&quot;comment&quot;&gt;// 启动hello线程&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            hello.join(); &lt;span class=&quot;comment&quot;&gt;// 等待hello线程结束&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125; &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (InterruptedException e) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;interrupted!&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        hello.interrupt();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;HelloThread&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Thread&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; n = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;while&lt;/span&gt; (!isInterrupted()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            n++;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            System.out.println(n + &lt;span class=&quot;string&quot;&gt;&quot; hello!&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                Thread.sleep(&lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125; &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (InterruptedException e) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+      &lt;h3 id=&quot;中断线程&quot;&gt;&lt;a href=&quot;#中断线程&quot; class=&quot;headerlink&quot; title=&quot;中断线程&quot;&gt;&lt;/a&gt;中断线程&lt;/h3&gt;&lt;h4 id=&quot;interrupt-方法&quot;&gt;&lt;a href=&quot;#interrupt-方法&quot; class=&quot;headerlink&quot; title=&quot;interrupt()方法&quot;&gt;&lt;/a&gt;interrupt()方法&lt;/h4&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Main&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String[] args)&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; InterruptedException &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Thread t = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; MyThread();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        t.start();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Thread.sleep(&lt;span class=&quot;number&quot;&gt;1000&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        t.interrupt(); &lt;span class=&quot;comment&quot;&gt;// 中断t线程&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        t.join(); &lt;span class=&quot;comment&quot;&gt;// 等待t线程结束&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;end&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MyThread&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Thread&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Thread hello = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; HelloThread();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        hello.start(); &lt;span class=&quot;comment&quot;&gt;// 启动hello线程&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            hello.join(); &lt;span class=&quot;comment&quot;&gt;// 等待hello线程结束&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125; &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (InterruptedException e) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;interrupted!&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        hello.interrupt();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;HelloThread&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Thread&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; n = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;while&lt;/span&gt; (!isInterrupted()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            n++;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            System.out.println(n + &lt;span class=&quot;string&quot;&gt;&quot; hello!&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                Thread.sleep(&lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125; &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (InterruptedException e) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;blockquote&gt;
-&lt;p&gt;1 hello! 2 hello! 3 hello! 4 hello! 5 hello! 6 hello! 7 hello! 8 hello! 9 hello! interrupted! end&lt;/p&gt;
+&lt;p&gt;1 hello!&lt;br&gt;2 hello!&lt;br&gt;3 hello!&lt;br&gt;4 hello!&lt;br&gt;5 hello!&lt;br&gt;6 hello!&lt;br&gt;7 hello!&lt;br&gt;8 hello!&lt;br&gt;9 hello!&lt;br&gt;interrupted!&lt;br&gt;end&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;每次输出的&lt;code&gt;hello!&lt;/code&gt;个数都是不一样的。&lt;/p&gt;
     
@@ -192,7 +187,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;VXLAN的东西说起来很简单，深挖的东西又太多了，先挖个坑，有时间填上...&lt;/p&gt;
+      &lt;p&gt;VXLAN的东西说起来很简单，深挖的东西又太多了，先挖个坑，有时间填上…&lt;/p&gt;
     
     </summary>
     
@@ -213,8 +208,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;kvm&quot;&gt;KVM&lt;/h1&gt;
-&lt;p&gt;KVM实际是linux内核提供的虚拟化架构，可将内核直接充当hypervisor来使用。KVM需要处理器硬件本身支持虚拟化扩展，如intel VT 和AMD AMD-V技术。KVM本身不实现任何模拟，仅仅是暴露了一个/dev/kvm接口，这个接口可被宿主机用来主要负责vCPU的创建，虚拟内存的地址空间分配，vCPU寄存器的读写以及vCPU的运行。 有了KVM以后，guest os的CPU指令不用再经过QEMU来转译便可直接运行，大大提高了运行速度。但KVM的kvm.ko本身只提供了CPU和内存的虚拟化，所以它必须结合QEMU才能构成一个完整的虚拟化技术，&lt;/p&gt;
+      &lt;h1 id=&quot;KVM&quot;&gt;&lt;a href=&quot;#KVM&quot; class=&quot;headerlink&quot; title=&quot;KVM&quot;&gt;&lt;/a&gt;KVM&lt;/h1&gt;&lt;p&gt;KVM实际是linux内核提供的虚拟化架构，可将内核直接充当hypervisor来使用。KVM需要处理器硬件本身支持虚拟化扩展，如intel VT 和AMD AMD-V技术。KVM本身不实现任何模拟，仅仅是暴露了一个/dev/kvm接口，这个接口可被宿主机用来主要负责vCPU的创建，虚拟内存的地址空间分配，vCPU寄存器的读写以及vCPU的运行。&lt;br&gt; 有了KVM以后，guest os的CPU指令不用再经过QEMU来转译便可直接运行，大大提高了运行速度。但KVM的kvm.ko本身只提供了CPU和内存的虚拟化，所以它必须结合QEMU才能构成一个完整的虚拟化技术，&lt;/p&gt;
     
     </summary>
     
@@ -224,11 +218,11 @@
     
       <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
     
+      <category term="分布式与云计算" scheme="https://jyke.xyz/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
+    
       <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
     
       <category term="虚拟化" scheme="https://jyke.xyz/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
-    
-      <category term="分布式与云计算" scheme="https://jyke.xyz/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
     
   </entry>
   
@@ -241,11 +235,9 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;java中取模和取余的区别&quot;&gt;JAVA中取模和取余的区别&lt;/h1&gt;
-&lt;p&gt;Java 中的取余运算是 %，而取模运算是 Math.floorMod()。&lt;/p&gt;
-&lt;h2 id=&quot;计算过程&quot;&gt;计算过程&lt;/h2&gt;
-&lt;p&gt;在JAVA中，取模和取余的计算过程都是相同的：&lt;/p&gt;
-&lt;ol type=&quot;1&quot;&gt;
+      &lt;h1 id=&quot;JAVA中取模和取余的区别&quot;&gt;&lt;a href=&quot;#JAVA中取模和取余的区别&quot; class=&quot;headerlink&quot; title=&quot;JAVA中取模和取余的区别&quot;&gt;&lt;/a&gt;JAVA中取模和取余的区别&lt;/h1&gt;&lt;p&gt;Java 中的取余运算是 %，而取模运算是 Math.floorMod()。&lt;/p&gt;
+&lt;h2 id=&quot;计算过程&quot;&gt;&lt;a href=&quot;#计算过程&quot; class=&quot;headerlink&quot; title=&quot;计算过程&quot;&gt;&lt;/a&gt;计算过程&lt;/h2&gt;&lt;p&gt;在JAVA中，取模和取余的计算过程都是相同的：&lt;/p&gt;
+&lt;ol&gt;
 &lt;li&gt;求整数商：c=a/b&lt;/li&gt;
 &lt;li&gt;取模或者取余：r=a-c*b&lt;/li&gt;
 &lt;/ol&gt;
@@ -273,9 +265,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;环境变量与文件查找&quot;&gt;环境变量与文件查找&lt;/h1&gt;
-&lt;h2 id=&quot;环境变量&quot;&gt;环境变量&lt;/h2&gt;
-&lt;p&gt;在 Shell 中如何创建一个变量，如何给变量赋值和如何读取变量的值呢？&lt;/p&gt;
+      &lt;h1 id=&quot;环境变量与文件查找&quot;&gt;&lt;a href=&quot;#环境变量与文件查找&quot; class=&quot;headerlink&quot; title=&quot;环境变量与文件查找&quot;&gt;&lt;/a&gt;环境变量与文件查找&lt;/h1&gt;&lt;h2 id=&quot;环境变量&quot;&gt;&lt;a href=&quot;#环境变量&quot; class=&quot;headerlink&quot; title=&quot;环境变量&quot;&gt;&lt;/a&gt;环境变量&lt;/h2&gt;&lt;p&gt;在 Shell 中如何创建一个变量，如何给变量赋值和如何读取变量的值呢？&lt;/p&gt;
 &lt;p&gt;使用 &lt;code&gt;declare&lt;/code&gt; 命令创建一个变量名为 tmp 的变量：&lt;/p&gt;
 &lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ &lt;span class=&quot;built_in&quot;&gt;declare&lt;/span&gt; tmp&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;blockquote&gt;
@@ -285,7 +275,7 @@
 &lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# 正确的赋值&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ tmp=lemon&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# 错误的赋值&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ tmp = lemon&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;读取变量的值，使用 &lt;code&gt;echo&lt;/code&gt; 命令和 &lt;code&gt;$&lt;/code&gt; 符号（&lt;strong&gt;$ 符号用于表示引用一个变量的值，初学者经常忘记输入&lt;/strong&gt;）：&lt;/p&gt;
 &lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ &lt;span class=&quot;built_in&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;variable&quot;&gt;$tmp&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200614162027.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200614162027.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;注意：并不是任何形式的变量名都是可用的，变量名只能是英文字母、数字或者下划线，且不能以数字作为开头。&lt;/strong&gt;&lt;/p&gt;
     
     </summary>
@@ -309,7 +299,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200611182352.png&quot; /&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200611182352.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
     
     </summary>
     
@@ -333,12 +323,10 @@
     <summary type="html">
     
       &lt;p&gt;&lt;a href=&quot;https://help.ubuntu.com/lts/ubuntu-help/index.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Ubuntu 20.04 LTS 使用指南&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=&quot;基本概念及操作&quot;&gt;基本概念及操作&lt;/h1&gt;
-&lt;h2 id=&quot;桌面环境&quot;&gt;桌面环境&lt;/h2&gt;
-&lt;p&gt;UNIX/Linux 本身是没有图形界面的，我们通常在 UNIX/Linux 发行版上看到的图形界面实际都只是运行在 Linux 系统之上的一套软件。实现一个完整的桌面环境需要服务器和客户端&lt;/p&gt;
+&lt;h1 id=&quot;基本概念及操作&quot;&gt;&lt;a href=&quot;#基本概念及操作&quot; class=&quot;headerlink&quot; title=&quot;基本概念及操作&quot;&gt;&lt;/a&gt;基本概念及操作&lt;/h1&gt;&lt;h2 id=&quot;桌面环境&quot;&gt;&lt;a href=&quot;#桌面环境&quot; class=&quot;headerlink&quot; title=&quot;桌面环境&quot;&gt;&lt;/a&gt;桌面环境&lt;/h2&gt;&lt;p&gt;UNIX/Linux 本身是没有图形界面的，我们通常在 UNIX/Linux 发行版上看到的图形界面实际都只是运行在 Linux 系统之上的一套软件。实现一个完整的桌面环境需要服务器和客户端&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;服务器：xorg，xorg实现了X窗口系统（简称为X）&lt;/li&gt;
-&lt;li&gt;客户端（X Client）：KDE，GNOME，XFCE，LXDE&lt;/li&gt;
+&lt;li&gt;客户端（X Client）：KDE，GNOME，XFCE，LXDE &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;这也意味着在 Linux 上你可以自己选择安装不同的桌面环境，甚至可以定制自己的专属桌面。&lt;/p&gt;
     
@@ -407,11 +395,12 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;io&quot;&gt;IO&lt;/h1&gt;
-&lt;p&gt;&lt;strong&gt;InputStream / OutputStream：&lt;/strong&gt;&lt;/p&gt;
+      &lt;h1 id=&quot;IO&quot;&gt;&lt;a href=&quot;#IO&quot; class=&quot;headerlink&quot; title=&quot;IO&quot;&gt;&lt;/a&gt;IO&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;InputStream / OutputStream：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;IO流以&lt;code&gt;byte&lt;/code&gt;（字节）为最小单位，因此也称为字节流。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;在Java中，&lt;code&gt;InputStream&lt;/code&gt;代表输入字节流，&lt;code&gt;OuputStream&lt;/code&gt;代表输出字节流，这是最基本的两种IO流。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;IO流以&lt;code&gt;byte&lt;/code&gt;（字节）为最小单位，因此也称为字节流。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;在Java中，&lt;code&gt;InputStream&lt;/code&gt;代表输入字节流，&lt;code&gt;OuputStream&lt;/code&gt;代表输出字节流，这是最基本的两种IO流。&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;Reader / Writer：&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;如果我们需要读写的是字符，并且字符不全是单字节表示的ASCII字符，那么，按照&lt;code&gt;char&lt;/code&gt;来读写显然更方便，这种流称为字符流。&lt;/p&gt;
@@ -442,9 +431,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;集合&quot;&gt;集合&lt;/h1&gt;
-&lt;h2 id=&quot;java集合简介&quot;&gt;JAVA集合简介&lt;/h2&gt;
-&lt;p&gt;Java标准库自带的&lt;code&gt;java.util&lt;/code&gt;包提供了集合类：&lt;code&gt;Collection&lt;/code&gt;，它是除&lt;code&gt;Map&lt;/code&gt;外所有其他集合类的根接口。&lt;/p&gt;
+      &lt;h1 id=&quot;集合&quot;&gt;&lt;a href=&quot;#集合&quot; class=&quot;headerlink&quot; title=&quot;集合&quot;&gt;&lt;/a&gt;集合&lt;/h1&gt;&lt;h2 id=&quot;JAVA集合简介&quot;&gt;&lt;a href=&quot;#JAVA集合简介&quot; class=&quot;headerlink&quot; title=&quot;JAVA集合简介&quot;&gt;&lt;/a&gt;JAVA集合简介&lt;/h2&gt;&lt;p&gt;Java标准库自带的&lt;code&gt;java.util&lt;/code&gt;包提供了集合类：&lt;code&gt;Collection&lt;/code&gt;，它是除&lt;code&gt;Map&lt;/code&gt;外所有其他集合类的根接口。&lt;/p&gt;
 &lt;p&gt;Java的&lt;code&gt;java.util&lt;/code&gt;包主要提供了以下三种类型的集合：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;List&lt;/code&gt;：一种有序列表的集合，例如，按索引排列的&lt;code&gt;Student&lt;/code&gt;的&lt;code&gt;List&lt;/code&gt;；&lt;/li&gt;
@@ -459,8 +446,7 @@
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;List&amp;lt;String&amp;gt; list = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ArrayList&amp;lt;&amp;gt;(); &lt;span class=&quot;comment&quot;&gt;// 只能放入String类型&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;Java访问集合总是通过统一的方式——迭代器（Iterator）来实现，它最明显的好处在于无需知道集合内部元素是按什么方式存储的。&lt;/p&gt;
 &lt;p&gt;注意到有一小部分集合类是遗留类，不应该继续使用。&lt;/p&gt;
-&lt;h3 id=&quot;小结&quot;&gt;小结&lt;/h3&gt;
-&lt;p&gt;Java的集合类定义在&lt;code&gt;java.util&lt;/code&gt;包中，支持泛型，主要提供了3种集合类，包括&lt;code&gt;List&lt;/code&gt;，&lt;code&gt;Set&lt;/code&gt;和&lt;code&gt;Map&lt;/code&gt;。Java集合使用统一的&lt;code&gt;Iterator&lt;/code&gt;遍历，尽量不要使用遗留接口。&lt;/p&gt;
+&lt;h3 id=&quot;小结&quot;&gt;&lt;a href=&quot;#小结&quot; class=&quot;headerlink&quot; title=&quot;小结&quot;&gt;&lt;/a&gt;小结&lt;/h3&gt;&lt;p&gt;Java的集合类定义在&lt;code&gt;java.util&lt;/code&gt;包中，支持泛型，主要提供了3种集合类，包括&lt;code&gt;List&lt;/code&gt;，&lt;code&gt;Set&lt;/code&gt;和&lt;code&gt;Map&lt;/code&gt;。Java集合使用统一的&lt;code&gt;Iterator&lt;/code&gt;遍历，尽量不要使用遗留接口。&lt;/p&gt;
     
     </summary>
     
@@ -483,8 +469,8 @@
     
     <summary type="html">
     
-      &lt;p&gt;​ 这篇文章是在学SQL的过程中记下来的比较重要的一些笔记，学习资源是来自油管的Mosh的教学视频，感觉是非常简单易懂的教程。如果你也是刚开始学习SQL的小白，可以跟着文章的视频链接学习一遍，其中比较重要的知识点已经在这篇文章中记录下来了。学习之前需要先安装MySQL，网上安装教程很多，并且也非常简单，在此就不赘述了。&lt;/p&gt;
-&lt;p&gt;点击链接可以访问Mosh油管视频：&lt;a href=&quot;https://www.youtube.com/watch?v=7S_tz1z_5bA&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Thanks for Mosh&#39;s Video&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;​        这篇文章是在学SQL的过程中记下来的比较重要的一些笔记，学习资源是来自油管的Mosh的教学视频，感觉是非常简单易懂的教程。如果你也是刚开始学习SQL的小白，可以跟着文章的视频链接学习一遍，其中比较重要的知识点已经在这篇文章中记录下来了。学习之前需要先安装MySQL，网上安装教程很多，并且也非常简单，在此就不赘述了。&lt;/p&gt;
+&lt;p&gt;点击链接可以访问Mosh油管视频：&lt;a href=&quot;https://www.youtube.com/watch?v=7S_tz1z_5bA&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Thanks for Mosh’s Video&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;视频有一份配套的pdf笔记，获得笔记需要填写邮箱，填写邮箱之后就会经常收到Mosh推送的他的课程的广告，所以pdf文档可以直接&lt;a href=&quot;https://programmingwithmosh.com/wp-content/uploads/2019/03/SQL-Cheat-Sheet.pdf&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;点这里下载&lt;/a&gt;以免邮箱会收到很多广告。&lt;/p&gt;
     
     </summary>
@@ -504,8 +490,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;什么是泛型&quot;&gt;什么是泛型&lt;/h1&gt;
-&lt;p&gt;一个简单的泛型例子：&lt;/p&gt;
+      &lt;h1 id=&quot;什么是泛型&quot;&gt;&lt;a href=&quot;#什么是泛型&quot; class=&quot;headerlink&quot; title=&quot;什么是泛型&quot;&gt;&lt;/a&gt;什么是泛型&lt;/h1&gt;&lt;p&gt;一个简单的泛型例子：&lt;/p&gt;
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;ArrayList&lt;/span&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;T&lt;/span&gt;&amp;gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; T[] array;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; size;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(T e)&lt;/span&gt; &lt;/span&gt;&amp;#123;...&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;remove&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; index)&lt;/span&gt; &lt;/span&gt;&amp;#123;...&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; T &lt;span class=&quot;title&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; index)&lt;/span&gt; &lt;/span&gt;&amp;#123;...&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;&lt;code&gt;T&lt;/code&gt;可以是任何class。这样一来，我们就实现了：编写一次模版，可以创建任意类型的&lt;code&gt;ArrayList&lt;/code&gt;：&lt;/p&gt;
     
@@ -532,8 +517,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;使用注解&quot;&gt;使用注解&lt;/h1&gt;
-&lt;p&gt;什么是注解（Annotation）？注解是放在Java源码的类、方法、字段、参数前的一种特殊“注释”：&lt;/p&gt;
+      &lt;h1 id=&quot;使用注解&quot;&gt;&lt;a href=&quot;#使用注解&quot; class=&quot;headerlink&quot; title=&quot;使用注解&quot;&gt;&lt;/a&gt;使用注解&lt;/h1&gt;&lt;p&gt;什么是注解（Annotation）？注解是放在Java源码的类、方法、字段、参数前的一种特殊“注释”：&lt;/p&gt;
 &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// this is a component:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Resource&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;hello&quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Hello&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;meta&quot;&gt;@Inject&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; n;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;meta&quot;&gt;@PostConstruct&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;hello&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(@Param String name)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(name);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;meta&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; String &lt;span class=&quot;title&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;Hello&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;&lt;strong&gt;注释会被编译器直接忽略，注解则可以被编译器打包进入class文件&lt;/strong&gt;，因此，注解是一种用作标注的“元数据”。&lt;/p&gt;
     

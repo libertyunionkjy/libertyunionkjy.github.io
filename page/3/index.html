@@ -254,8 +254,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="前-言">前 言</h1>
-<p>网络层只把分组发送到目的主机，但是真正通信的并不是主机而是主机中的进程。传输层提供了进程间的逻辑通信，传输层向高层用户屏蔽了下面网络层的核心细节，使应用程序看起来像是在两个传输层实体之间有一条端到端的逻辑通信信道。</p>
+          <h1 id="前-言"><a href="#前-言" class="headerlink" title="前 言"></a>前 言</h1><p>网络层只把分组发送到目的主机，但是真正通信的并不是主机而是主机中的进程。传输层提供了进程间的逻辑通信，传输层向高层用户屏蔽了下面网络层的核心细节，使应用程序看起来像是在两个传输层实体之间有一条端到端的逻辑通信信道。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/40445.html#more" rel="contents">
@@ -344,8 +343,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="反射">反射</h1>
-<p>是什么？反射就是Reflection，Java的反射是指<strong>程序在运行期可以拿到一个对象的所有信息</strong>。</p>
+          <h1 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h1><p>是什么？反射就是Reflection，Java的反射是指<strong>程序在运行期可以拿到一个对象的所有信息</strong>。</p>
 <p>有什么用？反射是为了解决在运行期，对某个实例一无所知的情况下，如何调用其方法。</p>
           <!--noindex-->
             <div class="post-button">
@@ -441,10 +439,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="java核心类">JAVA核心类</h1>
-<h2 id="字符串和编码">字符串和编码</h2>
-<h3 id="string">String</h3>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String s1 = <span class="string">"Hello!"</span>;</span><br></pre></td></tr></table></figure>
+          <h1 id="JAVA核心类"><a href="#JAVA核心类" class="headerlink" title="JAVA核心类"></a>JAVA核心类</h1><h2 id="字符串和编码"><a href="#字符串和编码" class="headerlink" title="字符串和编码"></a>字符串和编码</h2><h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String s1 = <span class="string">"Hello!"</span>;</span><br></pre></td></tr></table></figure>
 <p>实际上字符串在<code>String</code>内部是通过一个<code>char[]</code>数组表示的，因此，按下面的写法也是可以的：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String s2 = <span class="keyword">new</span> String(<span class="keyword">new</span> <span class="keyword">char</span>[] &#123;<span class="string">'H'</span>, <span class="string">'e'</span>, <span class="string">'l'</span>, <span class="string">'l'</span>, <span class="string">'o'</span>, <span class="string">'!'</span>&#125;);</span><br></pre></td></tr></table></figure>
 <p>Java字符串的一个重要特点就是字符串<em>不可变</em>。这种不可变性是通过内部的<code>private final char[]</code>字段，以及没有任何修改<code>char[]</code>的方法实现的。</p>
@@ -542,9 +537,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="类class">类（<code>class</code>）</h1>
-<ul>
-<li><p><code>field</code> : 一个<code>class</code>可以包含多个字段（<code>field</code>），字段用来描述一个类的特征。</p></li>
+          <h1 id="类（class）"><a href="#类（class）" class="headerlink" title="类（class）"></a>类（<code>class</code>）</h1><ul>
+<li><p><code>field</code> : 一个<code>class</code>可以包含多个字段（<code>field</code>），字段用来描述一个类的特征。</p>
+</li>
 <li><p><code>method</code></p>
 <ul>
 <li><p>可变参数</p>
@@ -553,12 +548,14 @@
 <p>可以把可变参数改写为String[] 类型，但是这样子传入null就不会报错，可变参数可以避免这个问题，而且改写后调用的时候需要先new一个数组，比较麻烦</p>
 </blockquote>
 <ul>
-<li>参数绑定
-<ul>
+<li>参数绑定<ul>
 <li>传递基本类型参数的时候，是复制；传递引用类型的时候，调用方和接收方两个都指向了同一个对象（地址）</li>
-</ul></li>
-</ul></li>
-</ul></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
           <!--noindex-->
             <div class="post-button">
@@ -654,9 +651,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="异常处理">异常处理</h1>
-<h2 id="java的异常">JAVA的异常</h2>
-<p>异常是一种<code>class</code>，因此它本身带有类型信息。异常可以在任何地方抛出，但只需要在上层捕获，这样就和方法调用分离了：</p>
+          <h1 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h1><h2 id="JAVA的异常"><a href="#JAVA的异常" class="headerlink" title="JAVA的异常"></a>JAVA的异常</h2><p>异常是一种<code>class</code>，因此它本身带有类型信息。异常可以在任何地方抛出，但只需要在上层捕获，这样就和方法调用分离了：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    String s = processFile(“C:\\test.txt”);</span><br><span class="line">    <span class="comment">// ok:</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">    <span class="comment">// file not found:</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (SecurityException e) &#123;</span><br><span class="line">    <span class="comment">// no read permission:</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    <span class="comment">// io error:</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    <span class="comment">// other error:</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
@@ -753,8 +748,7 @@
 
       
           <p>本来是打算做成一期电台节目的，但是拖到现在还没录哈哈，索性就先记录下来啦~如果录好了节目会更新这篇博客的。</p>
-<h1 id="the-cure">The Cure</h1>
-<p>To The Sky，来自英国的The Cure乐队的一张B-Side合辑，The Cure也是我在2018年开始接触到的最喜欢的一个乐队，1976年在英国的一个小镇Crawley成立。该乐队经历了多次阵容变化，不过主唱Robert Smith是唯一不变的成员。乐队中文译名为治疗乐队。</p>
+<h1 id="The-Cure"><a href="#The-Cure" class="headerlink" title="The Cure"></a>The Cure</h1><p>To The Sky，来自英国的The Cure乐队的一张B-Side合辑，The Cure也是我在2018年开始接触到的最喜欢的一个乐队，1976年在英国的一个小镇Crawley成立。该乐队经历了多次阵容变化，不过主唱Robert Smith是唯一不变的成员。乐队中文译名为治疗乐队。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/46990.html#more" rel="contents">
@@ -852,8 +846,7 @@
           <blockquote>
 <p>先确定protected来自类A（有可能是基类，也有可能是object类，也有可能就是自己这个类），确定的时候注意最后一次被重写是什么时候，然后根据可见性（A类所在的包以及A类的子类）来判断</p>
 </blockquote>
-<h1 id="java-protected关键字详解">JAVA protected关键字详解</h1>
-<p>很多介绍Java语言的书籍(包括《Java编程思想》)都对protected介绍的比较的简单，基本都是一句话，就是: <strong>被 protected 修饰的成员对于本包和其子类可见</strong>。这种说法有点太过含糊，常常会对大家造成误解。实际上，protected的可见性在于两点：</p>
+<h1 id="JAVA-protected关键字详解"><a href="#JAVA-protected关键字详解" class="headerlink" title="JAVA protected关键字详解"></a>JAVA protected关键字详解</h1><p>很多介绍Java语言的书籍(包括《Java编程思想》)都对protected介绍的比较的简单，基本都是一句话，就是: <strong>被 protected 修饰的成员对于本包和其子类可见</strong>。这种说法有点太过含糊，常常会对大家造成误解。实际上，protected的可见性在于两点：</p>
 <blockquote>
 <ul>
 <li>基类的 protected 成员是包内可见的，并且对子类可见；</li>
@@ -956,9 +949,7 @@
 
       
           <p><a href="https://www.bilibili.com/video/BV1M54y1R7dj?from=search&amp;seid=7608605351584542531" target="_blank" rel="noopener">参考链接</a></p>
-<h1 id="摇滚">摇滚</h1>
-<h2 id="流行摇滚">流行摇滚</h2>
-<p>特点：摇滚乐与流行音乐的融合，更强调流行性、商业化。通俗地讲，流行摇滚是使用了摇滚元素，商业上更成功的音乐</p>
+<h1 id="摇滚"><a href="#摇滚" class="headerlink" title="摇滚"></a>摇滚</h1><h2 id="流行摇滚"><a href="#流行摇滚" class="headerlink" title="流行摇滚"></a>流行摇滚</h2><p>特点：摇滚乐与流行音乐的融合，更强调流行性、商业化。通俗地讲，流行摇滚是使用了摇滚元素，商业上更成功的音乐</p>
 <p>Coldplay——《Everglow》</p>
 <p>Imagine Dragons——《Demons》（2013）</p>
 <p>OneRepublic——《Apologize》（2006）</p>
@@ -1056,9 +1047,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="git仓库的三大区域">Git仓库的三大区域</h1>
-<p>Git本地仓库有三大区域：<strong>工作区、暂存区、版本区</strong>。</p>
-<h1 id="一次完整的修改提交推送操作">一次完整的修改、提交、推送操作</h1>
+          <h1 id="Git仓库的三大区域"><a href="#Git仓库的三大区域" class="headerlink" title="Git仓库的三大区域"></a>Git仓库的三大区域</h1><p>Git本地仓库有三大区域：<strong>工作区、暂存区、版本区</strong>。</p>
+<h1 id="一次完整的修改、提交、推送操作"><a href="#一次完整的修改、提交、推送操作" class="headerlink" title="一次完整的修改、提交、推送操作"></a>一次完整的修改、提交、推送操作</h1>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/posts/30168.html#more" rel="contents">
