@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2020-11-17T14:39:10.535Z</updated>
+  <updated>2020-11-17T15:06:00.719Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -17,17 +17,102 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>LightDM, GDM, GNOME, KDE等的区别与联系</title>
-    <link href="https://jyke.xyz/posts/60263.html"/>
-    <id>https://jyke.xyz/posts/60263.html</id>
-    <published>2020-11-17T14:37:13.000Z</published>
-    <updated>2020-11-17T14:39:10.535Z</updated>
+    <title>Shell学习笔记</title>
+    <link href="https://jyke.xyz/posts/59949.html"/>
+    <id>https://jyke.xyz/posts/59949.html</id>
+    <published>2020-11-17T15:05:16.000Z</published>
+    <updated>2020-11-17T15:06:00.719Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;&lt;a href=&quot;linux lightdm gdm gnome kde等的区别于联系(桌面环境 窗口管理器 显示管理器&quot;&gt;参考链接&lt;/a&gt;)&lt;/p&gt;
-&lt;h1 id=&quot;linux窗口管理器（WM）&quot;&gt;&lt;a href=&quot;#linux窗口管理器（WM）&quot; class=&quot;headerlink&quot; title=&quot;linux窗口管理器（WM）&quot;&gt;&lt;/a&gt;linux窗口管理器（WM）&lt;/h1&gt;&lt;p&gt;窗口管理器（Window Manager）是&lt;strong&gt;控制窗口行为与位置&lt;/strong&gt;的软件。&lt;/p&gt;
-&lt;h1 id=&quot;linux桌面环境&quot;&gt;&lt;a href=&quot;#linux桌面环境&quot; class=&quot;headerlink&quot; title=&quot;linux桌面环境&quot;&gt;&lt;/a&gt;linux桌面环境&lt;/h1&gt;&lt;p&gt;桌面环境可能仅仅是一个简单的窗口管理器， 也可能是一个像 KDE 或者 GNOME这样的完整桌面应用程序套件。&lt;/p&gt;
+      &lt;h1 id=&quot;最基本的两个问题&quot;&gt;&lt;a href=&quot;#最基本的两个问题&quot; class=&quot;headerlink&quot; title=&quot;最基本的两个问题&quot;&gt;&lt;/a&gt;最基本的两个问题&lt;/h1&gt;&lt;h2 id=&quot;shell是什么？&quot;&gt;&lt;a href=&quot;#shell是什么？&quot; class=&quot;headerlink&quot; title=&quot;shell是什么？&quot;&gt;&lt;/a&gt;shell是什么？&lt;/h2&gt;&lt;p&gt;shell是一个用C语言编写的程序，是用户使用Linux的桥梁。他提供了一个界面，用户通过这个界面访问操作系统服务。&lt;/p&gt;
+&lt;p&gt;而Shell脚本（Shell Script）是一种为shell编写的脚本程序。也就是我们通常说的Shell脚本编程。&lt;/p&gt;
+&lt;h2 id=&quot;bash是什么？&quot;&gt;&lt;a href=&quot;#bash是什么？&quot; class=&quot;headerlink&quot; title=&quot;bash是什么？&quot;&gt;&lt;/a&gt;bash是什么？&lt;/h2&gt;&lt;p&gt;shell编程和其他的编程一样，需要文本编辑器和脚本解释器。&lt;/p&gt;
+&lt;p&gt;而Bash是Linux的一种Shell类型，是解释脚本文件的一个shell程序。&lt;/p&gt;
+&lt;p&gt;Linux的Shell种类众多，常见的有：&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="Shell" scheme="https://jyke.xyz/tags/Shell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>剑指Offer刷题记录</title>
+    <link href="https://jyke.xyz/posts/41647.html"/>
+    <id>https://jyke.xyz/posts/41647.html</id>
+    <published>2020-11-17T15:02:02.000Z</published>
+    <updated>2020-11-17T15:04:23.008Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;07-重建二叉树&quot;&gt;&lt;a href=&quot;#07-重建二叉树&quot; class=&quot;headerlink&quot; title=&quot;07. 重建二叉树&quot;&gt;&lt;/a&gt;07. &lt;a href=&quot;https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;重建二叉树&lt;/a&gt;&lt;/h2&gt;
+    
+    </summary>
+    
+    
+      <category term="算法" scheme="https://jyke.xyz/categories/%E7%AE%97%E6%B3%95/"/>
+    
+    
+      <category term="算法" scheme="https://jyke.xyz/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="剑指Offer" scheme="https://jyke.xyz/tags/%E5%89%91%E6%8C%87Offer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OpenCL, OpenGL, DirectX</title>
+    <link href="https://jyke.xyz/posts/9976.html"/>
+    <id>https://jyke.xyz/posts/9976.html</id>
+    <published>2020-11-17T14:57:07.000Z</published>
+    <updated>2020-11-17T14:58:20.185Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;OpenCL&quot;&gt;&lt;a href=&quot;#OpenCL&quot; class=&quot;headerlink&quot; title=&quot;OpenCL&quot;&gt;&lt;/a&gt;OpenCL&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;是由苹果（Apple）公司发起，业界众多著名厂商共同制作的面向异构系统通用目的并行编程的开放式、免费标准，也是一个统一的编程环境&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;OpenCL实际上是针对异构系统进行并行编程的一个全新的API，OpenCL可以利用GPU进行一些并行计算的工作。&lt;/li&gt;
+&lt;li&gt;OpenGL是针对图形的，而OpenCL则是针对并行计算的API。&lt;/li&gt;
+&lt;li&gt;它是一个连接硬件和软件的API接口，OpenCL的作用就是通过调用处理器和GPU的计算资源，释放硬件潜力，让程序运行得更快更好。&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="OpenCL" scheme="https://jyke.xyz/tags/OpenCL/"/>
+    
+      <category term="OpenGL" scheme="https://jyke.xyz/tags/OpenGL/"/>
+    
+      <category term="DirectX" scheme="https://jyke.xyz/tags/DirectX/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux启动过程分析</title>
+    <link href="https://jyke.xyz/posts/25242.html"/>
+    <id>https://jyke.xyz/posts/25242.html</id>
+    <published>2020-11-17T14:55:21.000Z</published>
+    <updated>2020-11-17T14:58:40.601Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Linux启动过程分析&quot;&gt;&lt;a href=&quot;#Linux启动过程分析&quot; class=&quot;headerlink&quot; title=&quot;Linux启动过程分析&quot;&gt;&lt;/a&gt;Linux启动过程分析&lt;/h1&gt;&lt;p&gt;以RedHat启动方式分析（Ubuntu的启动过程不太一样），可以分为5个阶段：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;引导内核&lt;/li&gt;
+&lt;li&gt;运行init&lt;/li&gt;
+&lt;li&gt;系统初始化&lt;/li&gt;
+&lt;li&gt;建立终端&lt;/li&gt;
+&lt;li&gt;用户登录&lt;/li&gt;
+&lt;/ol&gt;
     
     </summary>
     
@@ -40,19 +125,46 @@
   </entry>
   
   <entry>
-    <title>Hello World</title>
-    <link href="https://jyke.xyz/posts/16107.html"/>
-    <id>https://jyke.xyz/posts/16107.html</id>
-    <published>2020-11-16T15:28:23.850Z</published>
-    <updated>2020-05-12T13:06:52.000Z</updated>
+    <title>Linux各个目录的作用</title>
+    <link href="https://jyke.xyz/posts/13366.html"/>
+    <id>https://jyke.xyz/posts/13366.html</id>
+    <published>2020-11-17T14:53:29.000Z</published>
+    <updated>2020-11-17T14:54:54.552Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+      &lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/30617845&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;参考链接&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;文件系统的类型&quot;&gt;&lt;a href=&quot;#文件系统的类型&quot; class=&quot;headerlink&quot; title=&quot;文件系统的类型&quot;&gt;&lt;/a&gt;文件系统的类型&lt;/h1&gt;&lt;p&gt;LINUX有四种基本文件系统类型：普通文件、目录文件、连接文件和特殊文件，可用file命令来识别.&lt;/p&gt;
     
     </summary>
     
     
+      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>LightDM, GDM, GNOME, KDE等的区别与联系</title>
+    <link href="https://jyke.xyz/posts/60263.html"/>
+    <id>https://jyke.xyz/posts/60263.html</id>
+    <published>2020-11-17T14:37:13.000Z</published>
+    <updated>2020-11-17T14:45:48.436Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;linux窗口管理器（WM）&quot;&gt;&lt;a href=&quot;#linux窗口管理器（WM）&quot; class=&quot;headerlink&quot; title=&quot;linux窗口管理器（WM）&quot;&gt;&lt;/a&gt;linux窗口管理器（WM）&lt;/h1&gt;&lt;p&gt;窗口管理器（Window Manager）是&lt;strong&gt;控制窗口行为与位置&lt;/strong&gt;的软件。&lt;/p&gt;
+&lt;h1 id=&quot;linux桌面环境&quot;&gt;&lt;a href=&quot;#linux桌面环境&quot; class=&quot;headerlink&quot; title=&quot;linux桌面环境&quot;&gt;&lt;/a&gt;linux桌面环境&lt;/h1&gt;&lt;p&gt;桌面环境可能仅仅是一个简单的窗口管理器， 也可能是一个像 KDE 或者 GNOME这样的完整桌面应用程序套件。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
     
   </entry>
   
@@ -218,11 +330,11 @@
     
       <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
     
-      <category term="分布式与云计算" scheme="https://jyke.xyz/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
-    
       <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
     
       <category term="虚拟化" scheme="https://jyke.xyz/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
+    
+      <category term="分布式与云计算" scheme="https://jyke.xyz/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
     
   </entry>
   
@@ -347,7 +459,7 @@
     <link href="https://jyke.xyz/posts/46586.html"/>
     <id>https://jyke.xyz/posts/46586.html</id>
     <published>2020-06-02T07:56:35.000Z</published>
-    <updated>2020-06-29T06:39:46.000Z</updated>
+    <updated>2020-11-17T15:00:20.310Z</updated>
     
     <summary type="html">
     
@@ -407,119 +519,6 @@
 &lt;p&gt;Java提供了&lt;code&gt;Reader&lt;/code&gt;和&lt;code&gt;Writer&lt;/code&gt;表示字符流，字符流传输的最小数据单位是&lt;code&gt;char&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;例如，我们把&lt;code&gt;char[]&lt;/code&gt;数组&lt;code&gt;Hi你好&lt;/code&gt;这4个字符用&lt;code&gt;Writer&lt;/code&gt;字符流写入文件，并且使用UTF-8编码，得到的最终文件内容是8个字节，英文字符&lt;code&gt;H&lt;/code&gt;和&lt;code&gt;i&lt;/code&gt;各占一个字节，中文字符&lt;code&gt;你好&lt;/code&gt;各占3个字节：&lt;/p&gt;
 &lt;p&gt;反过来，我们用&lt;code&gt;Reader&lt;/code&gt;读取以UTF-8编码的这8个字节，会从&lt;code&gt;Reader&lt;/code&gt;中得到&lt;code&gt;Hi你好&lt;/code&gt;这4个字符。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="JAVA" scheme="https://jyke.xyz/tags/JAVA/"/>
-    
-      <category term="廖雪峰" scheme="https://jyke.xyz/tags/%E5%BB%96%E9%9B%AA%E5%B3%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JAVA集合</title>
-    <link href="https://jyke.xyz/posts/18925.html"/>
-    <id>https://jyke.xyz/posts/18925.html</id>
-    <published>2020-05-31T08:26:29.000Z</published>
-    <updated>2020-05-31T14:05:16.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;集合&quot;&gt;&lt;a href=&quot;#集合&quot; class=&quot;headerlink&quot; title=&quot;集合&quot;&gt;&lt;/a&gt;集合&lt;/h1&gt;&lt;h2 id=&quot;JAVA集合简介&quot;&gt;&lt;a href=&quot;#JAVA集合简介&quot; class=&quot;headerlink&quot; title=&quot;JAVA集合简介&quot;&gt;&lt;/a&gt;JAVA集合简介&lt;/h2&gt;&lt;p&gt;Java标准库自带的&lt;code&gt;java.util&lt;/code&gt;包提供了集合类：&lt;code&gt;Collection&lt;/code&gt;，它是除&lt;code&gt;Map&lt;/code&gt;外所有其他集合类的根接口。&lt;/p&gt;
-&lt;p&gt;Java的&lt;code&gt;java.util&lt;/code&gt;包主要提供了以下三种类型的集合：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;List&lt;/code&gt;：一种有序列表的集合，例如，按索引排列的&lt;code&gt;Student&lt;/code&gt;的&lt;code&gt;List&lt;/code&gt;；&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Set&lt;/code&gt;：一种保证&lt;strong&gt;没有重复元素&lt;/strong&gt;的集合，例如，所有无重复名称的&lt;code&gt;Student&lt;/code&gt;的&lt;code&gt;Set&lt;/code&gt;；&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Map&lt;/code&gt;：一种通过键值（key-value）查找的映射表集合，例如，根据&lt;code&gt;Student&lt;/code&gt;的&lt;code&gt;name&lt;/code&gt;查找对应&lt;code&gt;Student&lt;/code&gt;的&lt;code&gt;Map&lt;/code&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Java集合的设计有几个特点：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;一是实现了&lt;strong&gt;接口和实现类相分离&lt;/strong&gt;，例如，有序表的接口是&lt;code&gt;List&lt;/code&gt;，具体的实现类有&lt;code&gt;ArrayList&lt;/code&gt;，&lt;code&gt;LinkedList&lt;/code&gt;等；&lt;/li&gt;
-&lt;li&gt;二是&lt;strong&gt;支持泛型&lt;/strong&gt;，我们可以限制在一个集合中只能放入同一种数据类型的元素，例如：&lt;/li&gt;
-&lt;/ul&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;List&amp;lt;String&amp;gt; list = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ArrayList&amp;lt;&amp;gt;(); &lt;span class=&quot;comment&quot;&gt;// 只能放入String类型&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;Java访问集合总是通过统一的方式——迭代器（Iterator）来实现，它最明显的好处在于无需知道集合内部元素是按什么方式存储的。&lt;/p&gt;
-&lt;p&gt;注意到有一小部分集合类是遗留类，不应该继续使用。&lt;/p&gt;
-&lt;h3 id=&quot;小结&quot;&gt;&lt;a href=&quot;#小结&quot; class=&quot;headerlink&quot; title=&quot;小结&quot;&gt;&lt;/a&gt;小结&lt;/h3&gt;&lt;p&gt;Java的集合类定义在&lt;code&gt;java.util&lt;/code&gt;包中，支持泛型，主要提供了3种集合类，包括&lt;code&gt;List&lt;/code&gt;，&lt;code&gt;Set&lt;/code&gt;和&lt;code&gt;Map&lt;/code&gt;。Java集合使用统一的&lt;code&gt;Iterator&lt;/code&gt;遍历，尽量不要使用遗留接口。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="JAVA" scheme="https://jyke.xyz/tags/JAVA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SQL快速入门（持续更新中...）</title>
-    <link href="https://jyke.xyz/posts/4072.html"/>
-    <id>https://jyke.xyz/posts/4072.html</id>
-    <published>2020-05-26T16:03:17.000Z</published>
-    <updated>2020-08-27T12:13:24.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;​        这篇文章是在学SQL的过程中记下来的比较重要的一些笔记，学习资源是来自油管的Mosh的教学视频，感觉是非常简单易懂的教程。如果你也是刚开始学习SQL的小白，可以跟着文章的视频链接学习一遍，其中比较重要的知识点已经在这篇文章中记录下来了。学习之前需要先安装MySQL，网上安装教程很多，并且也非常简单，在此就不赘述了。&lt;/p&gt;
-&lt;p&gt;点击链接可以访问Mosh油管视频：&lt;a href=&quot;https://www.youtube.com/watch?v=7S_tz1z_5bA&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Thanks for Mosh’s Video&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;视频有一份配套的pdf笔记，获得笔记需要填写邮箱，填写邮箱之后就会经常收到Mosh推送的他的课程的广告，所以pdf文档可以直接&lt;a href=&quot;https://programmingwithmosh.com/wp-content/uploads/2019/03/SQL-Cheat-Sheet.pdf&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;点这里下载&lt;/a&gt;以免邮箱会收到很多广告。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>廖雪峰JAVA学习笔记（6）——泛型</title>
-    <link href="https://jyke.xyz/posts/2053.html"/>
-    <id>https://jyke.xyz/posts/2053.html</id>
-    <published>2020-05-24T18:02:00.000Z</published>
-    <updated>2020-05-24T18:03:30.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;什么是泛型&quot;&gt;&lt;a href=&quot;#什么是泛型&quot; class=&quot;headerlink&quot; title=&quot;什么是泛型&quot;&gt;&lt;/a&gt;什么是泛型&lt;/h1&gt;&lt;p&gt;一个简单的泛型例子：&lt;/p&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;ArrayList&lt;/span&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;T&lt;/span&gt;&amp;gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; T[] array;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; size;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(T e)&lt;/span&gt; &lt;/span&gt;&amp;#123;...&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;remove&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; index)&lt;/span&gt; &lt;/span&gt;&amp;#123;...&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; T &lt;span class=&quot;title&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; index)&lt;/span&gt; &lt;/span&gt;&amp;#123;...&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;code&gt;T&lt;/code&gt;可以是任何class。这样一来，我们就实现了：编写一次模版，可以创建任意类型的&lt;code&gt;ArrayList&lt;/code&gt;：&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="JAVA" scheme="https://jyke.xyz/tags/JAVA/"/>
-    
-      <category term="廖雪峰" scheme="https://jyke.xyz/tags/%E5%BB%96%E9%9B%AA%E5%B3%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>廖雪峰JAVA学习笔记（5）——注解</title>
-    <link href="https://jyke.xyz/posts/32221.html"/>
-    <id>https://jyke.xyz/posts/32221.html</id>
-    <published>2020-05-19T09:10:48.000Z</published>
-    <updated>2020-05-19T10:01:32.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;使用注解&quot;&gt;&lt;a href=&quot;#使用注解&quot; class=&quot;headerlink&quot; title=&quot;使用注解&quot;&gt;&lt;/a&gt;使用注解&lt;/h1&gt;&lt;p&gt;什么是注解（Annotation）？注解是放在Java源码的类、方法、字段、参数前的一种特殊“注释”：&lt;/p&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// this is a component:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Resource&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;hello&quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Hello&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;meta&quot;&gt;@Inject&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; n;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;meta&quot;&gt;@PostConstruct&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;hello&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(@Param String name)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(name);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;meta&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; String &lt;span class=&quot;title&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;Hello&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;strong&gt;注释会被编译器直接忽略，注解则可以被编译器打包进入class文件&lt;/strong&gt;，因此，注解是一种用作标注的“元数据”。&lt;/p&gt;
     
     </summary>
     
