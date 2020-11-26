@@ -46,7 +46,7 @@
     <link href="https://jyke.xyz/posts/41647.html"/>
     <id>https://jyke.xyz/posts/41647.html</id>
     <published>2020-11-17T15:02:02.000Z</published>
-    <updated>2020-11-25T17:56:40.589Z</updated>
+    <updated>2020-11-26T17:23:09.255Z</updated>
     
     <summary type="html">
     
@@ -332,9 +332,9 @@
     
       <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
     
-      <category term="分布式与云计算" scheme="https://jyke.xyz/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
-    
       <category term="虚拟化" scheme="https://jyke.xyz/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
+    
+      <category term="分布式与云计算" scheme="https://jyke.xyz/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
     
   </entry>
   
