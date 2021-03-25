@@ -44,14 +44,14 @@
   </url>
   
   <url>
-    <loc>https://jyke.xyz/posts/13366.html</loc>
+    <loc>https://jyke.xyz/posts/25242.html</loc>
     
     <lastmod>2020-11-17</lastmod>
     
   </url>
   
   <url>
-    <loc>https://jyke.xyz/posts/25242.html</loc>
+    <loc>https://jyke.xyz/posts/13366.html</loc>
     
     <lastmod>2020-11-17</lastmod>
     
@@ -254,13 +254,6 @@
   </url>
   
   <url>
-    <loc>https://jyke.xyz/posts/3547.html</loc>
-    
-    <lastmod>2020-05-12</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://jyke.xyz/posts/21194.html</loc>
     
     <lastmod>2020-05-12</lastmod>
@@ -269,6 +262,13 @@
   
   <url>
     <loc>https://jyke.xyz/posts/20563.html</loc>
+    
+    <lastmod>2020-05-12</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://jyke.xyz/posts/3547.html</loc>
     
     <lastmod>2020-05-12</lastmod>
     
@@ -333,13 +333,6 @@
   </url>
   
   <url>
-    <loc>https://jyke.xyz/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
-    <lastmod>2021-03-25</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://jyke.xyz/tags/%E7%AE%97%E6%B3%95/</loc>
     <lastmod>2021-03-25</lastmod>
     <changefreq>daily</changefreq>
@@ -348,6 +341,13 @@
   
   <url>
     <loc>https://jyke.xyz/tags/%E5%89%91%E6%8C%87Offer/</loc>
+    <lastmod>2021-03-25</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://jyke.xyz/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
     <lastmod>2021-03-25</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -417,14 +417,14 @@
   </url>
   
   <url>
-    <loc>https://jyke.xyz/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
+    <loc>https://jyke.xyz/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/</loc>
     <lastmod>2021-03-25</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://jyke.xyz/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/</loc>
+    <loc>https://jyke.xyz/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
     <lastmod>2021-03-25</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -461,14 +461,14 @@
   </url>
   
   <url>
-    <loc>https://jyke.xyz/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/</loc>
+    <loc>https://jyke.xyz/categories/%E7%AE%97%E6%B3%95/</loc>
     <lastmod>2021-03-25</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://jyke.xyz/categories/%E7%AE%97%E6%B3%95/</loc>
+    <loc>https://jyke.xyz/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/</loc>
     <lastmod>2021-03-25</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
