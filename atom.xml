@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2020-12-08T15:35:51.977Z</updated>
+  <updated>2021-03-25T16:00:52.820Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -17,11 +17,33 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>vfio</title>
+    <link href="https://jyke.xyz/posts/11156.html"/>
+    <id>https://jyke.xyz/posts/11156.html</id>
+    <published>2021-03-25T15:58:15.000Z</published>
+    <updated>2021-03-25T16:00:52.820Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/bfbb5095d8fd&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;参考链接&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;前提知识&quot;&gt;&lt;a href=&quot;#前提知识&quot; class=&quot;headerlink&quot; title=&quot;前提知识&quot;&gt;&lt;/a&gt;前提知识&lt;/h2&gt;&lt;h3 id=&quot;lspci命令&quot;&gt;&lt;a href=&quot;#lspci命令&quot; class=&quot;headerlink&quot; title=&quot;lspci命令&quot;&gt;&lt;/a&gt;lspci命令&lt;/h3&gt;&lt;p&gt;加入系统装有1G的RAM，1G以后的物理内存地址空间都是外部设备IO在系统内存地址空间上的映射。/proc/iomem描述了系统中所有的设备I/O在内存地址空间上的映射。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="虚拟化" scheme="https://jyke.xyz/categories/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
+    
+    
+      <category term="虚拟化" scheme="https://jyke.xyz/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Ubuntu20.04下安装mesa</title>
     <link href="https://jyke.xyz/posts/30959.html"/>
     <id>https://jyke.xyz/posts/30959.html</id>
     <published>2020-12-08T15:34:54.000Z</published>
-    <updated>2020-12-08T15:35:51.977Z</updated>
+    <updated>2020-12-08T15:36:31.397Z</updated>
     
     <summary type="html">
     
@@ -49,7 +71,7 @@
     <link href="https://jyke.xyz/posts/39689.html"/>
     <id>https://jyke.xyz/posts/39689.html</id>
     <published>2020-12-08T15:31:56.000Z</published>
-    <updated>2020-12-08T15:33:05.504Z</updated>
+    <updated>2020-12-08T15:36:31.400Z</updated>
     
     <summary type="html">
     
@@ -388,9 +410,9 @@
     
       <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
     
-      <category term="虚拟化" scheme="https://jyke.xyz/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
-    
       <category term="分布式与云计算" scheme="https://jyke.xyz/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
+    
+      <category term="虚拟化" scheme="https://jyke.xyz/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
     
   </entry>
   
@@ -507,29 +529,6 @@
       <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
     
       <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LeetCode刷题记录（JAVA语言）</title>
-    <link href="https://jyke.xyz/posts/46586.html"/>
-    <id>https://jyke.xyz/posts/46586.html</id>
-    <published>2020-06-02T07:56:35.000Z</published>
-    <updated>2020-12-06T17:07:10.446Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这篇文章是自己刷LeetCode的记录，本意是通过自己把题目思路写出来来捋清楚思路，也为了日后的复习更方便，所以语言没有非常严谨，各位谨慎参考。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="LeetCode" scheme="https://jyke.xyz/categories/LeetCode/"/>
-    
-    
-      <category term="LeetCode" scheme="https://jyke.xyz/tags/LeetCode/"/>
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   

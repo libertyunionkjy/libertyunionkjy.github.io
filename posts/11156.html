@@ -22,22 +22,20 @@
     var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="OpenCL 是由苹果（Apple）公司发起，业界众多著名厂商共同制作的面向异构系统通用目的并行编程的开放式、免费标准，也是一个统一的编程环境   OpenCL实际上是针对异构系统进行并行编程的一个全新的API，OpenCL可以利用GPU进行一些并行计算的工作。 OpenGL是针对图形的，而OpenCL则是针对并行计算的API。 它是一个连接硬件和软件的API接口，OpenCL的作用就是通过调用处">
+  <meta name="description" content="参考链接 前提知识lspci命令加入系统装有1G的RAM，1G以后的物理内存地址空间都是外部设备IO在系统内存地址空间上的映射。&#x2F;proc&#x2F;iomem描述了系统中所有的设备I&#x2F;O在内存地址空间上的映射。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OpenCL, OpenGL, DirectX">
-<meta property="og:url" content="https://jyke.xyz/posts/9976.html">
+<meta property="og:title" content="vfio">
+<meta property="og:url" content="https://jyke.xyz/posts/11156.html">
 <meta property="og:site_name" content="柯柯的博客">
-<meta property="og:description" content="OpenCL 是由苹果（Apple）公司发起，业界众多著名厂商共同制作的面向异构系统通用目的并行编程的开放式、免费标准，也是一个统一的编程环境   OpenCL实际上是针对异构系统进行并行编程的一个全新的API，OpenCL可以利用GPU进行一些并行计算的工作。 OpenGL是针对图形的，而OpenCL则是针对并行计算的API。 它是一个连接硬件和软件的API接口，OpenCL的作用就是通过调用处">
+<meta property="og:description" content="参考链接 前提知识lspci命令加入系统装有1G的RAM，1G以后的物理内存地址空间都是外部设备IO在系统内存地址空间上的映射。&#x2F;proc&#x2F;iomem描述了系统中所有的设备I&#x2F;O在内存地址空间上的映射。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-17T14:57:07.000Z">
-<meta property="article:modified_time" content="2020-11-17T15:06:11.945Z">
+<meta property="article:published_time" content="2021-03-25T15:58:15.000Z">
+<meta property="article:modified_time" content="2021-03-25T16:00:52.820Z">
 <meta property="article:author" content="Keke">
-<meta property="article:tag" content="OpenGL">
-<meta property="article:tag" content="OpenCL">
-<meta property="article:tag" content="DirectX">
+<meta property="article:tag" content="虚拟化">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://jyke.xyz/posts/9976.html">
+<link rel="canonical" href="https://jyke.xyz/posts/11156.html">
 
 
 <script id="page-configurations">
@@ -50,7 +48,7 @@
   };
 </script>
 
-  <title>OpenCL, OpenGL, DirectX | 柯柯的博客</title>
+  <title>vfio | 柯柯的博客</title>
   
     <script>
       function sendPageView() {
@@ -188,7 +186,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/9976.html">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/11156.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -201,7 +199,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          OpenCL, OpenGL, DirectX
+          vfio
         </h1>
 
         <div class="post-meta">
@@ -210,17 +208,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-11-17 22:57:07 / 修改时间：23:06:11" itemprop="dateCreated datePublished" datetime="2020-11-17T22:57:07+08:00">2020-11-17</time>
+              <time title="创建时间：2021-03-25 23:58:15" itemprop="dateCreated datePublished" datetime="2021-03-25T23:58:15+08:00">2021-03-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-26 00:00:52" itemprop="dateModified" datetime="2021-03-26T00:00:52+08:00">2021-03-26</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+                  <a href="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">虚拟化</span></a>
                 </span>
             </span>
 
@@ -233,8 +237,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/posts/9976.html#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/posts/9976.html" itemprop="commentCount"></span>
+    <a title="valine" href="/posts/11156.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/11156.html" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -249,45 +253,70 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="OpenCL"><a href="#OpenCL" class="headerlink" title="OpenCL"></a>OpenCL</h1><blockquote>
-<p>是由苹果（Apple）公司发起，业界众多著名厂商共同制作的面向异构系统通用目的并行编程的开放式、免费标准，也是一个统一的编程环境</p>
-</blockquote>
-<ul>
-<li>OpenCL实际上是针对异构系统进行并行编程的一个全新的API，OpenCL可以利用GPU进行一些并行计算的工作。</li>
-<li>OpenGL是针对图形的，而OpenCL则是针对并行计算的API。</li>
-<li>它是一个连接硬件和软件的API接口，OpenCL的作用就是通过调用处理器和GPU的计算资源，释放硬件潜力，让程序运行得更快更好。</li>
-</ul>
+        <p><a href="https://www.jianshu.com/p/bfbb5095d8fd" target="_blank" rel="noopener">参考链接</a></p>
+<h2 id="前提知识"><a href="#前提知识" class="headerlink" title="前提知识"></a>前提知识</h2><h3 id="lspci命令"><a href="#lspci命令" class="headerlink" title="lspci命令"></a>lspci命令</h3><p>加入系统装有1G的RAM，1G以后的物理内存地址空间都是外部设备IO在系统内存地址空间上的映射。/proc/iomem描述了系统中所有的设备I/O在内存地址空间上的映射。</p>
 <a id="more"></a>
-<h1 id="OpenGL"><a href="#OpenGL" class="headerlink" title="OpenGL"></a>OpenGL</h1><p>OpenGL是个专业的图形程序接口，是一个底层图形库。全称是Open Graphics Library。</p>
-<p>DirectX在家用市场领先，但是在专业领域OpenGL是个不能被取代的主角。</p>
-<h1 id="DirectX"><a href="#DirectX" class="headerlink" title="DirectX"></a>DirectX</h1><p>他是一个API。按照性质分类，这些API可以分为显示部分、声音部分、输入部分和网络部分。</p>
-<h1 id="三者之间的区别："><a href="#三者之间的区别：" class="headerlink" title="三者之间的区别："></a>三者之间的区别：</h1><p>DirectX仅支持Windows。</p>
-<p>OpenGL和Apple:</p>
-<p>​    90年代末Apple放弃了自己的QuickDraw 3D，将OpenGL作为Mac OS X的官方3D库。Apple的系统给OpenGL程序带来了不少拥护者。之后OpenGL正式被Linux采用，现在主流的游戏平台，包括PSP，PS3 和Wii都支持该技术。但是微软的Xbox360例外，它采用了自己的DirectX 图形库，而将OpenGL排除在外。</p>
-<p>​    如今OpenGL对DirectX来说比以前更有竞争力了。Apple的OpenCL能更紧密地与OpenGL代码协同工作，能带来更广泛的支持。 Apple还将OpenCL作为一个免费的，开源的标准，让任何人都能参与到该平台中来。<br>　　OpenGL和OpenCL设计的相似性，使开发者更易于开发。比如在OpenCL下进行数据虚拟化计算，可以把相同的对象在OpenGL上进行图形渲染。同时OpenGL下的图形渲染可以在OpenCL下进行处理和转换。<br>　　OpenCL得到了GPU厂商NVIDIA和AMD的支持，同时支持Apple，SONY,任天堂的平台，还支持Linux和Windows，而且任何公司的开发者都可以参与到该技术的发展中来。</p>
-<h1 id="CUDA"><a href="#CUDA" class="headerlink" title="CUDA"></a>CUDA</h1><p>CUDA是一个基于Nvidia GPU的并行计算的架构。<br>CUDA最主要的包含两个方面：</p>
+<p>0000:00:1f.1则是一个PCI外设的地址,它以冒号和逗号分隔为4个部分：</p>
 <ol>
-<li>ISA指令集架构；</li>
-<li>硬件计算引擎；实际上是硬件和指令集。</li>
+<li>第一个16位表示域</li>
+<li>第二个8位表示一个总线编号—-每个 PCI域可以拥有最多256个总线</li>
+<li>第三个5位表示一 个设备号—-每个总线上可支持32个设备</li>
+<li>最后3位表示功能号—-每个设备上最多可有8种功能</li>
 </ol>
-<p>也就是说我们可以把CUDA看做是与X86或者cell类似的架构，但是是基于是GPU，而不是传统的CPU</p>
-<h1 id="Relationship-Between-OpenCL-And-CUDA"><a href="#Relationship-Between-OpenCL-And-CUDA" class="headerlink" title="Relationship Between OpenCL And CUDA"></a>Relationship Between OpenCL And CUDA</h1><ul>
-<li><p>CUDA和OpenCL的关系并不是冲突关系，而是<strong>包容关系</strong>。OpenCL是一个API，在第一个级别，CUDA架构是更高一个级别，在这个架构上不管是OpenCL还是DX11这样的API，还是像C语言、Fortran、DX11计算，都可以支持。作为程序开发员来讲，一般他们只懂这些语言或者API，可以采用多种语言开发自己的程序，不管他选择什么语言，只要是希望调用GPU的计算能，在这个架构上都可以用CUDA来编程。</p>
-</li>
-<li><p>关于OpenCL与CUDA之间的技术区别，<strong>主要体现在实现方法上</strong>。基于C语言的CUDA被包装成一种容易编写的代码，因此即使是不熟悉芯片构造的科研人员，也可能利用CUDA工具编写出实用的程序。而OpenCL虽然句法上与CUDA接近，但是它更加强调底层操作，因此难度较高，但正因为如此，OpenCL才能跨平台运行。</p>
-</li>
-<li><p>CUDA是一个并行计算的架构，包含有一个指令集架构和相应的硬件引擎。OpenCL是一个并行计算的应用程序编程接口（API），在NVIDIA CUDA架构上OpenCL是除了C for CUDA外新增的一个CUDA程序开发途径。</p>
-</li>
-<li><p>如果你想获得更多的对硬件上的控制权的话，你可以使用OpenCL这个API来进行编程，如果对API不是太了解，也可以用CUDA C语言来编程，这是两种不同编程的方式，他们有他们相同点和不同点。</p>
+<p>lspci没有标明域，但是对于一台PC而言，一般只有一个域（0号域）</p>
+<p>单个系统上，插入多个总线是通过桥来完成的。桥是一种用来连接总线的特殊pci外设。所以电脑的PCI系统是一个树形结构。</p>
 <blockquote>
-<p>OpenCL和CUDA C语言进行开发的时候，在并行计算这块，他们的概念是差不多的，这两种程序在程序上是有很大的相似度，所以程序之间的相互移植相对来说也是比较容易。</p>
+<p>lspci怎么看有多少个设备？</p>
+<p>数不同的总线上有多少个不同的设备号。</p>
+</blockquote>
+<h3 id="IOMMU"><a href="#IOMMU" class="headerlink" title="IOMMU"></a>IOMMU</h3><p>IOMMU可以实现设备的隔离特性。包括设备之间的隔离以及设备和某块内存间的有效隔离。</p>
+<h4 id="IOMMU的隔离粒度"><a href="#IOMMU的隔离粒度" class="headerlink" title="IOMMU的隔离粒度"></a>IOMMU的隔离粒度</h4><p>IOMMU可以达到设备级的隔离粒度（辨识出每一个PCI设备并进行隔离），但是通常情况下为了达到更好的性能，不需要达到设备级别的隔离。</p>
+<blockquote>
+<p>比如：相关的<strong>一组设备</strong>可能会使用同一块内存空间。</p>
+</blockquote>
+<p><strong>Group:</strong></p>
+<p>所以IOMMU API因此也支持IOMMU group的概念。一个group是一组设备的集合。这组设备隔离于系统的其他设备。group也是VFIO使用的最小粒度。</p>
+<p><strong>Container:</strong></p>
+<p>虽然group是保证用户访问安全的最小粒度，它并不一定是最好的粒度。</p>
+<blockquote>
+<p>比如：在使用页表的IOMMU中，可以<strong>在不同group之间共享一组页表</strong>，从而减少平台（减少TLB抖动、减少重复页表）和用户（仅编程一组地址转换）的开销。</p>
+</blockquote>
+<p>因此，<strong>VFIO</strong>使用了一个container类的概念，一个类可以包括一个或者多个groups。创建一个container很简单，只要打开<code>/dev/vfio/vfio</code>字符设备即可。</p>
+<p>没有group的container本身提供的功能很少，用户需要在容器中添加一个group以获得下一级功能，即IOMMU。</p>
+<h2 id="什么是VFIO"><a href="#什么是VFIO" class="headerlink" title="什么是VFIO"></a>什么是VFIO</h2><p>先总结一下IOMMU：许多硬件平台提供DMA和中断重映射功能，以确保I/O设备只在分配给它们的域内访问内存，一般这样的硬件单元称为IOMMU。而不同架构的IOMMU可能提供的接口不同，因此container并未提供统一接口访问IOMMU。</p>
+<p>而<strong>VFIO驱动程序是一个与IOMMU具体硬件无关的框架</strong>，可以支持x86架构的VT-D、AMD-Vi，POWER PE，ARM等各种IOMMU硬件架构。有了VFIO，用户态可以以非特权的身份安全地访问pci设备。</p>
+<p>注意两个词：1.安全的；2.非特权的。</p>
+<p>与VFIO经常做对比的是UIO，UIO也是一个用户空间驱动，但是不受IOMMU的保护，且中断支持有限，并且需要root权限运行。</p>
+<p>总结一下：</p>
+<ol>
+<li>VFIO是一个可以安全的把设备I/O、中断、DMA等暴露到用户空间（userspace），从而可以在用户空间完成设备驱动的<strong>框架</strong>。</li>
+<li>得益于vfio低开销的用户空间直接设备访问，虚拟机设备分配（device assignment）、高性能应用等可以获得更高的I/O性能。</li>
+</ol>
+<h2 id="vfio的使用"><a href="#vfio的使用" class="headerlink" title="vfio的使用"></a>vfio的使用</h2><h3 id="准备group"><a href="#准备group" class="headerlink" title="准备group"></a>准备group</h3><p>一个重要的文件：<code>/dev/vfio/{group}</code>，组的标识，其中<code>{group}</code>是iommu的组号。</p>
+<ol>
+<li><p>怎么绑定设备到一个group？—-&gt;绑定设备到vfio驱动程序</p>
+</li>
+<li><p>一个设备关联到一个group后，用户首先需要标识这个group。</p>
+</li>
+</ol>
+<h3 id="将group添加到container中"><a href="#将group添加到container中" class="headerlink" title="将group添加到container中"></a>将group添加到container中</h3><h3 id="vfio使用示例"><a href="#vfio使用示例" class="headerlink" title="vfio使用示例"></a>vfio使用示例</h3><ol>
+<li><p>获取设备所属的iommu组号</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> readlink /sys/bus/pci/devices/0000:06:0d.0/iommu_group</span></span><br><span class="line">../../../../kernel/iommu_groups/26</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加载内核模块vfio-pci</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> modprobe vfio-pci</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>绑定设备到vfio驱动上</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> lspci -n -s 0000:06:0d.0 (查看设备的PCI vendor id和device id号)</span></span><br><span class="line">06:0d.0 0401: 1102:0002 (rev 08)</span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">echo</span> 0000:06:0d.0 &gt; /sys/bus/pci/devices/0000:06:0d.0/driver/unbind</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">echo</span> 1102 0002 &gt; /sys/bus/pci/drivers/vfio-pci/new_id</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：和所绑定设备处在同一个iommu_group下的设备必须同时也绑定到vfio或者不绑定任何驱动</p>
 </blockquote>
 </li>
-<li><p>CUDA C语言与OpenCL的定位不同，或者说是用人群不同。CUDA C是一种高级语言，那些对硬件了解不多的非专业人士也能轻松上手；而OpenCL则是针对硬件的应用程序开发接口，它能给程序员更多对硬件的控制权，相应的上手及开发会比较难一些。</p>
+<li><p>此时<code>dev/vfio/{group}</code>已经生成，需要修改<code>/dev/vfio/{group}</code>的owner，并确保它的权限是0666；保证非root用户有读写权限。之前的步骤都需要在root下执行，在此之后可以在非root用户下执行了</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> chown user:user /dev/vfio/26</span></span><br></pre></td></tr></table></figure>
+<h2 id="其他链接"><a href="#其他链接" class="headerlink" title="其他链接"></a>其他链接</h2><p><a href="https://github.com/torvalds/linux/blob/master/Documentation/driver-api/vfio.rst" target="_blank" rel="noopener">kernel_doc/vfio</a></p>
 </li>
-<li><p>程序员的使用习惯也是非常重要的一方面，那些在<code>X86 CPU</code>平台使用C语言的人员，会很容易接受基于CUDA GPU平台的C语言；而习惯于使用OpenGL图形开发的人员，看到OpenCL会更加亲切一些，在其基础上开发与图形、视频有关的计算程序会非常容易。</p>
-</li>
-</ul>
+</ol>
 
     </div>
 
@@ -297,9 +326,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
-              <a href="/tags/OpenCL/" rel="tag"># OpenCL</a>
-              <a href="/tags/DirectX/" rel="tag"># DirectX</a>
+              <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag"># 虚拟化</a>
           </div>
 
         
@@ -308,13 +335,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/posts/25242.html" rel="prev" title="Linux启动过程分析">
-      <i class="fa fa-chevron-left"></i> Linux启动过程分析
+    <a href="/posts/30959.html" rel="prev" title="Ubuntu20.04下安装mesa">
+      <i class="fa fa-chevron-left"></i> Ubuntu20.04下安装mesa
     </a></div>
-      <div class="post-nav-item">
-    <a href="/posts/41647.html" rel="next" title="剑指Offer刷题记录">
-      剑指Offer刷题记录 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -374,7 +398,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenCL"><span class="nav-number">1.</span> <span class="nav-text">OpenCL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenGL"><span class="nav-number">2.</span> <span class="nav-text">OpenGL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DirectX"><span class="nav-number">3.</span> <span class="nav-text">DirectX</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三者之间的区别："><span class="nav-number">4.</span> <span class="nav-text">三者之间的区别：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CUDA"><span class="nav-number">5.</span> <span class="nav-text">CUDA</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Relationship-Between-OpenCL-And-CUDA"><span class="nav-number">6.</span> <span class="nav-text">Relationship Between OpenCL And CUDA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前提知识"><span class="nav-number">1.</span> <span class="nav-text">前提知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lspci命令"><span class="nav-number">1.1.</span> <span class="nav-text">lspci命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IOMMU"><span class="nav-number">1.2.</span> <span class="nav-text">IOMMU</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IOMMU的隔离粒度"><span class="nav-number">1.2.1.</span> <span class="nav-text">IOMMU的隔离粒度</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是VFIO"><span class="nav-number">2.</span> <span class="nav-text">什么是VFIO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vfio的使用"><span class="nav-number">3.</span> <span class="nav-text">vfio的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备group"><span class="nav-number">3.1.</span> <span class="nav-text">准备group</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将group添加到container中"><span class="nav-number">3.2.</span> <span class="nav-text">将group添加到container中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vfio使用示例"><span class="nav-number">3.3.</span> <span class="nav-text">vfio使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他链接"><span class="nav-number">4.</span> <span class="nav-text">其他链接</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
