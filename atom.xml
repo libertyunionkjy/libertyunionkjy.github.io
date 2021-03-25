@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2021-03-25T16:03:56.945Z</updated>
+  <updated>2021-03-25T16:42:34.568Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -15,6 +15,89 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>(四)进程调度——linux内核设计与实现读书笔记</title>
+    <link href="https://jyke.xyz/posts/32169.html"/>
+    <id>https://jyke.xyz/posts/32169.html</id>
+    <published>2021-03-25T16:41:05.000Z</published>
+    <updated>2021-03-25T16:42:34.568Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;调度程序的作用：将哪个进程投入运行，以及运行多长时间&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="linux kernel" scheme="https://jyke.xyz/categories/linux-kernel/"/>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
+    
+      <category term="linux kernel" scheme="https://jyke.xyz/tags/linux-kernel/"/>
+    
+      <category term="linux内核设计与实现" scheme="https://jyke.xyz/tags/linux%E5%86%85%E6%A0%B8%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux中的软链接和硬链接</title>
+    <link href="https://jyke.xyz/posts/43970.html"/>
+    <id>https://jyke.xyz/posts/43970.html</id>
+    <published>2021-03-25T16:32:25.000Z</published>
+    <updated>2021-03-25T16:33:34.007Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;inode号&quot;&gt;&lt;a href=&quot;#inode号&quot; class=&quot;headerlink&quot; title=&quot;inode号&quot;&gt;&lt;/a&gt;inode号&lt;/h2&gt;&lt;p&gt;linux中文件分为两个部分：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;user data：用户数据&lt;/li&gt;
+&lt;li&gt;metadata：元数据&lt;ol&gt;
+&lt;li&gt;文件名：方便人识别和使用&lt;/li&gt;
+&lt;li&gt;inode号：文件的唯一标识，系统通过inode号找到用户数据&lt;/li&gt;
+&lt;li&gt;…&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;linux中查看inode号的命令：stat、ls -i&lt;/p&gt;
+&lt;p&gt;文件的移动和重命名不会改变inode号&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;所以，真正代表一个文件的是它的inode号。两个inode号一样的文件，指向的是同一个文件数据块。&lt;/strong&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux守护进程</title>
+    <link href="https://jyke.xyz/posts/42035.html"/>
+    <id>https://jyke.xyz/posts/42035.html</id>
+    <published>2021-03-25T16:30:21.000Z</published>
+    <updated>2021-03-25T16:33:43.729Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;http://www.ruanyifeng.com/blog/2016/02/linux-daemon.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;参考链接&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;前台任务与后台任务&quot;&gt;&lt;a href=&quot;#前台任务与后台任务&quot; class=&quot;headerlink&quot; title=&quot;前台任务与后台任务&quot;&gt;&lt;/a&gt;前台任务与后台任务&lt;/h2&gt;&lt;p&gt;前台任务：独占命令行窗口，只有运行完了或者手动中止，才能执行其他命令。&lt;/p&gt;
+&lt;p&gt;后台任务：只要在命令的尾部加上符号&lt;code&gt;&amp;amp;&lt;/code&gt;，启动的进程就会成为”后台任务”。如果要让正在运行的”前台任务”变为”后台任务”，可以先按&lt;code&gt;ctrl + z&lt;/code&gt;，然后执行&lt;code&gt;bg&lt;/code&gt;命令（让最近一个暂停的”后台任务”继续执行）。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
+    
+  </entry>
   
   <entry>
     <title>VFIO入门</title>
@@ -443,92 +526,6 @@
       <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
     
       <category term="JAVA" scheme="https://jyke.xyz/tags/JAVA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>linux学习笔记（2）</title>
-    <link href="https://jyke.xyz/posts/49195.html"/>
-    <id>https://jyke.xyz/posts/49195.html</id>
-    <published>2020-06-14T08:14:46.000Z</published>
-    <updated>2020-06-14T12:44:06.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;环境变量与文件查找&quot;&gt;&lt;a href=&quot;#环境变量与文件查找&quot; class=&quot;headerlink&quot; title=&quot;环境变量与文件查找&quot;&gt;&lt;/a&gt;环境变量与文件查找&lt;/h1&gt;&lt;h2 id=&quot;环境变量&quot;&gt;&lt;a href=&quot;#环境变量&quot; class=&quot;headerlink&quot; title=&quot;环境变量&quot;&gt;&lt;/a&gt;环境变量&lt;/h2&gt;&lt;p&gt;在 Shell 中如何创建一个变量，如何给变量赋值和如何读取变量的值呢？&lt;/p&gt;
-&lt;p&gt;使用 &lt;code&gt;declare&lt;/code&gt; 命令创建一个变量名为 tmp 的变量：&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ &lt;span class=&quot;built_in&quot;&gt;declare&lt;/span&gt; tmp&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;blockquote&gt;
-&lt;p&gt;其实也可以不用 declare 预声明一个变量，直接即用即创建&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;使用 &lt;code&gt;=&lt;/code&gt; 号赋值运算符，将变量 tmp 赋值为lemon。注意，与其他语言不同的是， Shell 中的赋值操作，&lt;code&gt;=&lt;/code&gt; 两边不可以输入空格，否则会报错。&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# 正确的赋值&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ tmp=lemon&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# 错误的赋值&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ tmp = lemon&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;读取变量的值，使用 &lt;code&gt;echo&lt;/code&gt; 命令和 &lt;code&gt;$&lt;/code&gt; 符号（&lt;strong&gt;$ 符号用于表示引用一个变量的值，初学者经常忘记输入&lt;/strong&gt;）：&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ &lt;span class=&quot;built_in&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;variable&quot;&gt;$tmp&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200614162027.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;注意：并不是任何形式的变量名都是可用的，变量名只能是英文字母、数字或者下划线，且不能以数字作为开头。&lt;/strong&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>vim编辑器基本操作</title>
-    <link href="https://jyke.xyz/posts/45117.html"/>
-    <id>https://jyke.xyz/posts/45117.html</id>
-    <published>2020-06-11T03:26:44.000Z</published>
-    <updated>2020-07-31T10:09:06.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200611182352.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>linux学习笔记（1）</title>
-    <link href="https://jyke.xyz/posts/33835.html"/>
-    <id>https://jyke.xyz/posts/33835.html</id>
-    <published>2020-06-07T15:22:01.000Z</published>
-    <updated>2020-06-07T15:26:00.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;a href=&quot;https://help.ubuntu.com/lts/ubuntu-help/index.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Ubuntu 20.04 LTS 使用指南&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=&quot;基本概念及操作&quot;&gt;&lt;a href=&quot;#基本概念及操作&quot; class=&quot;headerlink&quot; title=&quot;基本概念及操作&quot;&gt;&lt;/a&gt;基本概念及操作&lt;/h1&gt;&lt;h2 id=&quot;桌面环境&quot;&gt;&lt;a href=&quot;#桌面环境&quot; class=&quot;headerlink&quot; title=&quot;桌面环境&quot;&gt;&lt;/a&gt;桌面环境&lt;/h2&gt;&lt;p&gt;UNIX/Linux 本身是没有图形界面的，我们通常在 UNIX/Linux 发行版上看到的图形界面实际都只是运行在 Linux 系统之上的一套软件。实现一个完整的桌面环境需要服务器和客户端&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;服务器：xorg，xorg实现了X窗口系统（简称为X）&lt;/li&gt;
-&lt;li&gt;客户端（X Client）：KDE，GNOME，XFCE，LXDE &lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;这也意味着在 Linux 上你可以自己选择安装不同的桌面环境，甚至可以定制自己的专属桌面。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
     
   </entry>
   
