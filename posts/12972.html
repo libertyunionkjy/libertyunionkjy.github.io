@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Linux环境变量的分类从生命周期分为：  永久的——修改配置文件 临时的——export命令  从作用域分：  系统环境变量：对所有用户生效 用户环境变量：对某一个用户生效  Linux环境变量的设置永久+所有用户：编辑&#x2F;etc&#x2F;profile 12vim &#x2F;etc&#x2F;profile    export CLASSPATH&#x3D;.&#x2F;JAVA_HOME&#x2F;lib;$JAVA_HOME&#x2F;jre&#x2F;lib 永久">
+  <meta name="description" content="Linux环境变量的分类从生命周期分为：  永久的——修改配置文件 临时的——export命令  从作用域分：  系统环境变量：对所有用户生效 用户环境变量：对某一个用户生效">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux环境变量">
 <meta property="og:url" content="https://jyke.xyz/posts/12972.html">
 <meta property="og:site_name" content="柯柯的博客">
-<meta property="og:description" content="Linux环境变量的分类从生命周期分为：  永久的——修改配置文件 临时的——export命令  从作用域分：  系统环境变量：对所有用户生效 用户环境变量：对某一个用户生效  Linux环境变量的设置永久+所有用户：编辑&#x2F;etc&#x2F;profile 12vim &#x2F;etc&#x2F;profile    export CLASSPATH&#x3D;.&#x2F;JAVA_HOME&#x2F;lib;$JAVA_HOME&#x2F;jre&#x2F;lib 永久">
+<meta property="og:description" content="Linux环境变量的分类从生命周期分为：  永久的——修改配置文件 临时的——export命令  从作用域分：  系统环境变量：对所有用户生效 用户环境变量：对某一个用户生效">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-04-02T15:12:52.000Z">
-<meta property="article:modified_time" content="2021-04-02T15:13:24.261Z">
+<meta property="article:modified_time" content="2021-04-02T15:17:17.594Z">
 <meta property="article:author" content="Keke">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="环境变量">
@@ -211,7 +211,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-04-02 23:12:52 / 修改时间：23:13:24" itemprop="dateCreated datePublished" datetime="2021-04-02T23:12:52+08:00">2021-04-02</time>
+              <time title="创建时间：2021-04-02 23:12:52 / 修改时间：23:17:17" itemprop="dateCreated datePublished" datetime="2021-04-02T23:12:52+08:00">2021-04-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -258,6 +258,7 @@
 <li>系统环境变量：对所有用户生效</li>
 <li>用户环境变量：对某一个用户生效</li>
 </ol>
+<a id="more"></a>
 <h2 id="Linux环境变量的设置"><a href="#Linux环境变量的设置" class="headerlink" title="Linux环境变量的设置"></a>Linux环境变量的设置</h2><p>永久+所有用户：编辑<code>/etc/profile</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile    </span><br><span class="line"><span class="built_in">export</span> CLASSPATH=./JAVA_HOME/lib;<span class="variable">$JAVA_HOME</span>/jre/lib</span><br></pre></td></tr></table></figure>
 <p>永久+单一用户：编辑<code>~/.bash_profile</code></p>
