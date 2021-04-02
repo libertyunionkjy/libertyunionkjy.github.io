@@ -186,6 +186,299 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/12972.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/12972.html" class="post-title-link" itemprop="url">Linux环境变量</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-02 23:12:52 / 修改时间：23:13:24" itemprop="dateCreated datePublished" datetime="2021-04-02T23:12:52+08:00">2021-04-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/12972.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/12972.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Linux环境变量的分类"><a href="#Linux环境变量的分类" class="headerlink" title="Linux环境变量的分类"></a>Linux环境变量的分类</h2><p>从生命周期分为：</p>
+<ol>
+<li>永久的——修改配置文件</li>
+<li>临时的——export命令</li>
+</ol>
+<p>从作用域分：</p>
+<ol>
+<li>系统环境变量：对所有用户生效</li>
+<li>用户环境变量：对某一个用户生效</li>
+</ol>
+<h2 id="Linux环境变量的设置"><a href="#Linux环境变量的设置" class="headerlink" title="Linux环境变量的设置"></a>Linux环境变量的设置</h2><p>永久+所有用户：编辑<code>/etc/profile</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile    </span><br><span class="line"><span class="built_in">export</span> CLASSPATH=./JAVA_HOME/lib;<span class="variable">$JAVA_HOME</span>/jre/lib</span><br></pre></td></tr></table></figure>
+<p>永久+单一用户：编辑<code>~/.bash_profile</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bash.profile</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=./JAVA_HOME/lib;<span class="variable">$JAVA_HOME</span>/jre/lib</span><br></pre></td></tr></table></figure>
+<p>临时某一个shell：<code>export 变量名=变量值</code></p>
+<h2 id="常见的环境变量"><a href="#常见的环境变量" class="headerlink" title="常见的环境变量"></a>常见的环境变量</h2><ul>
+<li>PATH：指定命令的搜索路径</li>
+</ul>
+<blockquote>
+<p><strong>PATH声明用法：</strong><br>PATH=$PAHT:<PATH 1>:<PATH 2>:<PATH 3>:————:&lt; PATH  n &gt;<br>export PATH<br>你可以自己加上指定的路径，中间用冒号隔开。环境变量更改后，在用户下次登陆时生效。<br>可以利用<code>echo $PATH</code>查看当前当前系统PATH路径。</p>
+</blockquote>
+<ul>
+<li>HOME：指定用户的主工作目录（即用户登陆到Linux系统中时，默认的目录）。</li>
+<li>HISTSIZE：指保存历史命令记录的条数。</li>
+<li>LOGNAME：指当前用户的登录名。</li>
+<li>HOSTNAME：指主机的名称，许多应用程序如果要用到主机名的话，通常是从这个环境变量中来取得的</li>
+<li>SHELL：指当前用户用的是哪种Shell。</li>
+<li>LD_LIBRARY_PATH: 动态库的查找路径</li>
+</ul>
+<h2 id="环境变量的修改和查看"><a href="#环境变量的修改和查看" class="headerlink" title="环境变量的修改和查看"></a>环境变量的修改和查看</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span>         显示某个环境变量值 <span class="built_in">echo</span> <span class="variable">$PATH</span></span><br><span class="line"><span class="built_in">export</span>   设置一个新的环境变量 <span class="built_in">export</span> HELLO=<span class="string">"hello"</span> (可以无引号)</span><br><span class="line">env      显示所有环境变量</span><br><span class="line"><span class="built_in">set</span>      显示本地定义的shell变量</span><br><span class="line"><span class="built_in">unset</span>        清除环境变量 <span class="built_in">unset</span> HELLO</span><br><span class="line"><span class="built_in">readonly</span>     设置只读环境变量 <span class="built_in">readonly</span> HELLO</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/23615.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/23615.html" class="post-title-link" itemprop="url">Linux中的动态库和静态库</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-02 23:10:29 / 修改时间：23:11:32" itemprop="dateCreated datePublished" datetime="2021-04-02T23:10:29+08:00">2021-04-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Studying/" itemprop="url" rel="index"><span itemprop="name">Studying</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/23615.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/23615.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="什么是库？"><a href="#什么是库？" class="headerlink" title="什么是库？"></a>什么是库？</h2><p>库是写好的现有的，成熟的，可以复用的代码。</p>
+<p>本质上来说库是一种可执行代码的二进制形式，可以被操作系统载入内存执行。<strong>库有两种：静态库（.a、.lib）和动态库（.so、.dll）。 windows上对应的是.lib .dll linux上对应的是.a .so</strong></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/23615.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/43297.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/posts/43297.html" class="post-title-link" itemprop="url">内存对齐一把梭</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-02 23:04:26 / 修改时间：23:05:39" itemprop="dateCreated datePublished" datetime="2021-04-02T23:04:26+08:00">2021-04-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/43297.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/43297.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前提知识"><a href="#前提知识" class="headerlink" title="前提知识"></a>前提知识</h2><ol>
+<li>现代操作系统的内存空间都是按照byte划分的</li>
+<li>但是读取这些数据的时候处理器并不一定是按照字节块来读取这些数据，而是以两个字节/四个字节/八个字节…为单位来存取，具体的读取粒度根据硬件平台的不同而有所不同</li>
+</ol>
+<p>现在考虑以4个字节为内存存取粒度的平台（32位系统），代表处理器只能从地址为4的倍数的内存单元处读取数据。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/43297.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/32169.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -211,7 +504,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-03-26 00:41:05 / 修改时间：00:42:34" itemprop="dateCreated datePublished" datetime="2021-03-26T00:41:05+08:00">2021-03-26</time>
+              <time title="创建时间：2021-03-26 00:41:05 / 修改时间：00:43:00" itemprop="dateCreated datePublished" datetime="2021-03-26T00:41:05+08:00">2021-03-26</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -300,7 +593,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-03-26 00:32:25 / 修改时间：00:33:34" itemprop="dateCreated datePublished" datetime="2021-03-26T00:32:25+08:00">2021-03-26</time>
+              <time title="创建时间：2021-03-26 00:32:25 / 修改时间：00:43:00" itemprop="dateCreated datePublished" datetime="2021-03-26T00:32:25+08:00">2021-03-26</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -403,7 +696,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-03-26 00:30:21 / 修改时间：00:33:43" itemprop="dateCreated datePublished" datetime="2021-03-26T00:30:21+08:00">2021-03-26</time>
+              <time title="创建时间：2021-03-26 00:30:21 / 修改时间：00:43:00" itemprop="dateCreated datePublished" datetime="2021-03-26T00:30:21+08:00">2021-03-26</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -840,297 +1133,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/41647.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Keke">
-      <meta itemprop="description" content="记录学习的地方">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="柯柯的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/41647.html" class="post-title-link" itemprop="url">剑指Offer刷题记录</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-11-17 23:02:02" itemprop="dateCreated datePublished" datetime="2020-11-17T23:02:02+08:00">2020-11-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-27 01:23:09" itemprop="dateModified" datetime="2020-11-27T01:23:09+08:00">2020-11-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/posts/41647.html#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/posts/41647.html" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="04-二维数组中的查找"><a href="#04-二维数组中的查找" class="headerlink" title="04.二维数组中的查找"></a>04.<a href="https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/" target="_blank" rel="noopener">二维数组中的查找</a></h2>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/41647.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/9976.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Keke">
-      <meta itemprop="description" content="记录学习的地方">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="柯柯的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/9976.html" class="post-title-link" itemprop="url">OpenCL, OpenGL, DirectX</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-11-17 22:57:07 / 修改时间：23:06:11" itemprop="dateCreated datePublished" datetime="2020-11-17T22:57:07+08:00">2020-11-17</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/posts/9976.html#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/posts/9976.html" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="OpenCL"><a href="#OpenCL" class="headerlink" title="OpenCL"></a>OpenCL</h1><blockquote>
-<p>是由苹果（Apple）公司发起，业界众多著名厂商共同制作的面向异构系统通用目的并行编程的开放式、免费标准，也是一个统一的编程环境</p>
-</blockquote>
-<ul>
-<li>OpenCL实际上是针对异构系统进行并行编程的一个全新的API，OpenCL可以利用GPU进行一些并行计算的工作。</li>
-<li>OpenGL是针对图形的，而OpenCL则是针对并行计算的API。</li>
-<li>它是一个连接硬件和软件的API接口，OpenCL的作用就是通过调用处理器和GPU的计算资源，释放硬件潜力，让程序运行得更快更好。</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/9976.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/25242.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="Keke">
-      <meta itemprop="description" content="记录学习的地方">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="柯柯的博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/posts/25242.html" class="post-title-link" itemprop="url">Linux启动过程分析</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-11-17 22:55:21 / 修改时间：23:06:11" itemprop="dateCreated datePublished" datetime="2020-11-17T22:55:21+08:00">2020-11-17</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/posts/25242.html#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/posts/25242.html" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Linux启动过程分析"><a href="#Linux启动过程分析" class="headerlink" title="Linux启动过程分析"></a>Linux启动过程分析</h1><p>以RedHat启动方式分析（Ubuntu的启动过程不太一样），可以分为5个阶段：</p>
-<ol>
-<li>引导内核</li>
-<li>运行init</li>
-<li>系统初始化</li>
-<li>建立终端</li>
-<li>用户登录</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/posts/25242.html#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1198,20 +1204,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-count">42</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

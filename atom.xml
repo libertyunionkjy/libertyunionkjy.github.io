@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2021-03-25T16:42:34.568Z</updated>
+  <updated>2021-04-02T15:13:24.261Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -17,11 +17,87 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Linux环境变量</title>
+    <link href="https://jyke.xyz/posts/12972.html"/>
+    <id>https://jyke.xyz/posts/12972.html</id>
+    <published>2021-04-02T15:12:52.000Z</published>
+    <updated>2021-04-02T15:13:24.261Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Linux环境变量的分类&quot;&gt;&lt;a href=&quot;#Linux环境变量的分类&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
+    
+      <category term="环境变量" scheme="https://jyke.xyz/tags/%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux中的动态库和静态库</title>
+    <link href="https://jyke.xyz/posts/23615.html"/>
+    <id>https://jyke.xyz/posts/23615.html</id>
+    <published>2021-04-02T15:10:29.000Z</published>
+    <updated>2021-04-02T15:11:32.823Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;什么是库？&quot;&gt;&lt;a href=&quot;#什么是库？&quot; class=&quot;headerlink&quot; title=&quot;什么是库？&quot;&gt;&lt;/a&gt;什么是库？&lt;/h2&gt;&lt;p&gt;库是写好的现有的，成熟的，可以复用的代码。&lt;/p&gt;
+&lt;p&gt;本质上来说库是一种可执行代码的二进制形式，可以被操作系统载入内存执行。&lt;strong&gt;库有两种：静态库（.a、.lib）和动态库（.so、.dll）。 windows上对应的是.lib .dll linux上对应的是.a .so&lt;/strong&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Studying" scheme="https://jyke.xyz/categories/Studying/"/>
+    
+    
+      <category term="c language" scheme="https://jyke.xyz/tags/c-language/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>内存对齐一把梭</title>
+    <link href="https://jyke.xyz/posts/43297.html"/>
+    <id>https://jyke.xyz/posts/43297.html</id>
+    <published>2021-04-02T15:04:26.000Z</published>
+    <updated>2021-04-02T15:05:39.401Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前提知识&quot;&gt;&lt;a href=&quot;#前提知识&quot; class=&quot;headerlink&quot; title=&quot;前提知识&quot;&gt;&lt;/a&gt;前提知识&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;现代操作系统的内存空间都是按照byte划分的&lt;/li&gt;
+&lt;li&gt;但是读取这些数据的时候处理器并不一定是按照字节块来读取这些数据，而是以两个字节/四个字节/八个字节…为单位来存取，具体的读取粒度根据硬件平台的不同而有所不同&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;现在考虑以4个字节为内存存取粒度的平台（32位系统），代表处理器只能从地址为4的倍数的内存单元处读取数据。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="操作系统" scheme="https://jyke.xyz/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+    
+      <category term="操作系统" scheme="https://jyke.xyz/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
+  
+  <entry>
     <title>(四)进程调度——linux内核设计与实现读书笔记</title>
     <link href="https://jyke.xyz/posts/32169.html"/>
     <id>https://jyke.xyz/posts/32169.html</id>
     <published>2021-03-25T16:41:05.000Z</published>
-    <updated>2021-03-25T16:42:34.568Z</updated>
+    <updated>2021-03-25T16:43:00.768Z</updated>
     
     <summary type="html">
     
@@ -46,7 +122,7 @@
     <link href="https://jyke.xyz/posts/43970.html"/>
     <id>https://jyke.xyz/posts/43970.html</id>
     <published>2021-03-25T16:32:25.000Z</published>
-    <updated>2021-03-25T16:33:34.007Z</updated>
+    <updated>2021-03-25T16:43:00.767Z</updated>
     
     <summary type="html">
     
@@ -81,7 +157,7 @@
     <link href="https://jyke.xyz/posts/42035.html"/>
     <id>https://jyke.xyz/posts/42035.html</id>
     <published>2021-03-25T16:30:21.000Z</published>
-    <updated>2021-03-25T16:33:43.729Z</updated>
+    <updated>2021-03-25T16:43:00.765Z</updated>
     
     <summary type="html">
     
@@ -446,84 +522,6 @@
     
       <category term="JAVA" scheme="https://jyke.xyz/categories/JAVA/"/>
     
-    
-      <category term="JAVA" scheme="https://jyke.xyz/tags/JAVA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>什么是VLAN和VXLAN？</title>
-    <link href="https://jyke.xyz/posts/58599.html"/>
-    <id>https://jyke.xyz/posts/58599.html</id>
-    <published>2020-07-30T17:15:57.000Z</published>
-    <updated>2020-07-30T17:21:26.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;VXLAN的东西说起来很简单，深挖的东西又太多了，先挖个坑，有时间填上…&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="分布式与云计算" scheme="https://jyke.xyz/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
-    
-    
-      <category term="分布式与云计算" scheme="https://jyke.xyz/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>什么是KVM和QEMU</title>
-    <link href="https://jyke.xyz/posts/20354.html"/>
-    <id>https://jyke.xyz/posts/20354.html</id>
-    <published>2020-07-24T05:34:25.000Z</published>
-    <updated>2020-07-24T07:44:06.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;KVM&quot;&gt;&lt;a href=&quot;#KVM&quot; class=&quot;headerlink&quot; title=&quot;KVM&quot;&gt;&lt;/a&gt;KVM&lt;/h1&gt;&lt;p&gt;KVM实际是linux内核提供的虚拟化架构，可将内核直接充当hypervisor来使用。KVM需要处理器硬件本身支持虚拟化扩展，如intel VT 和AMD AMD-V技术。KVM本身不实现任何模拟，仅仅是暴露了一个/dev/kvm接口，这个接口可被宿主机用来主要负责vCPU的创建，虚拟内存的地址空间分配，vCPU寄存器的读写以及vCPU的运行。&lt;br&gt; 有了KVM以后，guest os的CPU指令不用再经过QEMU来转译便可直接运行，大大提高了运行速度。但KVM的kvm.ko本身只提供了CPU和内存的虚拟化，所以它必须结合QEMU才能构成一个完整的虚拟化技术，&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="分布式与云计算" scheme="https://jyke.xyz/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
-    
-      <category term="虚拟化" scheme="https://jyke.xyz/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
-    
-      <category term="分布式与云计算" scheme="https://jyke.xyz/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JAVA的取模和取余操作</title>
-    <link href="https://jyke.xyz/posts/13488.html"/>
-    <id>https://jyke.xyz/posts/13488.html</id>
-    <published>2020-06-27T07:05:48.000Z</published>
-    <updated>2020-06-27T07:10:44.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;JAVA中取模和取余的区别&quot;&gt;&lt;a href=&quot;#JAVA中取模和取余的区别&quot; class=&quot;headerlink&quot; title=&quot;JAVA中取模和取余的区别&quot;&gt;&lt;/a&gt;JAVA中取模和取余的区别&lt;/h1&gt;&lt;p&gt;Java 中的取余运算是 %，而取模运算是 Math.floorMod()。&lt;/p&gt;
-&lt;h2 id=&quot;计算过程&quot;&gt;&lt;a href=&quot;#计算过程&quot; class=&quot;headerlink&quot; title=&quot;计算过程&quot;&gt;&lt;/a&gt;计算过程&lt;/h2&gt;&lt;p&gt;在JAVA中，取模和取余的计算过程都是相同的：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;求整数商：c=a/b&lt;/li&gt;
-&lt;li&gt;取模或者取余：r=a-c*b&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;两者的区别在于第一步计算c时的不同，由于c计算的方式不同导致第二步取模或者取余的值不一定相同。&lt;/p&gt;
-&lt;p&gt;取模运算在计算c时，向负无穷方向舍入。取余运算在计算c时，向0舍入。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
     
       <category term="JAVA" scheme="https://jyke.xyz/tags/JAVA/"/>
     
