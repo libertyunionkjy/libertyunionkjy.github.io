@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2021-04-13T01:22:25.021Z</updated>
+  <updated>2021-04-13T14:13:34.317Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -21,17 +21,21 @@
     <link href="https://jyke.xyz/posts/44802.html"/>
     <id>https://jyke.xyz/posts/44802.html</id>
     <published>2021-04-13T01:21:27.000Z</published>
-    <updated>2021-04-13T01:22:25.021Z</updated>
+    <updated>2021-04-13T14:13:34.317Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;h2 id=&quot;多线程&quot;&gt;&lt;a href=&quot;#多线程&quot; class=&quot;headerlink&quot; title=&quot;多线程&quot;&gt;&lt;/a&gt;多线程&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://concurrent.redspider.group/RedSpider.html&quot;
-        
-      
+      &lt;h2 id=&quot;多线程&quot;&gt;&lt;a href=&quot;#多线程&quot; class=&quot;headerlink&quot; title=&quot;多线程&quot;&gt;&lt;/a&gt;多线程&lt;/h2&gt;&lt;p&gt;线程创建：4种方式&lt;/p&gt;
+&lt;p&gt;解决线程安全问题：3种方式&lt;/p&gt;
+&lt;p&gt;一个java.exe，至少有三个线程：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;main()：主线程&lt;/li&gt;
+&lt;li&gt;gc()垃圾回收线程&lt;/li&gt;
+&lt;li&gt;异常处理线程&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;并行和并发：&lt;/p&gt;
+&lt;p&gt;并行：多个CPU&lt;/p&gt;
+&lt;p&gt;并发：一个CPU&lt;/p&gt;
     
     </summary>
     
