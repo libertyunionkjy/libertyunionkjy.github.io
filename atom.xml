@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2021-04-13T14:13:34.317Z</updated>
+  <updated>2021-04-15T16:33:19.234Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -15,6 +15,84 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>虚拟内存详解</title>
+    <link href="https://jyke.xyz/posts/34444.html"/>
+    <id>https://jyke.xyz/posts/34444.html</id>
+    <published>2021-04-15T16:28:53.000Z</published>
+    <updated>2021-04-15T16:33:19.234Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;虚拟内存&quot;&gt;&lt;a href=&quot;#虚拟内存&quot; class=&quot;headerlink&quot; title=&quot;虚拟内存&quot;&gt;&lt;/a&gt;虚拟内存&lt;/h2&gt;&lt;p&gt;虚拟内存的实现是一门复杂的学问，各种细节非常繁杂，对于这些实现的细节我们不必深究，但作为一名软件工程从业者，虚拟内存的设计思想是非常重要的，所以我们依然有必要从整体上对其的设计有一定的了解。本篇文章从以下几个方面来讨论虚拟内存，相信看完后一定会对虚拟内存会有一个总体的认识：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;为什么要有虚拟内存？、物理内存存在什么问题？&lt;/li&gt;
+&lt;li&gt;什么是虚拟内存？&lt;/li&gt;
+&lt;li&gt;虚拟内存的实现用到了什么技术？&lt;/li&gt;
+&lt;li&gt;虚拟内存到物理内存的转换？&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+      <category term="操作系统" scheme="https://jyke.xyz/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+    
+      <category term="操作系统" scheme="https://jyke.xyz/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Mysql中的主键、外键、索引的区别和联系</title>
+    <link href="https://jyke.xyz/posts/62631.html"/>
+    <id>https://jyke.xyz/posts/62631.html</id>
+    <published>2021-04-15T16:27:07.000Z</published>
+    <updated>2021-04-15T16:27:46.123Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;主键&quot;&gt;&lt;a href=&quot;#主键&quot; class=&quot;headerlink&quot; title=&quot;主键&quot;&gt;&lt;/a&gt;主键&lt;/h2&gt;&lt;p&gt;主键的作用：为了唯一的确定某一条记录&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;任意两条记录的主键不能重复&lt;/li&gt;
+&lt;li&gt;记录一旦插入表中，主键不要修改了&lt;/li&gt;
+&lt;li&gt;选取主键的原则：不使用业务相关的字段作为主键（这个字段在业务中不会用到，基本上来说就是我们自己为每条数据定义一个id）&lt;/li&gt;
+&lt;li&gt;联合主键：多列确定一个数据，没有必要的时候不要用&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+      <category term="Mysql" scheme="https://jyke.xyz/categories/Mysql/"/>
+    
+    
+      <category term="Mysql" scheme="https://jyke.xyz/tags/Mysql/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Maven入门</title>
+    <link href="https://jyke.xyz/posts/63612.html"/>
+    <id>https://jyke.xyz/posts/63612.html</id>
+    <published>2021-04-15T16:23:53.000Z</published>
+    <updated>2021-04-15T16:25:28.782Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Maven能解决什么问题？&quot;&gt;&lt;a href=&quot;#Maven能解决什么问题？&quot; class=&quot;headerlink&quot; title=&quot;Maven能解决什么问题？&quot;&gt;&lt;/a&gt;Maven能解决什么问题？&lt;/h2&gt;&lt;p&gt;想像一个场景，我们一个项目A需要依赖一个B的jar包，如果我们去B的官网上寻找B的jar包并把它放到我们的classpath中，这个过程是非常繁琐的，因为很可能我们在一个项目中需要依赖很多个组件。&lt;/p&gt;
+&lt;p&gt;通过使用Maven，可以自动解析依赖，并导入相应的依赖。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="JAVA" scheme="https://jyke.xyz/categories/JAVA/"/>
+    
+    
+      <category term="JAVA" scheme="https://jyke.xyz/tags/JAVA/"/>
+    
+      <category term="Maven" scheme="https://jyke.xyz/tags/Maven/"/>
+    
+  </entry>
   
   <entry>
     <title>JAVA多线程笔记</title>
@@ -471,70 +549,6 @@
       <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
     
       <category term="虚拟化" scheme="https://jyke.xyz/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Git学习笔记（二）</title>
-    <link href="https://jyke.xyz/posts/63098.html"/>
-    <id>https://jyke.xyz/posts/63098.html</id>
-    <published>2020-08-23T18:03:50.000Z</published>
-    <updated>2020-11-16T16:52:03.900Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;Git&quot;&gt;&lt;a href=&quot;#Git&quot; class=&quot;headerlink&quot; title=&quot;Git&quot;&gt;&lt;/a&gt;Git&lt;/h1&gt;&lt;p&gt;Git和代码托管中心&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;代码托管中心：维护远程库&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;局域网环境下：gitlab&lt;/li&gt;
-&lt;li&gt;外网环境下：github、码云&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>正则表达式</title>
-    <link href="https://jyke.xyz/posts/46563.html"/>
-    <id>https://jyke.xyz/posts/46563.html</id>
-    <published>2020-08-13T18:04:40.000Z</published>
-    <updated>2020-08-13T18:06:30.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;正则表达式&quot;&gt;&lt;a href=&quot;#正则表达式&quot; class=&quot;headerlink&quot; title=&quot;正则表达式&quot;&gt;&lt;/a&gt;正则表达式&lt;/h2&gt;&lt;p&gt;正则表达式可以用&lt;strong&gt;字符串&lt;/strong&gt;来描述规则，并用来匹配字符串。&lt;/p&gt;
-&lt;p&gt;正则表达式是一套标准，它可以用于任何语言。&lt;/p&gt;
-&lt;p&gt;正则表达式是一串字符串。&lt;/p&gt;
-&lt;p&gt;在JAVA中使用正则表达式匹配：&lt;/p&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Main&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String[] args)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        String regex = &lt;span class=&quot;string&quot;&gt;&quot;20\\d\\d&quot;&lt;/span&gt;;&lt;span class=&quot;comment&quot;&gt;//对应的正则表达式是20\d\d，匹配20##年&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;2019&quot;&lt;/span&gt;.matches(regex)); &lt;span class=&quot;comment&quot;&gt;// true&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;2100&quot;&lt;/span&gt;.matches(regex)); &lt;span class=&quot;comment&quot;&gt;// false&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CentOS 7下firewalld的安装与常用操作</title>
-    <link href="https://jyke.xyz/posts/24271.html"/>
-    <id>https://jyke.xyz/posts/24271.html</id>
-    <published>2020-08-07T07:13:54.000Z</published>
-    <updated>2020-08-07T07:19:04.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;firewalld是Linux操作系统的防火墙管理工具。它通过充当Linux内核的netfilter框架的前端来提供防火墙功能，就像iptables一样。&lt;/p&gt;
-    
-    </summary>
-    
-    
     
   </entry>
   
