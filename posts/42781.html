@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1. 编译内核 1.1 配置选项 不同的架构有不同的默认文件，比如x86平台，可以在arch&#x2F;x86&#x2F;configs找到相关文件： 1234567# junyu @ junyu in ~&#x2F;Documents&#x2F;linux&#x2F;arch&#x2F;x86&#x2F;configs on git:136057256686 o [15:56:45] $ lltotal 24K-rw-rw-r-- 1 junyu junyu 5.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Debug Linux Kernel by Qemu and GDB">
+<meta property="og:url" content="https://jyke.xyz/posts/42781.html">
+<meta property="og:site_name" content="柯柯的博客">
+<meta property="og:description" content="1. 编译内核 1.1 配置选项 不同的架构有不同的默认文件，比如x86平台，可以在arch&#x2F;x86&#x2F;configs找到相关文件： 1234567# junyu @ junyu in ~&#x2F;Documents&#x2F;linux&#x2F;arch&#x2F;x86&#x2F;configs on git:136057256686 o [15:56:45] $ lltotal 24K-rw-rw-r-- 1 junyu junyu 5.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202111301614041.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202111302124635.png">
+<meta property="article:published_time" content="2021-12-01T04:58:44.000Z">
+<meta property="article:modified_time" content="2021-12-01T05:07:09.560Z">
+<meta property="article:author" content="Keke">
+<meta property="article:tag" content="linux kernel">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202111301614041.png">
+
+<link rel="canonical" href="https://jyke.xyz/posts/42781.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Debug Linux Kernel by Qemu and GDB | 柯柯的博客</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-166231991-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="柯柯的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">柯柯的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">KK's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/42781.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Debug Linux Kernel by Qemu and GDB
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-12-01 12:58:44 / 修改时间：13:07:09" itemprop="dateCreated datePublished" datetime="2021-12-01T12:58:44+08:00">2021-12-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux-kernel/" itemprop="url" rel="index"><span itemprop="name">linux kernel</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/42781.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/42781.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="编译内核">1. 编译内核</h2>
+<h3 id="配置选项">1.1 配置选项</h3>
+<p>不同的架构有不同的默认文件，比如x86平台，可以在arch/x86/configs找到相关文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> junyu @ junyu <span class="keyword">in</span> ~/Documents/linux/arch/x86/configs on git:136057256686 o [15:56:45] </span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ll</span></span><br><span class="line">total 24K</span><br><span class="line">-rw-rw-r-- 1 junyu junyu 5.9K 11月 30 14:24 i386_defconfig #32位系统</span><br><span class="line">-rw-rw-r-- 1 junyu junyu  147 11月 30 14:24 tiny.config  </span><br><span class="line">-rw-rw-r-- 1 junyu junyu 5.8K 11月 30 14:24 x86_64_defconfig #64位系统</span><br><span class="line">-rw-rw-r-- 1 junyu junyu  744 11月 30 14:24 xen.config</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>我们首先根据我们的架构生成默认的配置，以下两个命令皆可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ make x86_64_defconfig</span><br><span class="line">$ make defconfig</span><br></pre></td></tr></table></figure>
+<p>运行完毕后会在src目录下生成<code>.config</code>文件，然后我们需要对这个<code>config</code>文件进行微调，目的是开启<code>Complie the kernel with debug info</code>选项，如果要让内核可以进行调试，这个选项必须选：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> make menuconfig</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>选项路径：</p>
+<p>Kernel hacking ---&gt; Compile-time checks and compiler options ---&gt; [ ] Compile the kernel with debug info</p>
+<p>Y勾选</p>
+<p>PS：默认情况下，Kernel hacking -&gt; Kernel debugging应该开启，也可以在这里检查一下。</p>
+</blockquote>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202111301614041.png" alt="image-20211130161406917" /><figcaption>image-20211130161406917</figcaption>
+</figure>
+<p>检查一下<code>.config</code>文件是否被正确改写：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> junyu @ junyu <span class="keyword">in</span> ~/Documents/linux on git:136057256686 o [16:14:54] </span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cat .config | grep -i debug | grep -i info  </span></span><br><span class="line">CONFIG_DEBUG_INFO=y</span><br></pre></td></tr></table></figure>
+<h3 id="编译">1.2 编译</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> make -j8</span></span><br></pre></td></tr></table></figure>
+<p>编译完成后，会生成一些文件，其中比较重要的当然是我们的内核文件：</p>
+<ul>
+<li>src/arch/x86/boot/bzImage ： 相当于/boot目录下vmlinuz，是一个压缩的，可以bootable的Linux kernel文件</li>
+<li>src/vmlinux ：一个非压缩的，不可以bootable的Linux kernel文件。是用来生成bzImage/vmlinuz的中间步骤。</li>
+</ul>
+<p>完成后当然就是安装，但我们这里并不是真的要将本机的内核换掉，接下来的过程就交给 QEMU 了。</p>
+<h2 id="构建initrd文件">2. 构建initrd文件</h2>
+<p>关于initrd文件的具体说明请参考下文的“关于initramfs的一些说明“。</p>
+<ol type="1">
+<li><p>Linux系统启动时使用initramfs (initram file system), initramfs可以在启动早期提供一个用户态环境，借助它可以完成一些内核在启动阶段不易完成的工作。</p></li>
+<li><p>initramfs打包的时候，要求打包成压缩的cpio档案。cpio档案可以嵌入到内核image中，也可以作为一个独立的文件在启动的过程中被GRUB load。</p></li>
+</ol>
+<p>我们可以自己制作一个initramfs文件，参考<a href="https://www.cnblogs.com/wipan/p/9269505.html" target="_blank" rel="noopener">Initramfs 原理和实践</a>，在这里，我们使用busybox来制作initramfs。</p>
+<h3 id="准备">2.1 准备</h3>
+<p>统一下目录，把环境变量TOP设置为这个目录</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TOP=<span class="regexp">/home/</span>junyu<span class="regexp">/Documents/</span>linux-learn</span><br><span class="line">cd <span class="variable">$TOP</span></span><br></pre></td></tr></table></figure>
+<h3 id="下载和解压busybox">2.2 下载和解压BusyBox</h3>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl https:<span class="comment">//busybox.net/downloads/busybox-1.34.1.tar.bz2 -o busybox-1.34.1.tar.bz2</span></span><br><span class="line">tar -xf busybox<span class="number">-1.34</span><span class="number">.1</span>.tar.bz2</span><br></pre></td></tr></table></figure>
+<h3 id="configure-busybox">2.3 configure busybox</h3>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd <span class="variable">$TOP</span>/busybox-1.27.2</span><br><span class="line">mkdir -pv <span class="built_in">..</span>/obj/busybox-x86</span><br><span class="line">make <span class="attribute">O</span>=../obj/busybox-x86 defconfig</span><br><span class="line">make <span class="attribute">O</span>=../obj/busybox-x86 menuconfig</span><br></pre></td></tr></table></figure>
+<p>type <code>/</code>, search for “static”. You’ll see that the option is located at:</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-&gt; Busybox Settings</span><br><span class="line">  -&gt; Build Options</span><br><span class="line">[ ] Build BusyBox as a static binary (<span class="literal">no</span> shared libs)</span><br></pre></td></tr></table></figure>
+<p>选择yes。</p>
+<h3 id="build-busybox">2.4 build busybox</h3>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">cd</span> <span class="string">../obj/busybox-x86</span></span><br><span class="line"><span class="attr">make</span> <span class="string">-j8</span></span><br><span class="line"><span class="attr">make</span> <span class="string">install</span></span><br></pre></td></tr></table></figure>
+<h3 id="build-the-directory-structure-for-our-initramfs">2.5 build the directory structure for our initramfs</h3>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -pv <span class="variable">$TOP</span><span class="regexp">/initramfs/</span>x86-busyboxcd <span class="variable">$TOP</span><span class="regexp">/initramfs/</span>x86-busyboxmkdir -pv &#123;bin,sbin,etc,proc,sys,usr<span class="regexp">/&#123;bin,sbin&#125;&#125;cp -av $TOP/</span>obj<span class="regexp">/busybox-x86/</span>_install<span class="regexp">/* .</span></span><br></pre></td></tr></table></figure>
+<p><code>vim init</code> 填入如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/shmount -t proc none /procmount -t sysfs none /sysecho -e "\nBoot took $(cut -d' ' -f1 /proc/uptime) seconds\n"exec /bin/sh</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">chmod</span> +<span class="keyword">x</span> initfind . -<span class="keyword">print</span><span class="number">0</span> \    | cpio --null -ov --<span class="keyword">format</span>=newc \    | gzip -<span class="number">9</span> &gt; $TOP/initramfs-busybox-x86.cpio.gz</span><br></pre></td></tr></table></figure>
+<p>We now have a minimal userland in <code>$TOP/obj/initramfs-busybox-x86.cpio.gz</code> that we can pass to <code>qemu</code> as an <code>initrd</code> (using the <code>-initrd</code> option).</p>
+<h2 id="安装qemu">3. 安装Qemu</h2>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo apt-get install qemu</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>qemu主要选项解释：</p>
+<ul>
+<li><code>-s</code>：<code>-gdb tcp::1234</code> 的缩写，QEMU 监听在 TCP 端口 1234，等待 gdb 的连接。</li>
+<li><code>-S</code>：在启动时冻结 CPU，等待 gdb 输入 c 时继续执行。</li>
+<li><code>-kernel</code>：指定内核。</li>
+<li><code>-initrd</code>：指定 initramfs。</li>
+<li><code>nographic</code>：禁用图形输出并将串行 I/O 重定向到控制台。</li>
+<li><code>-append "console=ttyS0</code>：所有内核输出到 ttyS0 串行控制台，并打印到终端。</li>
+</ul>
+</blockquote>
+<h2 id="利用gdb进行内核调试">4. 利用gdb进行内核调试</h2>
+<h3 id="启动脚本">4.1 启动脚本</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bashqemu-system-x86_64 -kernel bzImage \                   -initrd initramfs-busybox-x86.cpio.gz \                   -s -S \                   -append <span class="string">"console=ttyS0"</span> -nographic</span></span><br></pre></td></tr></table></figure>
+<h3 id="文件结构">4.2 文件结构</h3>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202111302124635.png" alt="image-20211130212402506" /><figcaption>image-20211130212402506</figcaption>
+</figure>
+<h3 id="启动gdb调试">4.3 启动gdb调试</h3>
+<p>在本机另一个terminal利用gdb连接本地的gdbserver 1234端口</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdbfile linux<span class="number">-3.14</span><span class="number">.69</span><span class="regexp">/vmlinux /</span><span class="regexp">/load Linux符号表target remote:1234 /</span><span class="regexp">/远程连接监听在TCP 1234的gdb serverb start_kernel /</span><span class="regexp">/在start_kernel函数设置断点c /</span>/<span class="keyword">continue</span>,继续执行代码</span><br></pre></td></tr></table></figure>
+<h2 id="关于initramfs的一些说明">关于initramfs的一些说明</h2>
+<h3 id="什么是ramdisk内存磁盘">什么是ramdisk(内存磁盘)</h3>
+<ul>
+<li>ramdisk基于内存的<strong>块设备</strong>，具备块设备的一切属性</li>
+<li>一旦创建，<strong>大小固定，不可动态调整</strong></li>
+<li>伪块设备，存在于内存中，与真实块设备基本无异，访问时候居然还需要缓存（都已经在内存中了还缓存个鸡儿）</li>
+<li>2.4及更早版本使用ramdisk构建initrd</li>
+</ul>
+<h3 id="什么是initrd基于ramdisk的临时文件系统">什么是initrd(基于ramdisk的临时文件系统)</h3>
+<ul>
+<li><strong>Boot loader Init Ram disk</strong>缩写，是一种机制，装载一个临时根文件系统到内存中</li>
+<li>作为Linux startup process的一部分，为实际根文件系统的加载做准备。</li>
+<li>对于2.4或更早的kernel来说，使用的是该方法。</li>
+</ul>
+<h3 id="什么是ramfs基于内存缓存的文件系统">什么是ramfs(基于内存缓存的文件系统)</h3>
+<ul>
+<li>Ramfs 是一个<code>空间大小动态可变</code>的基于 RAM 的文件系统，它是Linux 用来实现磁盘缓存（page cache and dentry cache）的文件系统。</li>
+<li>ramfs 是一个仅存在与内存中文件系统，它没有后备存储（例如磁盘），也就是说 ramfs 文件系统所管理的文件都是存放在内存中，而不存放在磁盘中，如果计算机掉电关闭，那么 ramfs 文件系统中所有文件也就都没有了。</li>
+<li>当普通磁盘中的文件被操作系统加载到内存中时，内核会分配 page 来存储文件中的内容，然后进程通过读写内存中文件对应的 page 实现对文件的读写修改操作，当完成了所有的读写操作之后，文件对应的 page 就会被标记为脏页，然后在合适的时机被操作系统写回到原来的磁盘中对应的文件中，内存中原来存放这些文件的 page 就会被标记为干净，最后被系统回收重新使用。而 ramfs 文件系统中的文件当同样被加载到内存中 page 进行读写操作之后，它对应的 page 并不会被标记为脏页，因为 ramfs 中文件没有下级的后备存储器（例如，磁盘），也就没有了写回后备存储器的操作，所以为它分配的这些 page 也就无法回收了。</li>
+<li>ramfs是一种统称，不一定就只是作为临时根文件系统，还可以作为其他用途，有其他特定命名。</li>
+<li><strong>ramdisk是一种基于ram的块设备，ramfs是一种基于ram的文件系统</strong></li>
+<li><strong>initrd是init ramdisk的缩写，initramfs是init ramfs的缩写</strong></li>
+</ul>
+<h3 id="什么是initramfs基于ramfs的临时文件系统">什么是initramfs(基于ramfs的临时文件系统)</h3>
+<ul>
+<li>initramfs 是一种以 <strong>cpio 格式</strong>压缩后的 rootfs 文件系统，它通常和 Linux 内核文件一起被打包成 boot.img 作为启动镜像</li>
+<li>BootLoader 加载 boot.img，并启动内核之后，内核接着就对 cpio 格式的 initramfs 进行解压，并将解压后得到的 rootfs 加载进内存，最后内核会检查 rootfs 中是否存在 init 可执行文件（该 init 文件本质上是一个执行的 shell 脚本），如果存在，就开始执行 init 程序并创建 Linux 系统用户空间 PID 为 1 的进程，然后将磁盘中存放根目录内容的分区真正地挂载到 / 根目录上，最后通过 <code>exec chroot . /sbin/init</code> 命令来将 rootfs 中的根目录切换到挂载了实际磁盘分区文件系统中，并执行 <code>/sbin/init</code> 程序来启动系统中的其他进程和服务。</li>
+<li><strong>基于ramfs开发initramfs，取代了initrd</strong></li>
+</ul>
+<h3 id="什么是initrd多个含义">什么是initrd（多个含义）</h3>
+<ul>
+<li>initrd代指内核启动过程中的一个阶段，临时挂载文件系统，加载硬盘的基础驱动，进而过渡到最终的根文件系统</li>
+<li>早期基于ramdisk生成的临时根文件系统的名称</li>
+<li>现阶段虽然基于initramfs，但是临时根文件系统也依然存在某些发行版称其为initrd</li>
+<li>CentOS 临时根文件系统命名为 <code>initramfs-</code>uname -r<code>.img</code></li>
+<li>Ubuntu 临时根文件系统命名为 <code>initrd-</code>uname -r<code>.img</code></li>
+</ul>
+<h3 id="什么是tmpfs">什么是tmpfs</h3>
+<ul>
+<li>ramfs 中有一个非常大的缺点就是你可以持续不断地向 ramfs 文件系统中的文件持续不断地写入数据直到填满整个物理内存空间为止。出现这个问题的原因就是前面介绍的 ramfs 文件系统不存在向普通磁盘那样的将内存中的文件内容写回到文件的操作，也就导致了它所占据的那部分内存空间是无法被释放的，正是因为这个原因，通常只有 root 用户才有读写 ramfs 文件系统中文件的权限。</li>
+<li>tmpfs 文件系统是从 ramfs 衍生而来的一个文件系统，但是它相对于 ramfs 多了空间容量大小限制，并且还可以将文件系统中一些不必要的的文件内容写到交换空间中（swap space）。并且 tmpfs 文件系统的大小还可以通过 mount -o remount … 命令来重新调整。</li>
+</ul>
+<h3 id="什么是rootfs">什么是rootfs？</h3>
+<ul>
+<li>rootfs（也叫根文件系统） 它本质上就是一个 Linux 系统中基本的文件目录组织结构，也就是 Linux 系统中 / 根目录下的结构</li>
+</ul>
+<h3 id="解压initramfs到rootfs">解压initramfs到rootfs</h3>
+<ul>
+<li>“内核将Bootloader加载到内存中的initramfs中的文件解压到rootfs中”这句话的意思，Bootloader，比如grub，配置文件中的菜单项，每一个菜单项包括两个内容，一个是内核，一个是initrd。bootloader将initrd加载到内存，解压的工作是内核自己干的，所以initrd无法正常使用的话应该检查内核而不是grub</li>
+</ul>
+<hr />
+<p>参考文献</p>
+<ol type="1">
+<li><a href="https://www.cnblogs.com/wipan/p/9264979.html" target="_blank" rel="noopener">在qemu环境中用gdb调试Linux内核</a></li>
+<li><a href="https://www.cnblogs.com/wipan/p/9269505.html" target="_blank" rel="noopener">Initramfs 原理和实践</a></li>
+<li><a href="https://www.cnblogs.com/wipan/p/9272255.html" target="_blank" rel="noopener">在qemu上运行BusyBox</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux-kernel/" rel="tag"># linux kernel</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/34444.html" rel="prev" title="虚拟内存详解">
+      <i class="fa fa-chevron-left"></i> 虚拟内存详解
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#编译内核"><span class="nav-number">1.</span> <span class="nav-text">1. 编译内核</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置选项"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 配置选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 编译</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建initrd文件"><span class="nav-number">2.</span> <span class="nav-text">2. 构建initrd文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载和解压busybox"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 下载和解压BusyBox</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#configure-busybox"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 configure busybox</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#build-busybox"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 build busybox</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#build-the-directory-structure-for-our-initramfs"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 build the directory structure for our initramfs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装qemu"><span class="nav-number">3.</span> <span class="nav-text">3. 安装Qemu</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用gdb进行内核调试"><span class="nav-number">4.</span> <span class="nav-text">4. 利用gdb进行内核调试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启动脚本"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 启动脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件结构"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 文件结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动gdb调试"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 启动gdb调试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于initramfs的一些说明"><span class="nav-number">5.</span> <span class="nav-text">关于initramfs的一些说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是ramdisk内存磁盘"><span class="nav-number">5.1.</span> <span class="nav-text">什么是ramdisk(内存磁盘)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是initrd基于ramdisk的临时文件系统"><span class="nav-number">5.2.</span> <span class="nav-text">什么是initrd(基于ramdisk的临时文件系统)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是ramfs基于内存缓存的文件系统"><span class="nav-number">5.3.</span> <span class="nav-text">什么是ramfs(基于内存缓存的文件系统)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是initramfs基于ramfs的临时文件系统"><span class="nav-number">5.4.</span> <span class="nav-text">什么是initramfs(基于ramfs的临时文件系统)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是initrd多个含义"><span class="nav-number">5.5.</span> <span class="nav-text">什么是initrd（多个含义）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是tmpfs"><span class="nav-number">5.6.</span> <span class="nav-text">什么是tmpfs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是rootfs"><span class="nav-number">5.7.</span> <span class="nav-text">什么是rootfs？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解压initramfs到rootfs"><span class="nav-number">5.8.</span> <span class="nav-text">解压initramfs到rootfs</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Keke"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Keke</p>
+  <div class="site-description" itemprop="description">记录学习的地方</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://libertyunionkjy@gmail.com/" title="E-Mail → https:&#x2F;&#x2F;libertyunionkjy@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Keke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el         : '#valine-comments',
+      path       : location.pathname,
+    }, {"enable":true,"appId":"tnKOKDSuvxOLRFeojycmFGDV-MdYXbMMI","appKey":"Q4ro4ajDoVK1ScWWSlGCxY3G","notify":true,"verify":false,"placeholder":"快来评论吧！柯柯给你举高高ヽ(✿ﾟ▽ﾟ)ノ","avatar":"monsterid","meta":["nick","mail","link"],"pageSize":10,"language":"zh-cn","visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

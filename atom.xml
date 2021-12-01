@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2021-12-01T02:25:33.627Z</updated>
+  <updated>2021-12-01T05:07:09.560Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -17,26 +17,26 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>摇滚入门聆听指南</title>
-    <link href="https://jyke.xyz/posts/11943.html"/>
-    <id>https://jyke.xyz/posts/11943.html</id>
-    <published>2021-12-01T02:25:33.495Z</published>
-    <updated>2021-12-01T02:25:33.627Z</updated>
+    <title>Debug Linux Kernel by Qemu and GDB</title>
+    <link href="https://jyke.xyz/posts/42781.html"/>
+    <id>https://jyke.xyz/posts/42781.html</id>
+    <published>2021-12-01T04:58:44.000Z</published>
+    <updated>2021-12-01T05:07:09.560Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          
-
-        
-      
+      &lt;h2 id=&quot;编译内核&quot;&gt;1. 编译内核&lt;/h2&gt;
+&lt;h3 id=&quot;配置选项&quot;&gt;1.1 配置选项&lt;/h3&gt;
+&lt;p&gt;不同的架构有不同的默认文件，比如x86平台，可以在arch/x86/configs找到相关文件：&lt;/p&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;bash&quot;&gt; junyu @ junyu &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; ~/Documents/linux/arch/x86/configs on git:136057256686 o [15:56:45] &lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;bash&quot;&gt; ll&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;total 24K&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;-rw-rw-r-- 1 junyu junyu 5.9K 11月 30 14:24 i386_defconfig #32位系统&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;-rw-rw-r-- 1 junyu junyu  147 11月 30 14:24 tiny.config  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;-rw-rw-r-- 1 junyu junyu 5.8K 11月 30 14:24 x86_64_defconfig #64位系统&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;-rw-rw-r-- 1 junyu junyu  744 11月 30 14:24 xen.config&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
     
     
+      <category term="linux kernel" scheme="https://jyke.xyz/categories/linux-kernel/"/>
+    
+    
+      <category term="linux kernel" scheme="https://jyke.xyz/tags/linux-kernel/"/>
     
   </entry>
   
