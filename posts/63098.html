@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Git Git和代码托管中心 代码托管中心：维护远程库  局域网环境下：gitlab 外网环境下：github、码云">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git学习笔记（二）">
+<meta property="og:url" content="https://jyke.xyz/posts/63098.html">
+<meta property="og:site_name" content="柯柯的博客">
+<meta property="og:description" content="Git Git和代码托管中心 代码托管中心：维护远程库  局域网环境下：gitlab 外网环境下：github、码云">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200823120808.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200823121201.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200823122221.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200823123324.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200823123620.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200824011949.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200824013926.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200824095959.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200824100337.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200824105230.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200824130817.png">
+<meta property="article:published_time" content="2020-08-23T18:03:50.000Z">
+<meta property="article:modified_time" content="2020-08-27T11:51:40.322Z">
+<meta property="article:author" content="Keke">
+<meta property="article:tag" content="学习">
+<meta property="article:tag" content="摇滚">
+<meta property="article:tag" content="电影">
+<meta property="article:tag" content="摄影">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200823120808.png">
+
+<link rel="canonical" href="https://jyke.xyz/posts/63098.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Git学习笔记（二） | 柯柯的博客</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-166231991-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="柯柯的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">柯柯的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">KK's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/63098.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Git学习笔记（二）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-24 02:03:50" itemprop="dateCreated datePublished" datetime="2020-08-24T02:03:50+08:00">2020-08-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-27 19:51:40" itemprop="dateModified" datetime="2020-08-27T19:51:40+08:00">2020-08-27</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/63098.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/63098.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="git">Git</h1>
+<p>Git和代码托管中心</p>
+<p><strong>代码托管中心：维护远程库</strong></p>
+<ul>
+<li>局域网环境下：gitlab</li>
+<li>外网环境下：github、码云</li>
+</ul>
+<a id="more"></a>
+<p><strong>本地库和远程库：</strong></p>
+<p>团队内协作——本地库：</p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200823120808.png" alt="image-20200823120419336" /><figcaption>image-20200823120419336</figcaption>
+</figure>
+<p>跨团队协作——远程库：</p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200823121201.png" alt="image-20200823121200896" /><figcaption>image-20200823121200896</figcaption>
+</figure>
+<h2 id="git命令行操作">Git命令行操作</h2>
+<h3 id="git本地库初始化git-init">Git本地库初始化：<code>git init</code></h3>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200823122221.png" alt="image-20200823122221265" /><figcaption>image-20200823122221265</figcaption>
+</figure>
+<p>.git中存放的是<strong>本地库相关</strong>的子目录和文件</p>
+<h3 id="设置签名">设置签名</h3>
+<ul>
+<li>形式
+<ul>
+<li>用户名:Lemon</li>
+<li>Email地址:xxxxx@gmail.com</li>
+</ul></li>
+<li>作用：区分不同开发人员身份</li>
+<li>辨析：这里设置的签名和登录远程库（代码托管中心）的账号、密码没有任何关系</li>
+<li>命令
+<ul>
+<li>项目级别/仓库级别：仅在当前本地库范围生效
+<ul>
+<li><code>git config user.name Lemon</code></li>
+<li><code>git config user.email xxxx@gmail.com</code></li>
+<li>信息保存位置：.git/config</li>
+</ul></li>
+</ul></li>
+</ul>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200823123324.png" alt="image-20200823123323940" /><figcaption>image-20200823123323940</figcaption>
+</figure>
+<ul>
+<li>系统用户级别：登录当前操作系统的用户范围
+<ul>
+<li><code>git config --global user.name Lemon</code></li>
+<li><code>git config --global user.email xxxx@gmail.com</code></li>
+<li>保存位置：用户目录下的.gitconfig文件</li>
+</ul></li>
+</ul>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200823123620.png" alt="image-20200823123620102" /><figcaption>image-20200823123620102</figcaption>
+</figure>
+<ul>
+<li>优先级：就近原则，二者都有时，项目级别&gt;系统用户级别</li>
+<li>二者都没有不允许</li>
+</ul>
+<h3 id="基本操作">基本操作</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看工作区暂存区状态</span></span><br><span class="line">git status</span><br><span class="line"><span class="comment">#工作区---&gt;暂存区</span></span><br><span class="line">git add &lt;file&gt;</span><br><span class="line"><span class="comment">#暂存区---&gt;本地库</span></span><br><span class="line">git commit -m <span class="string">"commit message"</span> &lt;file_name&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>新建的文件必须要add一下再commit</p>
+<p>修改的文件可以直接commit，但是不能够撤销了</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看历史记录</span></span><br><span class="line">git <span class="built_in">log</span></span><br><span class="line">git <span class="built_in">log</span> --pretty=oneline</span><br><span class="line">git <span class="built_in">log</span> --oneline</span><br><span class="line">git reflog</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>多屏显示的控制方式：空格向下翻页、b向上翻页、q退出</p>
+</blockquote>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200824011949.png" alt="image-20200824011317501" /><figcaption>image-20200824011317501</figcaption>
+</figure>
+<blockquote>
+<p>HEAD{移动到当前版本需要多少步数}</p>
+</blockquote>
+<h4 id="前进后退"><strong>前进后退</strong></h4>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard &lt;局部索引值/HEAD^/HEAD~n&gt;</span><br></pre></td></tr></table></figure>
+<ol type="1">
+<li>:star:基于索引值[推荐]</li>
+</ol>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200824013926.png" alt="image-20200824013924266" /><figcaption>image-20200824013924266</figcaption>
+</figure>
+<ol start="2" type="1">
+<li><p>基于<code>^</code>：只能往后退</p></li>
+<li><p>基于<code>~</code>：只能后退</p></li>
+</ol>
+<h4 id="reset参数对比"><strong>reset参数对比</strong></h4>
+<ol type="1">
+<li>--soft:只碰本地库的HEAD指针</li>
+</ol>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200824095959.png" alt="image-20200824095959578" /><figcaption>image-20200824095959578</figcaption>
+</figure>
+<ol start="2" type="1">
+<li>--mix：修改本地库的HEAD指针和重置暂存区</li>
+</ol>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200824100337.png" alt="image-20200824100336981" /><figcaption>image-20200824100336981</figcaption>
+</figure>
+<ol start="3" type="1">
+<li>-- hard：修改本地库的HEAD指针，重置暂存区、工作区</li>
+</ol>
+<h4 id="删除文件后找回">删除文件后找回</h4>
+<p>前提：删除前文件存在时的状态提交到了本地库</p>
+<p>操作：<code>git reset --hard [指针位置</code>]</p>
+<p><strong>永久删除文件后找回</strong></p>
+<p><code>git reset --hard &lt;hash_code&gt;</code></p>
+<p><strong>添加到暂存区的删除文件找回</strong></p>
+<p><code>git reset --hard HEAD</code></p>
+<h4 id="git-diff">git diff</h4>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200824105230.png" alt="0A44FE6F4EB0A0EC577F17855F53D4D3" /><figcaption>0A44FE6F4EB0A0EC577F17855F53D4D3</figcaption>
+</figure>
+<p><a href="https://www.jianshu.com/p/80542dc3164e" target="_blank" rel="noopener">reference</a></p>
+<h5 id="工作目录-vs-暂存区">工作目录 vs 暂存区</h5>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git diff &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+<p>意义：查看文件在工作目录与暂存区的差别。如果还没 add 进暂存区，则查看文件自身修改前后的差别。也可查看和另一分支的区别。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git diff &lt;branch&gt; &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="暂存区-vs-git仓库">暂存区 vs Git仓库</h5>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --cached &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+<p>意义：表示查看已经 add 进暂存区但是尚未 commit 的内容同最新一次 commit 时的内容的差异。 也可以指定仓库版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff --cached &lt;commit&gt; &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+<h5 id="工作目录-vs-git仓库">工作目录 vs Git仓库</h5>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff &lt;commit&gt; &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+<p>意义：查看工作目录同Git仓库指定 commit 的内容的差异。 <code>&lt;commit&gt;</code>=<code>HEAD</code> 时：查看工作目录同最近一次 commit 的内容的差异。</p>
+<h5 id="git仓库-vs-git仓库">Git仓库 vs Git仓库</h5>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff &lt;commit&gt; &lt;commit&gt;</span><br></pre></td></tr></table></figure>
+<p>意义：Git仓库任意两次 commit 之间的差别。</p>
+<h3 id="分支">分支</h3>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200824130817.png" alt="image-20200824123430188" /><figcaption>image-20200824123430188</figcaption>
+</figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#创建分支</span></span><br><span class="line">git branch &lt;branch_name&gt;</span><br><span class="line"><span class="comment">#查看分支</span></span><br><span class="line">git branch -v</span><br><span class="line"><span class="comment">#切换分支 </span></span><br><span class="line">git checkout &lt;branch_name&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>合并分支</strong></p>
+<ul>
+<li>切换到接受修改的分支</li>
+<li>执行merge命令
+<ul>
+<li><code>git merge &lt;branch_name&gt;</code>；</li>
+</ul></li>
+</ul>
+<p><strong>合并分支的时候产生冲突</strong></p>
+<ol type="1">
+<li>冲突的表现</li>
+<li>冲突的解决
+<ol type="1">
+<li>编辑文件，删除特殊符号</li>
+<li>修改文件，保存</li>
+<li><code>git add &lt;file_name&gt;</code></li>
+<li><code>git commit -m "commit message"</code>(不能带文件名)</li>
+</ol></li>
+</ol>
+<h2 id="git基本原理">Git基本原理</h2>
+<p>SVN：增量式</p>
+<p>Git：基于快照</p>
+<p>提交：<code>git commit</code></p>
+<p>新建 分支：<code>git branch &lt;branch_name&gt;</code></p>
+<p>切换分支：<code>git checkout &lt;branch_name&gt;</code></p>
+<p>新建分支并且切换到那个分支：<code>git checkout -b &lt;branch_name&gt;</code></p>
+<p>合并分支：</p>
+<ol type="1">
+<li><code>git merge &lt;branch_name&gt;</code>；</li>
+<li>得到更线性的提交，把当前分支合并到<code>branch_name上</code>，<code>git rebase &lt;brance_name&gt;</code>；</li>
+</ol>
+<p>分离HEAD：<code>git checkout &lt;某次提交的哈希值&gt;</code>，然后HEAD就会指向这个哈希的提交。</p>
+<p>查看提交记录的哈希值：<code>git log</code></p>
+<p><strong>相对引用</strong></p>
+<p><code>^</code></p>
+<ul>
+<li><code>git checkout master^</code>、HEAD会指向master的父节点；</li>
+<li><code>git checkout master^^</code>、HEAD会指向master的父节点的父节点；</li>
+<li>master可以换成任何一个节点名称</li>
+</ul>
+<p><code>~</code></p>
+<ul>
+<li><code>git checkout HEAD~4</code>：向后移动四步</li>
+<li>~后面可以不跟参数，此时与^无异</li>
+</ul>
+<p><strong>强制移动分支</strong></p>
+<ul>
+<li><code>git branch -f master HEAD~3</code>：上面的命令会将 master 分支强制指向 HEAD 的第 3 级父提交。</li>
+</ul>
+<blockquote>
+<p>相对引用为我们提供了一种简洁的引用提交记录 <code>C1</code> 的方式， 而 <code>-f</code> 则容许我们将分支强制移动到那个位置。</p>
+</blockquote>
+<p><strong>撤销变更</strong></p>
+<p><code>git reset</code> 通过把分支记录回退几个提交记录来实现撤销改动。你可以将这想象成“改写历史”。<code>git reset</code> 向上移动分支，原来指向的提交记录就跟从来没有提交过一样。</p>
+<p>虽然在本地分支中使用 <code>git reset</code> 很方便，但是这种“改写历史”的方法对大家一起使用的远程分支是无效的。</p>
+<p><code>git revert</code>：新生成一个提交，这个提交正好是用来撤销更改的。</p>
+<p>将一些提交复制到当前位置下面：<code>git cherry-pick &lt;提交号&gt;...</code></p>
+<p><strong>交互式rebase：<code>git rebase -i</code></strong></p>
+<p><a href="http://gitbook.liuhui998.com/4_3.html" target="_blank" rel="noopener">git book</a></p>
+<h1 id="github">Github</h1>
+<p>Pull Request(PR)：如果我fork了别人的项目，自己做了改进到自己的仓库里面，但我同时希望我的改进可以加到被fork的人的项目中（项目创始人），我就可以发起一个PR</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">git</span> <span class="string">remote</span></span><br><span class="line"><span class="attr">git</span> <span class="string">push &lt;别名&gt; &lt;分支名&gt;</span></span><br><span class="line"><span class="attr">git</span> <span class="string">clone</span></span><br></pre></td></tr></table></figure>
+<h2 id="git-remote">git remote</h2>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add <span class="tag">&lt;<span class="name">别名</span>&gt;</span> <span class="tag">&lt;<span class="name">远程地址</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="git-push">git push</h2>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push <span class="tag">&lt;<span class="name">别名</span>&gt;</span> <span class="tag">&lt;<span class="name">分支名字</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="git-pull">git pull</h2>
+<ul>
+<li>pull 相当于fetch+merge
+<ul>
+<li><code>git fetch &lt;远程库地址别名&gt; &lt;远程分支名&gt;</code></li>
+<li><code>git merge &lt;远程库地址别名/远程分支名&gt;</code></li>
+</ul></li>
+</ul>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#抓取操作</span></span><br><span class="line">git fetch origin <span class="literal">master</span></span><br><span class="line"><span class="comment">#想看下抓取的东西</span></span><br><span class="line">git checkout origin/<span class="literal">master</span></span><br><span class="line"><span class="comment">#看了抓取的东西，觉得可以合并了</span></span><br><span class="line">git merge origin/<span class="literal">master</span></span><br></pre></td></tr></table></figure>
+<h2 id="多人协作">多人协作</h2>
+<h3 id="git-clone">git clone</h3>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">clone</span> <span class="title">&lt;远程地址&gt;</span></span><br></pre></td></tr></table></figure>
+<ol type="1">
+<li>完整的把远程库下载到本地</li>
+<li>创建origin远程地址别名</li>
+<li>初始化本地库</li>
+</ol>
+<h3 id="冲突解决">冲突解决</h3>
+<ul>
+<li>要点
+<ul>
+<li>如果不是基于远程库所做的修改，不能推送，必须先拉取</li>
+<li>拉取下来后如果进入冲突状态，按照冲突操作解决</li>
+</ul></li>
+</ul>
+<h3 id="邀请成员加入团队">邀请成员加入团队</h3>
+<p><a href="https://docs.github.com/cn/github/setting-up-and-managing-organizations-and-teams/adding-organization-members-to-a-team" target="_blank" rel="noopener">github文档</a></p>
+<h3 id="团队外部人员协同开发">团队外部人员协同开发</h3>
+<p>外部人员：</p>
+<ol type="1">
+<li>fork项目</li>
+<li>编写代码，提交到自己的远程库</li>
+<li>提交PR</li>
+</ol>
+<p>项目拥有者：</p>
+<ol type="1">
+<li>审查</li>
+<li>确认merge</li>
+<li>pull到本地库</li>
+</ol>
+<h3 id="ssh免密登录">SSH免密登录</h3>
+<ol type="1">
+<li>把自己的公钥放到github上</li>
+<li><code>git remote add &lt;别名&gt; &lt;仓库的ssh地址&gt;</code></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/46563.html" rel="prev" title="正则表达式">
+      <i class="fa fa-chevron-left"></i> 正则表达式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/3112.html" rel="next" title="Cloud-init是什么？">
+      Cloud-init是什么？ <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#git"><span class="nav-number">1.</span> <span class="nav-text">Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#git命令行操作"><span class="nav-number">1.1.</span> <span class="nav-text">Git命令行操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#git本地库初始化git-init"><span class="nav-number">1.1.1.</span> <span class="nav-text">Git本地库初始化：git init</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置签名"><span class="nav-number">1.1.2.</span> <span class="nav-text">设置签名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本操作"><span class="nav-number">1.1.3.</span> <span class="nav-text">基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#前进后退"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">前进后退</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reset参数对比"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">reset参数对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除文件后找回"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">删除文件后找回</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#git-diff"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">git diff</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#工作目录-vs-暂存区"><span class="nav-number">1.1.3.4.1.</span> <span class="nav-text">工作目录 vs 暂存区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#暂存区-vs-git仓库"><span class="nav-number">1.1.3.4.2.</span> <span class="nav-text">暂存区 vs Git仓库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#工作目录-vs-git仓库"><span class="nav-number">1.1.3.4.3.</span> <span class="nav-text">工作目录 vs Git仓库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#git仓库-vs-git仓库"><span class="nav-number">1.1.3.4.4.</span> <span class="nav-text">Git仓库 vs Git仓库</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分支"><span class="nav-number">1.1.4.</span> <span class="nav-text">分支</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git基本原理"><span class="nav-number">1.2.</span> <span class="nav-text">Git基本原理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#github"><span class="nav-number">2.</span> <span class="nav-text">Github</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#git-remote"><span class="nav-number">2.1.</span> <span class="nav-text">git remote</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-push"><span class="nav-number">2.2.</span> <span class="nav-text">git push</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-pull"><span class="nav-number">2.3.</span> <span class="nav-text">git pull</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多人协作"><span class="nav-number">2.4.</span> <span class="nav-text">多人协作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#git-clone"><span class="nav-number">2.4.1.</span> <span class="nav-text">git clone</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#冲突解决"><span class="nav-number">2.4.2.</span> <span class="nav-text">冲突解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#邀请成员加入团队"><span class="nav-number">2.4.3.</span> <span class="nav-text">邀请成员加入团队</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#团队外部人员协同开发"><span class="nav-number">2.4.4.</span> <span class="nav-text">团队外部人员协同开发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh免密登录"><span class="nav-number">2.4.5.</span> <span class="nav-text">SSH免密登录</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Keke"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Keke</p>
+  <div class="site-description" itemprop="description">记录学习的地方</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://libertyunionkjy@gmail.com/" title="E-Mail → https:&#x2F;&#x2F;libertyunionkjy@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Keke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el         : '#valine-comments',
+      path       : location.pathname,
+    }, {"enable":true,"appId":"tnKOKDSuvxOLRFeojycmFGDV-MdYXbMMI","appKey":"Q4ro4ajDoVK1ScWWSlGCxY3G","notify":true,"verify":false,"placeholder":"快来评论吧！柯柯给你举高高ヽ(✿ﾟ▽ﾟ)ノ","avatar":"monsterid","meta":["nick","mail","link"],"pageSize":10,"language":"zh-cn","visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

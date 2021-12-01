@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="什么是泛型 一个简单的泛型例子： 1234567public class ArrayList&lt;T&gt; &amp;#123;    private T[] array;    private int size;    public void add(T e) &amp;#123;...&amp;#125;    public void remove(int index) &amp;#123;...&amp;#125;    pu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="廖雪峰JAVA学习笔记（6）——泛型">
+<meta property="og:url" content="https://jyke.xyz/posts/2053.html">
+<meta property="og:site_name" content="柯柯的博客">
+<meta property="og:description" content="什么是泛型 一个简单的泛型例子： 1234567public class ArrayList&lt;T&gt; &amp;#123;    private T[] array;    private int size;    public void add(T e) &amp;#123;...&amp;#125;    public void remove(int index) &amp;#123;...&amp;#125;    pu">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-24T18:02:00.000Z">
+<meta property="article:modified_time" content="2020-05-24T18:03:29.109Z">
+<meta property="article:author" content="Keke">
+<meta property="article:tag" content="学习">
+<meta property="article:tag" content="JAVA">
+<meta property="article:tag" content="廖雪峰">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://jyke.xyz/posts/2053.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>廖雪峰JAVA学习笔记（6）——泛型 | 柯柯的博客</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-166231991-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="柯柯的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">柯柯的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">KK's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/2053.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          廖雪峰JAVA学习笔记（6）——泛型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-05-25 02:02:00 / 修改时间：02:03:29" itemprop="dateCreated datePublished" datetime="2020-05-25T02:02:00+08:00">2020-05-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/2053.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/2053.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="什么是泛型">什么是泛型</h1>
+<p>一个简单的泛型例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayList</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T[] array;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(T e)</span> </span>&#123;...&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;...&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>T</code>可以是任何class。这样一来，我们就实现了：编写一次模版，可以创建任意类型的<code>ArrayList</code>：</p>
+<a id="more"></a>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建可以存储String的ArrayList:</span></span><br><span class="line">ArrayList&lt;String&gt; strList = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line"><span class="comment">// 创建可以存储Float的ArrayList:</span></span><br><span class="line">ArrayList&lt;Float&gt; floatList = <span class="keyword">new</span> ArrayList&lt;Float&gt;();</span><br><span class="line"><span class="comment">// 创建可以存储Person的ArrayList:</span></span><br><span class="line">ArrayList&lt;Person&gt; personList = <span class="keyword">new</span> ArrayList&lt;Person&gt;();</span><br></pre></td></tr></table></figure>
+<p>因此，泛型就是定义一种模板，例如<code>ArrayList</code>，然后在代码中为用到的类创建对应的<code>ArrayList&lt;类型&gt;</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;String&gt; strList = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br></pre></td></tr></table></figure>
+<p>由编译器针对类型作检查：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">strList.add(<span class="string">"hello"</span>); <span class="comment">// OK</span></span><br><span class="line">String s = strList.get(<span class="number">0</span>); <span class="comment">// OK</span></span><br><span class="line">strList.add(<span class="keyword">new</span> Integer(<span class="number">123</span>)); <span class="comment">// compile error!</span></span><br><span class="line">Integer n = strList.get(<span class="number">0</span>); <span class="comment">// compile error!</span></span><br></pre></td></tr></table></figure>
+<p>这样一来，既实现了编写一次，万能匹配，又通过编译器保证了类型安全：这就是泛型。</p>
+<h2 id="小结">小结</h2>
+<p>泛型就是编写模板代码来适应任意类型；</p>
+<p>泛型的好处是使用时不必对类型进行强制转换，它通过编译器对类型进行检查；</p>
+<p>注意泛型的继承关系：可以把<code>ArrayList</code>向上转型为<code>List</code>（<code>T</code>不能变！），但不能把<code>ArrayList</code>向上转型为<code>ArrayList</code>（<code>T</code>不能变成父类）。</p>
+<h1 id="使用泛型">使用泛型</h1>
+<p>编译器如果能自动推断出泛型类型，就可以省略后面的泛型类型。例如，对于下面的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Number&gt; list = <span class="keyword">new</span> ArrayList&lt;Number&gt;();</span><br></pre></td></tr></table></figure>
+<p>编译器看到泛型类型<code>List</code>就可以自动推断出后面的<code>ArrayList</code>的泛型类型必须是<code>ArrayList&lt;Number&gt;</code>，因此，可以把代码简写为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 可以省略后面的Number，编译器可以自动推断泛型类型：</span></span><br><span class="line">List&lt;Number&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br></pre></td></tr></table></figure>
+<h2 id="泛型接口">泛型接口</h2>
+<p>接口也可以使用泛型，例如，<code>Arrays.sort(Object[])</code>可以对任意数组进行排序，但待排序的元素必须实现<code>Comparable</code>这个泛型接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Comparable</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回-1: 当前实例比参数o小</span></span><br><span class="line"><span class="comment">     * 返回0: 当前实例与参数o相等</span></span><br><span class="line"><span class="comment">     * 返回1: 当前实例比参数o大</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(T o)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在JAVA自带的核心类比如String或者包装类中已经实现了Comparable这个接口，但是如果我们想要使用自定义类，就必须在自定义类中实现这个接口，例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Person[] ps = <span class="keyword">new</span> Person[] &#123;</span><br><span class="line">            <span class="keyword">new</span> Person(<span class="string">"Bob"</span>, <span class="number">61</span>),</span><br><span class="line">            <span class="keyword">new</span> Person(<span class="string">"Alice"</span>, <span class="number">88</span>),</span><br><span class="line">            <span class="keyword">new</span> Person(<span class="string">"Lily"</span>, <span class="number">75</span>),</span><br><span class="line">        &#125;;</span><br><span class="line">        Arrays.sort(ps);</span><br><span class="line">        System.out.println(Arrays.toString(ps));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> <span class="keyword">implements</span> <span class="title">Comparable</span>&lt;<span class="title">Person</span>&gt; </span>&#123;</span><br><span class="line">    String name;</span><br><span class="line">    <span class="keyword">int</span> score;</span><br><span class="line">    Person(String name, <span class="keyword">int</span> score) &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.score = score;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(Person other)</span> </span>&#123;</span><br><span class="line">    	<span class="keyword">return</span> <span class="keyword">new</span> Integer(<span class="keyword">this</span>.score).compareTo(<span class="keyword">new</span> Integer(other.score));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name + <span class="string">","</span> + <span class="keyword">this</span>.score;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>输出：[Bob,61, Lily,75, Alice,88]</p>
+</blockquote>
+<h1 id="编写泛型">编写泛型</h1>
+<p>一般来说，我们很少使用泛型，但是如果需要编写泛型，可以按照以下三个步骤来：</p>
+<ol type="1">
+<li>使用特定类型来编写类；</li>
+<li>标记出所有特性类型；</li>
+<li>把特定类型替换为T，然后在类申明中申明<code>&lt;T&gt;</code>；</li>
+</ol>
+<h2 id="在静态方法中使用泛型">在静态方法中使用泛型</h2>
+<p>编写泛型类时，要特别注意，泛型类型<code>&lt;T&gt;</code>不能用于静态方法。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T first;</span><br><span class="line">    <span class="keyword">private</span> T last;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(T first, T last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.first = first;</span><br><span class="line">        <span class="keyword">this</span>.last = last;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getFirst</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getLast</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 对静态方法使用&lt;T&gt;:</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Pair&lt;T&gt; <span class="title">create</span><span class="params">(T first, T last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Pair&lt;T&gt;(first, last);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码会导致编译错误，我们无法在静态方法<code>create()</code>的方法参数和返回类型上使用泛型类型<code>T</code>。</p>
+<p>可以在<code>static</code>修饰符后面加一个<code>&lt;T&gt;</code>，编译就能通过：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T first;</span><br><span class="line">    <span class="keyword">private</span> T last;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(T first, T last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.first = first;</span><br><span class="line">        <span class="keyword">this</span>.last = last;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getFirst</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getLast</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 可以编译通过:</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">Pair&lt;T&gt; <span class="title">create</span><span class="params">(T first, T last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Pair&lt;T&gt;(first, last);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但实际上，这个<code>&lt;T&gt;</code>和<code>Pair&lt;T&gt;</code>类型的<code>&lt;T&gt;</code>已经没有任何关系了。</p>
+<p>对于静态方法，我们可以单独改写为“泛型”方法，只需要使用另一个类型即可。对于上面的<code>create()</code>静态方法，我们应该把它改为另一种泛型类型，例如，<code>&lt;K&gt;</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T first;</span><br><span class="line">    <span class="keyword">private</span> T last;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(T first, T last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.first = first;</span><br><span class="line">        <span class="keyword">this</span>.last = last;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getFirst</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getLast</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 静态泛型方法应该使用其他类型区分:</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;K&gt; <span class="function">Pair&lt;K&gt; <span class="title">create</span><span class="params">(K first, K last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Pair&lt;K&gt;(first, last);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样才能清楚地将静态方法的泛型类型和实例类型的泛型类型区分开。</p>
+<h2 id="多个泛型类型">多个泛型类型</h2>
+<p>泛型还可以定义多种类型。例如，我们希望<code>Pair</code>不总是存储两个类型一样的对象，就可以使用类型<code>&lt;T, K&gt;</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>, <span class="title">K</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T first;</span><br><span class="line">    <span class="keyword">private</span> K last;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(T first, K last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.first = first;</span><br><span class="line">        <span class="keyword">this</span>.last = last;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getFirst</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> K <span class="title">getLast</span><span class="params">()</span> </span>&#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用的时候，需要指出两种类型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;String, Integer&gt; p = <span class="keyword">new</span> Pair&lt;&gt;(<span class="string">"test"</span>, <span class="number">123</span>);</span><br></pre></td></tr></table></figure>
+<p>Java标准库的<code>Map</code>就是使用两种泛型类型的例子。它对Key使用一种类型，对Value使用另一种类型。</p>
+<h2 id="小结-1">小结</h2>
+<p>编写泛型时，需要定义泛型类型<code>&lt;T&gt;</code>；</p>
+<p>静态方法不能引用泛型类型<code>&lt;T&gt;</code>，必须定义其他类型（例如<code>&lt;K&gt;</code>）来实现静态泛型方法；</p>
+<p>泛型可以同时定义多种类型，例如<code>Map</code>。</p>
+<h1 id="擦拭法">擦拭法</h1>
+<p>泛型是一种类似”模板代码“的技术，不同语言的泛型实现方式不一定相同。Java语言的泛型实现方式是擦拭法（Type Erasure）。所谓擦拭法是指，虚拟机对泛型其实一无所知，所有的工作都是编译器做的。</p>
+<p>例如，我们编写了一个泛型类<code>Pair</code>，这是<strong>编译器看到的代码：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T first;</span><br><span class="line">    <span class="keyword">private</span> T last;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(T first, T last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.first = first;</span><br><span class="line">        <span class="keyword">this</span>.last = last;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getFirst</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> first;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getLast</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> last;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而虚拟机根本不知道泛型。这是<strong>虚拟机执行的代码：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pair</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Object first;</span><br><span class="line">    <span class="keyword">private</span> Object last;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(Object first, Object last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.first = first;</span><br><span class="line">        <span class="keyword">this</span>.last = last;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getFirst</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> first;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getLast</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> last;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因此，Java使用擦拭法实现泛型，导致了：</p>
+<ul>
+<li>编译器把类型<code>&lt;T&gt;</code>视为<code>Object</code>；</li>
+<li>编译器根据<code>&lt;T&gt;</code>实现安全的强制转型。</li>
+</ul>
+<p>使用泛型的时候，我们编写的代码也是编译器看到的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;String&gt; p = <span class="keyword">new</span> Pair&lt;&gt;(<span class="string">"Hello"</span>, <span class="string">"world"</span>);</span><br><span class="line">String first = p.getFirst();</span><br><span class="line">String last = p.getLast();</span><br></pre></td></tr></table></figure>
+<p>而虚拟机执行的代码并没有泛型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Pair p = <span class="keyword">new</span> Pair(<span class="string">"Hello"</span>, <span class="string">"world"</span>);</span><br><span class="line">String first = (String) p.getFirst();</span><br><span class="line">String last = (String) p.getLast();</span><br></pre></td></tr></table></figure>
+<p>所以，Java的泛型是由编译器在编译时实行的，编译器内部永远把所有类型<code>T</code>视为<code>Object</code>处理，但是，在需要转型的时候，编译器会根据<code>T</code>的类型自动为我们实行安全地强制转型。</p>
+<h2 id="java泛型的局限">Java泛型的局限：</h2>
+<p>局限一：<code>&lt;T&gt;</code>不能是基本类型，例如<code>int</code>，因为实际类型是<code>Object</code>，<code>Object</code>类型无法持有基本类型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;<span class="keyword">int</span>&gt; p = <span class="keyword">new</span> Pair&lt;&gt;(<span class="number">1</span>, <span class="number">2</span>); <span class="comment">// compile error!</span></span><br></pre></td></tr></table></figure>
+<p>局限二：无法取得带泛型的<code>Class</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Pair&lt;String&gt; p1 = <span class="keyword">new</span> Pair&lt;&gt;(<span class="string">"Hello"</span>, <span class="string">"world"</span>);</span><br><span class="line">        Pair&lt;Integer&gt; p2 = <span class="keyword">new</span> Pair&lt;&gt;(<span class="number">123</span>, <span class="number">456</span>);</span><br><span class="line">        Class c1 = p1.getClass();</span><br><span class="line">        Class c2 = p2.getClass();</span><br><span class="line">        System.out.println(c1==c2); <span class="comment">// true</span></span><br><span class="line">        System.out.println(c1==Pair<span class="class">.<span class="keyword">class</span>)</span>; <span class="comment">// true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T first;</span><br><span class="line">    <span class="keyword">private</span> T last;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(T first, T last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.first = first;</span><br><span class="line">        <span class="keyword">this</span>.last = last;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getFirst</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> first;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getLast</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> last;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为<code>T</code>是<code>Object</code>，我们对<code>Pair&lt;String&gt;</code>和<code>Pair&lt;Integer&gt;</code>类型获取<code>Class</code>时，获取到的是同一个<code>Class</code>，也就是<code>Pair</code>类的<code>Class</code>。</p>
+<p>换句话说，所有泛型实例，无论<code>T</code>的类型是什么，<code>getClass()</code>返回同一个<code>Class</code>实例，因为编译后它们全部都是<code>Pair</code>。</p>
+<p>局限三：无法判断带泛型的<code>Class</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;Integer&gt; p = <span class="keyword">new</span> Pair&lt;&gt;(<span class="number">123</span>, <span class="number">456</span>);</span><br><span class="line"><span class="comment">// Compile error:</span></span><br><span class="line"><span class="keyword">if</span> (p <span class="keyword">instanceof</span> Pair&lt;String&gt;<span class="class">.<span class="keyword">class</span>) </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>原因和前面一样，并不存在<code>Pair&lt;String&gt;.class</code>，而是只有唯一的<code>Pair.class</code>。</p>
+<p>局限四：不能实例化<code>T</code>类型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T first;</span><br><span class="line">    <span class="keyword">private</span> T last;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Compile error:</span></span><br><span class="line">        first = <span class="keyword">new</span> T();</span><br><span class="line">        last = <span class="keyword">new</span> T();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码无法通过编译，因为构造方法的两行语句：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">first = <span class="keyword">new</span> T();</span><br><span class="line">last = <span class="keyword">new</span> T();</span><br></pre></td></tr></table></figure>
+<p>擦拭后实际上变成了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">first = <span class="keyword">new</span> Object();</span><br><span class="line">last = <span class="keyword">new</span> Object();</span><br></pre></td></tr></table></figure>
+<p>这样一来，创建<code>new Pair()</code>和创建<code>new Pair()</code>就全部成了<code>Object</code>，显然编译器要阻止这种类型不对的代码。</p>
+<p>要实例化<code>T</code>类型，我们必须借助额外的<code>Class</code>参数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T first;</span><br><span class="line">    <span class="keyword">private</span> T last;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(Class&lt;T&gt; clazz)</span> </span>&#123;<span class="comment">//使用的时候应该传入一个Class实例</span></span><br><span class="line">        first = clazz.newInstance();</span><br><span class="line">        last = clazz.newInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码借助<code>Class</code>参数并通过反射来实例化<code>T</code>类型，使用的时候，也必须传入<code>Class</code>。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;String&gt; pair = <span class="keyword">new</span> Pair&lt;&gt;(String<span class="class">.<span class="keyword">class</span>)</span>;</span><br></pre></td></tr></table></figure>
+<p>因为传入了<code>Class&lt;String&gt;</code>的实例，所以我们借助<code>String.class</code>就可以实例化<code>String</code>类型。</p>
+<h2 id="不恰当的覆写方法">不恰当的覆写方法</h2>
+<p>有些时候，一个看似正确定义的方法会无法通过编译。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(T t)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span> == t;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是因为，定义的<code>equals(T t)</code>方法实际上会被擦拭成<code>equals(Object t)</code>，而这个方法是继承自<code>Object</code>的，<strong>编译器会阻止一个实际上会变成覆写的泛型方法定义</strong>。</p>
+<p><strong>换个方法名，</strong>避开与<code>Object.equals(Object)</code>的冲突就可以成功编译：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">same</span><span class="params">(T t)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span> == t;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="泛型继承">泛型继承</h2>
+<p>一个类可以继承自一个泛型类。例如：父类的类型是<code>Pair</code>，子类的类型是<code>IntPair</code>，可以这么继承：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IntPair</span> <span class="keyword">extends</span> <span class="title">Pair</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用的时候，因为子类<code>IntPair</code>并没有泛型类型，所以，正常使用即可：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IntPair<span class="built_in"> ip </span>= new IntPair(1, 2);</span><br></pre></td></tr></table></figure>
+<p>在继承了泛型类型的情况下，子类可以获取父类的泛型类型。例如：<code>IntPair</code>可以获取到父类的泛型类型<code>Integer</code>。获取父类的泛型类型代码比较复杂：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.reflect.ParameterizedType;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Type;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Class&lt;IntPair&gt; clazz = IntPair<span class="class">.<span class="keyword">class</span></span>;</span><br><span class="line">        Type t = clazz.getGenericSuperclass();</span><br><span class="line">        <span class="keyword">if</span> (t <span class="keyword">instanceof</span> ParameterizedType) &#123;</span><br><span class="line">            ParameterizedType pt = (ParameterizedType) t;</span><br><span class="line">            Type[] types = pt.getActualTypeArguments(); <span class="comment">// 可能有多个泛型类型</span></span><br><span class="line">            Type firstType = types[<span class="number">0</span>]; <span class="comment">// 取第一个泛型类型</span></span><br><span class="line">            Class&lt;?&gt; typeClass = (Class&lt;?&gt;) firstType;</span><br><span class="line">            System.out.println(typeClass); <span class="comment">// Integer</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T first;</span><br><span class="line">    <span class="keyword">private</span> T last;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(T first, T last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.first = first;</span><br><span class="line">        <span class="keyword">this</span>.last = last;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getFirst</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> first;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getLast</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> last;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">IntPair</span> <span class="keyword">extends</span> <span class="title">Pair</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">IntPair</span><span class="params">(Integer first, Integer last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(first, last);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="小结-2">小结</h2>
+<p>Java的泛型是采用擦拭法实现的；</p>
+<p>擦拭法决定了泛型<code>&lt;T&gt;</code>：</p>
+<ul>
+<li>不能是基本类型，例如：<code>int</code>；</li>
+<li>不能获取带泛型类型的<code>Class</code>，例如：<code>Pair&lt;String&gt;.class</code>；</li>
+<li>不能判断带泛型类型的类型，例如：<code>x instanceof Pair&lt;String&gt;</code>；</li>
+<li>不能实例化<code>T</code>类型，例如：<code>new T()</code>。</li>
+</ul>
+<p>泛型方法要防止重复定义方法，例如：<code>public boolean equals(T obj)</code>；</p>
+<p>子类可以获取父类的泛型类型<code>&lt;T&gt;</code>。</p>
+<h1 id="通配符">通配符</h1>
+<h2 id="extends通配符">extends通配符</h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Pair&lt;Integer&gt; p = <span class="keyword">new</span> Pair&lt;&gt;(<span class="number">123</span>, <span class="number">456</span>);</span><br><span class="line">        <span class="keyword">int</span> n = add(p);<span class="comment">//ERROE！p是Pair&lt;Integer&gt;类型，与Pair&lt;Number&gt;没有继承关系，会报错</span></span><br><span class="line">        System.out.println(n);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    	<span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(Pair&lt;Number&gt; p)</span> </span>&#123;</span><br><span class="line">        Number first = p.getFirst();</span><br><span class="line">        Number last = p.getLast();</span><br><span class="line">        <span class="keyword">return</span> first.intValue() + last.intValue();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T first;</span><br><span class="line">    <span class="keyword">private</span> T last;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(T first, T last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.first = first;</span><br><span class="line">        <span class="keyword">this</span>.last = last;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getFirst</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> first;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getLast</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> last;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>静态方法<code>add</code>的方法参数类型定死了只能传入<code>Pair&lt;Number&gt;</code>。</p>
+<p>有没有办法使得方法参数接受<code>Pair&lt;Integer&gt;</code>？办法是有的，这就是使用<code>Pair&lt;? extends Number&gt;</code>使得方法接收所有泛型类型为<code>Number</code>或<code>Number</code>子类的<code>Pair</code>类型。我们把方法签名改写如下即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(Pair&lt;? extends Number&gt; p)</span> </span>&#123;...&#125;;</span><br></pre></td></tr></table></figure>
+<p>这种使用<code>&lt;? extends Number&gt;</code>的泛型定义称之为<strong>上界通配符（Upper Bounds Wildcards）</strong>，即把泛型类型<code>T</code>的上界限定在<code>Number</code>了。使用通配符后实际的方法签名变成了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;? extends Number&gt; getFirst();</span><br></pre></td></tr></table></figure>
+<p>就是把<code>T</code>改成了<code>&lt;? extends Number&gt;</code>，因此，可以安全赋值给<code>Number</code>类型的变量：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Number x = p.getFirst();</span><br></pre></td></tr></table></figure>
+<p>然后，我们不可预测实际类型就是<code>Integer</code>，例如，下面的代码是无法通过编译的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Integer x = p.getFirst();</span><br></pre></td></tr></table></figure>
+<p>这是因为实际的返回类型可能是<code>Integer</code>，也可能是<code>Double</code>或者其他类型，编译器只能确定类型一定是<code>Number</code>的子类（包括<code>Number</code>类型本身），但具体类型无法确定。</p>
+<p>再考察以下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Pair&lt;Integer&gt; p = <span class="keyword">new</span> Pair&lt;&gt;(<span class="number">123</span>, <span class="number">456</span>);</span><br><span class="line">        <span class="keyword">int</span> n = add(p);<span class="comment">//③</span></span><br><span class="line">        System.out.println(n);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(Pair&lt;? extends Number&gt; p)</span> </span>&#123;<span class="comment">//①</span></span><br><span class="line">        Number first = p.getFirst();</span><br><span class="line">        Number last = p.getLast();</span><br><span class="line">        p.setFirst(<span class="keyword">new</span> Integer(first.intValue() + <span class="number">100</span>));<span class="comment">//ERROE!④</span></span><br><span class="line">        p.setLast(<span class="keyword">new</span> Integer(last.intValue() + <span class="number">100</span>));<span class="comment">//ERROR!④</span></span><br><span class="line">        <span class="keyword">return</span> p.getFirst().intValue() + p.getFirst().intValue();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T first;</span><br><span class="line">    <span class="keyword">private</span> T last;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(T first, T last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.first = first;</span><br><span class="line">        <span class="keyword">this</span>.last = last;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getFirst</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> first;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getLast</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> last;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(T first)</span> </span>&#123;<span class="comment">//②</span></span><br><span class="line">        <span class="keyword">this</span>.first = first;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLast</span><span class="params">(T last)</span> </span>&#123;<span class="comment">//②</span></span><br><span class="line">        <span class="keyword">this</span>.last = last;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>比如在上面程序中，在①处我们使用<code>Pair&lt;? extends Number&gt; p</code>代表可以传入Number及其子类的<code>Pair</code>类型，所以②处的方法签名中传入参数就变成了<code>&lt;? extends Number&gt; first</code>或者<code>&lt;? extends Number&gt; last</code>，如果我们在主方法中调用<code>add</code>传入的是<code>Pair&lt;Double&gt;</code>，但是在调用<code>set</code>方法时传入的是<code>Integer</code>，虽然一切都满足<code>extends</code>通配符的定义，但显然<code>Pair&lt;Double&gt;.setFirst(Double first)</code>方法不能接受<code>Integer</code>类型作为传入参数，所以编译器会阻止这类调用。在上面程序中虽然理论上是可以进行操作的，但是因为这类潜在错误的存在，编译器会阻止所有试图调用传入<code>Number</code>引用的方法。</p>
+<p>这就是<code>&lt;? extends Numbe，r&gt;</code>通配符的一个重要限制：方法内部（在上面例子中就是<code>add</code>方法）无法调用传入<code>Number</code>引用的方法（在上面例子中就是<code>setFirst</code>或者<code>setLast</code>方法）。除非传入<code>null</code>，例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p.setFirst(<span class="keyword">null</span>); <span class="comment">// ok, 但是后面会抛出NullPointerException</span></span><br><span class="line">p.getFirst().intValue(); <span class="comment">// NullPointerException</span></span><br></pre></td></tr></table></figure>
+<p>简单来说就是：如果某一个方法A的参数列表是通过上界通配符传入的类引用，那么在方法A的实现过程中就不能调用这个类自身的的需要传入<code>T</code>的方法。即这个引用不能传递到这个类方法体中去，保证了不会对这个类做出写操作。</p>
+<h3 id="extends通配符的作用">extends通配符的作用</h3>
+<p>如果我们考察Java标准库的<code>java.util.List</code>接口，它实现的是一个类似“可变数组”的列表，主要功能包括：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">List</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>; <span class="comment">// 获取个数</span></span><br><span class="line">    <span class="function">T <span class="title">get</span><span class="params">(<span class="keyword">int</span> index)</span></span>; <span class="comment">// 根据索引获取指定元素</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(T t)</span></span>; <span class="comment">// 添加一个新元素</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">(T t)</span></span>; <span class="comment">// 删除一个已有元素</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在，让我们定义一个方法来处理列表的每个元素：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sumOfList</span><span class="params">(List&lt;? extends Integer&gt; list)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;list.size(); i++) &#123;</span><br><span class="line">        Integer n = list.get(i);</span><br><span class="line">        sum = sum + n;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为什么我们定义的方法参数类型是<code>List</code>而不是<code>List</code>？从方法内部代码看，传入<code>List&lt;? extends Integer&gt;</code>或者<code>List&lt;Integer&gt;</code>是完全一样的，但是，注意到<code>List&lt;? extends Integer&gt;</code>的限制：</p>
+<ul>
+<li>允许调用<code>get()</code>方法获取<code>Integer</code>的引用，因为方法签名中返回值是<code>T get(int index);</code>；</li>
+<li>不允许调用<code>add(? extends Integer)</code>或<code>remove(? extends Integer)</code>方法并传入任何<code>Integer</code>的引用（<code>null</code>除外）。</li>
+</ul>
+<p>因此，使用extends表明了该方法内部只会读取<code>List</code>的元素，不会修改<code>List</code>的元素（因为无法调用<code>add(? extends Integer)</code>、<code>remove(? extends Integer)</code>这些方法。换句话说，这是一个对参数<code>List</code>进行只读的方法（恶意调用<code>set(null)</code>除外）。</p>
+<h3 id="使用extends限定t类型">使用extends限定T类型</h3>
+<p>在<strong>定义</strong>泛型类型<code>Pair</code>的时候，也可以使用<code>extends</code>通配符来限定<code>T</code>的类型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">Number</span>&gt; </span>&#123; ... &#125;<span class="comment">//注意这里不是问号而是T</span></span><br></pre></td></tr></table></figure>
+<p>现在，我们只能定义：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;Number&gt; p1 = <span class="keyword">null</span>;</span><br><span class="line">Pair&lt;Integer&gt; p2 = <span class="keyword">new</span> Pair&lt;&gt;(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">Pair&lt;Double&gt; p3 = <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
+<p>因为<code>Number</code>、<code>Integer</code>和<code>Double</code>都符合<code>&lt;T extends Number&gt;</code>。</p>
+<p>非<code>Number</code>类型将无法通过编译：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;String&gt; p1 = <span class="keyword">null</span>; <span class="comment">// compile error!</span></span><br><span class="line">Pair&lt;Object&gt; p2 = <span class="keyword">null</span>; <span class="comment">// compile error!</span></span><br></pre></td></tr></table></figure>
+<h3 id="小结-3">小结</h3>
+<p>使用类似<code>&lt;? extends Number&gt;</code>通配符作为方法参数时表示：</p>
+<ul>
+<li>方法内部可以调用获取<code>Number</code>引用的方法，例如：<code>Number n = obj.getFirst();</code>；</li>
+<li>方法内部无法调用传入<code>Number</code>引用的方法（<code>null</code>除外），例如：<code>obj.setFirst(Number n);</code>。</li>
+</ul>
+<p>即一句话总结：使用<code>extends</code>通配符表示<strong>可以读，不能写。</strong></p>
+<p>使用类似<code>&lt;T extends Number&gt;</code>定义泛型类时表示：</p>
+<ul>
+<li>泛型类型限定为<code>Number</code>以及<code>Number</code>的子类。</li>
+</ul>
+<h2 id="super通配符">super通配符</h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Pair&lt;Number&gt; p1 = <span class="keyword">new</span> Pair&lt;&gt;(<span class="number">12.3</span>, <span class="number">4.56</span>);</span><br><span class="line">        Pair&lt;Integer&gt; p2 = <span class="keyword">new</span> Pair&lt;&gt;(<span class="number">123</span>, <span class="number">456</span>);</span><br><span class="line">        setSame(p1, <span class="number">100</span>);</span><br><span class="line">        setSame(p2, <span class="number">200</span>);</span><br><span class="line">        System.out.println(p1.getFirst() + <span class="string">", "</span> + p1.getLast());</span><br><span class="line">        System.out.println(p2.getFirst() + <span class="string">", "</span> + p2.getLast());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setSame</span><span class="params">(Pair&lt;? <span class="keyword">super</span> Integer&gt; p, Integer n)</span> </span>&#123;</span><br><span class="line">        p.setFirst(n);</span><br><span class="line">        p.setLast(n);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T first;</span><br><span class="line">    <span class="keyword">private</span> T last;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(T first, T last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.first = first;</span><br><span class="line">        <span class="keyword">this</span>.last = last;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getFirst</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> first;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getLast</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> last;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(T first)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.first = first;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLast</span><span class="params">(T last)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.last = last;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在以上程序中，<code>Pair&lt;? super Integer&gt; p</code>使用了super通配符来表示，方法参数接受所有泛型类型为<code>Integer</code>或<code>Integer</code>父类的<code>Pair</code>类型。注意到，super参数的作用是和extends相反的。</p>
+<ol type="1">
+<li>考察<code>Pair&lt;? super Integer&gt;</code>的<code>setFirst()</code>方法，它的方法签名实际上是：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setFirst</span><span class="params">(? <span class="keyword">super</span> Integer)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>因此，可以安全地传入<code>Integer</code>类型。</p>
+<ol start="2" type="1">
+<li>再考察<code>Pair&lt;? super Integer&gt;</code>的<code>getFirst()</code>方法，它的方法签名实际上是：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">? <span class="function"><span class="keyword">super</span> Integer <span class="title">getFirst</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<p>这里注意到我们无法使用<code>Integer</code>类型来接收<code>getFirst()</code>的返回值，即下面的语句将无法通过编译：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Integer x = p.getFirst();</span><br></pre></td></tr></table></figure>
+<p>因为如果传入的实际类型是<code>Pair&lt;Number&gt;</code>，编译器无法将<code>Number</code>类型转型为<code>Integer</code>。此外，传入<code>Pair&lt;Object&gt;</code>类型时，编译器也无法将<code>Object</code>类型转型为<code>Integer</code>。</p>
+<p>唯一可以接收<code>getFirst()</code>方法返回值的是<code>Object</code>类型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object obj = p.getFirst();</span><br></pre></td></tr></table></figure>
+<p>因此，使用<code>&lt;? super Integer&gt;</code>通配符表示：</p>
+<ul>
+<li>允许调用<code>set(? super Integer)</code>方法传入<code>Integer</code>的引用；</li>
+<li>不允许调用<code>get()</code>方法获得<code>Integer</code>的引用。</li>
+</ul>
+<p>唯一例外是可以获取<code>Object</code>的引用：<code>Object o = p.getFirst()</code>。</p>
+<p><strong>换句话说，使用<code>&lt;? super Integer&gt;</code>通配符作为方法参数，表示方法内部代码对于参数只能写，不能读。</strong></p>
+<h2 id="对比extends和super通配符">对比extends和super通配符</h2>
+<p>作为方法参数，<code>&lt;? extends T&gt;</code>类型和<code>&lt;? super T&gt;</code>类型的区别在于：</p>
+<ul>
+<li><code>&lt;? extends T&gt;</code>允许调用读方法<code>T get()</code>获取<code>T</code>的引用，但不允许调用写方法<code>set(T)</code>传入<code>T</code>的引用（传入<code>null</code>除外）；
+<ul>
+<li>为什么允许获取T的引用，因为<code>T get()</code>的返回值是T类型，使用extends通配符之后传入参数是T或者其子类，而<code>T get()</code>也变成了<code>&lt;? extends T&gt; get()</code>，可以安全地向上转型</li>
+<li>为什么不允许传入T的引用在上一节已经做了详细说明，不再赘述。</li>
+</ul></li>
+<li><code>&lt;? super T&gt;</code>允许调用写方法<code>set(T)</code>传入<code>T</code>的引用，但不允许调用读方法<code>T get()</code>获取<code>T</code>的引用（获取<code>Object</code>除外）。</li>
+</ul>
+<blockquote>
+<p>extends是允许读不允许写</p>
+<p>super是允许写不允许读。</p>
+</blockquote>
+<h3 id="一个很好的例子">一个很好的例子</h3>
+<p>我们来看Java标准库的<code>Collections</code>类定义的<code>copy()</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Collections</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 把src的每个元素复制到dest中:</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">copy</span><span class="params">(List&lt;? <span class="keyword">super</span> T&gt; dest, List&lt;? extends T&gt; src)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;src.size(); i++) &#123;</span><br><span class="line">            T t = src.get(i);</span><br><span class="line">            dest.add(t);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>它的作用是把一个<code>List</code>的每个元素依次添加到另一个<code>List</code>中。它的第一个参数是<code>List&lt;? super T&gt;</code>，表示目标<code>List</code>，第二个参数<code>List&lt;? extends T&gt;</code>，表示要复制的<code>List</code>。我们可以简单地用<code>for</code>循环实现复制。在<code>for</code>循环中，我们可以看到，对于类型<code>&lt;? extends T&gt;</code>的变量<code>src</code>，我们可以安全地获取类型<code>T</code>的引用，而对于类型<code>&lt;? super T&gt;</code>的变量<code>dest</code>，我们可以安全地传入<code>T</code>的引用。</p>
+<p>这个<code>copy()</code>方法的定义就完美地展示了<code>extends</code>和<code>super</code>的意图：</p>
+<ul>
+<li><code>copy()</code>方法内部不会读取<code>dest</code>，因为不能调用<code>dest.get()</code>来获取<code>T</code>的引用；</li>
+<li><code>copy()</code>方法内部也不会修改<code>src</code>，因为不能调用<code>src.add(T)</code>。</li>
+</ul>
+<p>这是<strong>由编译器检查</strong>来实现的。</p>
+<p>这个<code>copy()</code>方法的另一个好处是可以安全地把一个<code>List&lt;Integer&gt;</code>添加到<code>List&lt;Number&gt;</code>，但是无法反过来添加：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// copy List&lt;Integer&gt; to List&lt;Number&gt; ok:</span></span><br><span class="line">List&lt;Number&gt; numList = ...;</span><br><span class="line">List&lt;Integer&gt; intList = ...;</span><br><span class="line">Collections.copy(numList, intList);</span><br><span class="line"></span><br><span class="line"><span class="comment">// ERROR: cannot copy List&lt;Number&gt; to List&lt;Integer&gt;:</span></span><br><span class="line">Collections.copy(intList, numList);</span><br></pre></td></tr></table></figure>
+<p>而这些都是通过<code>super</code>和<code>extends</code>通配符，并由编译器强制检查来实现的。</p>
+<h3 id="pecs原则">PECS原则</h3>
+<p>何时使用<code>extends</code>，何时使用<code>super</code>？为了便于记忆，我们可以用PECS原则：Producer Extends Consumer Super。</p>
+<p>即：如果需要返回<code>T</code>，它是生产者（Producer），要使用<code>extends</code>通配符；如果需要写入<code>T</code>，它是消费者（Consumer），要使用<code>super</code>通配符。</p>
+<blockquote>
+<p>生产者只出不进，消费者只进不出</p>
+</blockquote>
+<p>还是以<code>Collections</code>的<code>copy()</code>方法为例：需要返回<code>T</code>的<code>src</code>是生产者，因此声明为<code>List&lt;? extends T&gt;</code>，需要写入<code>T</code>的<code>dest</code>是消费者，因此声明为<code>List&lt;? super T&gt;</code>。</p>
+<h2 id="无限定通配符">无限定通配符</h2>
+<p>我们已经讨论了<code>&lt;? extends T&gt;</code>和<code>&lt;? super T&gt;</code>作为方法参数的作用。实际上，Java的泛型还允许使用无限定通配符（Unbounded Wildcard Type），即只定义一个<code>?</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sample</span><span class="params">(Pair&lt;?&gt; p)</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为<code>&lt;?&gt;</code>通配符既没有<code>extends</code>，也没有<code>super</code>，因此：</p>
+<ul>
+<li>不允许调用<code>set(T)</code>方法并传入引用（<code>null</code>除外）；</li>
+<li>不允许调用<code>T get()</code>方法并获取<code>T</code>引用（只能获取<code>Object</code>引用）。</li>
+</ul>
+<p>换句话说，既不能读，也不能写，那只能做一些<code>null</code>判断：</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="function"><span class="keyword">boolean</span> <span class="title">isNull</span><span class="params">(Pair&lt;?&gt; p)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> p.getFirst() == <span class="keyword">null</span> || p.getLast() == <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>大多数情况下，可以引入泛型参数<code>&lt;T&gt;</code>消除<code>&lt;?&gt;</code>通配符：</p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">boolean</span> <span class="title">isNull</span><span class="params">(Pair&lt;T&gt; p)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> p.getFirst() == <span class="keyword">null</span> || p.getLast() == <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>&lt;?&gt;</code>通配符有一个独特的特点，就是：<code>Pair&lt;?&gt;</code>是所有<code>Pair&lt;T&gt;</code>的超类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;Integer&gt; p = <span class="keyword">new</span> Pair&lt;&gt;(<span class="number">123</span>, <span class="number">456</span>);</span><br><span class="line">Pair&lt;?&gt; p2 = p; <span class="comment">// 安全地向上转型</span></span><br></pre></td></tr></table></figure>
+<p>上面这种代码是可以正常编译运行的。因为<code>Pair&lt;Integer&gt;</code>是<code>Pair&lt;?&gt;</code>的子类，可以安全地向上转型。</p>
+<h2 id="小结-4">小结</h2>
+<ul>
+<li>使用类似<code>&lt;? extends Number&gt;</code>通配符作为方法参数时表示：
+<ul>
+<li>方法内部可以调用获取<code>Number</code>引用的方法，例如：<code>Number n = obj.getFirst();</code>；</li>
+<li>方法内部无法调用传入<code>Number</code>引用的方法（<code>null</code>除外），例如：<code>obj.setFirst(Number n);</code>。</li>
+</ul></li>
+</ul>
+<p>即使用<code>extends</code>通配符表示<strong>可以读，不能写。</strong></p>
+<ul>
+<li>使用类似<code>&lt;T extends Number&gt;</code>定义泛型类时表示：
+<ul>
+<li>泛型类型限定为<code>Number</code>以及<code>Number</code>的子类。</li>
+</ul></li>
+<li>使用类似<code>&lt;? super Integer&gt;</code>通配符作为方法参数时表示：
+<ul>
+<li>方法内部可以调用传入<code>Integer</code>引用的方法，例如：<code>obj.setFirst(Integer n);</code>；</li>
+<li>方法内部无法调用获取<code>Integer</code>引用的方法（<code>Object</code>除外），例如：<code>Integer n = obj.getFirst();</code>。</li>
+</ul></li>
+</ul>
+<p>即使用<code>super</code>通配符表示<strong>只能写，不能读。</strong></p>
+<ul>
+<li><p>使用<code>extends</code>和<code>super</code>通配符要遵循PECS原则。</p></li>
+<li><p>无限定通配符<code>&lt;?&gt;</code>很少使用，可以用<code>&lt;T&gt;</code>替换，同时它是所有<code>&lt;T&gt;</code>类型的超类。</p></li>
+</ul>
+<h1 id="泛型和反射">泛型和反射</h1>
+<p>Java的部分反射API也是泛型。例如：<code>Class&lt;T&gt;</code>就是泛型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// compile warning:</span></span><br><span class="line">Class clazz = String<span class="class">.<span class="keyword">class</span></span>;</span><br><span class="line">String str = (String) clazz.newInstance();</span><br><span class="line"></span><br><span class="line"><span class="comment">// no warning:</span></span><br><span class="line">Class&lt;String&gt; clazz = String<span class="class">.<span class="keyword">class</span></span>;</span><br><span class="line">String str = clazz.newInstance();</span><br></pre></td></tr></table></figure>
+<p>调用<code>Class</code>的<code>getSuperclass()</code>方法返回的<code>Class</code>类型是<code>Class&lt;? super T&gt;</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;? <span class="keyword">super</span> String&gt; sup = String<span class="class">.<span class="keyword">class</span>.<span class="title">getSuperclass</span>()</span>;</span><br></pre></td></tr></table></figure>
+<p>构造方法<code>Constructor&lt;T&gt;</code>也是泛型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;Integer&gt; clazz = Integer<span class="class">.<span class="keyword">class</span></span>;</span><br><span class="line">Constructor&lt;Integer&gt; cons = clazz.getConstructor(<span class="keyword">int</span><span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">Integer i = cons.newInstance(<span class="number">123</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="泛型数组">泛型数组</h2>
+<p>我们可以声明带泛型的数组，但<strong>不能用<code>new</code>操作符创建带泛型的数组：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;String&gt;[] ps = <span class="keyword">null</span>; <span class="comment">// ok</span></span><br><span class="line">Pair&lt;String&gt;[] ps = <span class="keyword">new</span> Pair&lt;String&gt;[<span class="number">2</span>]; <span class="comment">// compile error!</span></span><br></pre></td></tr></table></figure>
+<p>必须通过强制转型实现带泛型的数组：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">Pair&lt;String&gt;[] ps = (Pair&lt;String&gt;[]) <span class="keyword">new</span> Pair[<span class="number">2</span>];</span><br></pre></td></tr></table></figure>
+<p>使用泛型数组要特别小心，因为数组实际上在运行期没有泛型，编译器可以强制检查变量<code>ps</code>，因为它的类型是泛型数组。但是，编译器不会检查变量<code>arr</code>，因为它不是泛型数组。因为这两个变量实际上指向同一个数组，所以，操作<code>arr</code>可能导致从<code>ps</code>获取元素时报错，例如，以下代码演示了不安全地使用带泛型的数组：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Pair[] arr = <span class="keyword">new</span> Pair[<span class="number">2</span>];<span class="comment">//通过变量arr直接获取到了泛型数组的引用，这样是不安全的，因为编译器不会对这个变量进行强制检查</span></span><br><span class="line">Pair&lt;String&gt;[] ps = (Pair&lt;String&gt;[]) arr;<span class="comment">//arr和ps指向的是同一个数组</span></span><br><span class="line"></span><br><span class="line">ps[<span class="number">0</span>] = <span class="keyword">new</span> Pair&lt;String&gt;(<span class="string">"a"</span>, <span class="string">"b"</span>);<span class="comment">//对ps进行操作编译器会强制检查</span></span><br><span class="line">arr[<span class="number">1</span>] = <span class="keyword">new</span> Pair&lt;Integer&gt;(<span class="number">1</span>, <span class="number">2</span>);<span class="comment">//对arr进行操作也就是对ps进行操作，对arr进行操作编译器不会进行强制检查</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ClassCastException:</span></span><br><span class="line">Pair&lt;String&gt; p = ps[<span class="number">1</span>];</span><br><span class="line">String s = p.getFirst();</span><br></pre></td></tr></table></figure>
+<p>要安全地使用泛型数组，必须扔掉<code>arr</code>的引用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">Pair&lt;String&gt;[] ps = (Pair&lt;String&gt;[]) <span class="keyword">new</span> Pair[<span class="number">2</span>];</span><br></pre></td></tr></table></figure>
+<p>上面的代码中，由于拿不到原始数组的引用，就只能对泛型数组<code>ps</code>进行操作，这种操作就是安全的。</p>
+<p>带泛型的数组实际上是编译器的类型擦除：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Pair[] arr = <span class="keyword">new</span> Pair[<span class="number">2</span>];</span><br><span class="line">Pair&lt;String&gt;[] ps = (Pair&lt;String&gt;[]) arr;</span><br><span class="line"></span><br><span class="line">System.out.println(ps.getClass() == Pair[]<span class="class">.<span class="keyword">class</span>)</span>; <span class="comment">// true，类型信息被擦除</span></span><br><span class="line"></span><br><span class="line">String s1 = (String) arr[<span class="number">0</span>].getFirst();</span><br><span class="line">String s2 = ps[<span class="number">0</span>].getFirst();</span><br></pre></td></tr></table></figure>
+<p>所以我们不能直接创建泛型数组<code>T[]</code>，因为擦拭后代码变为<code>Object[]</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// compile error:</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Abc</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    T[] createArray() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> T[<span class="number">5</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>必须借助<code>Class&lt;T&gt;</code>来创建泛型数组：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">T[] createArray(Class&lt;T&gt; cls) &#123;</span><br><span class="line">    <span class="keyword">return</span> (T[]) Array.newInstance(cls, <span class="number">5</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们还可以利用可变参数创建泛型数组<code>T[]</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayHelper</span> </span>&#123;</span><br><span class="line">    <span class="meta">@SafeVarargs</span></span><br><span class="line">    <span class="keyword">static</span> &lt;T&gt; T[] asArray(T... objs) &#123;</span><br><span class="line">        <span class="keyword">return</span> objs;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">String[] ss = ArrayHelper.asArray(<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>);</span><br><span class="line">Integer[] ns = ArrayHelper.asArray(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="谨慎使用泛型可变参数">谨慎使用泛型可变参数</h2>
+<p>在上面的例子中，我们看到，通过：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &lt;T&gt; T[] asArray(T... objs) &#123;</span><br><span class="line">    <span class="keyword">return</span> objs;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>似乎可以安全地创建一个泛型数组。但实际上，这种方法非常危险。</p>
+<h2 id="小结-5">小结</h2>
+<p>部分反射API是泛型，例如：<code>Class&lt;T&gt;</code>，<code>Constructor&lt;T&gt;</code>；</p>
+<p>可以声明带泛型的数组，但不能直接创建带泛型的数组，必须强制转型；</p>
+<p>可以通过<code>Array.newInstance(Class&lt;T&gt;, int)</code>创建<code>T[]</code>数组，需要强制转型；</p>
+<p>同时使用泛型和可变参数时需要特别小心。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"># 学习</a>
+              <a href="/tags/JAVA/" rel="tag"># JAVA</a>
+              <a href="/tags/%E5%BB%96%E9%9B%AA%E5%B3%B0/" rel="tag"># 廖雪峰</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/32221.html" rel="prev" title="廖雪峰JAVA学习笔记（5）——注解">
+      <i class="fa fa-chevron-left"></i> 廖雪峰JAVA学习笔记（5）——注解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/4072.html" rel="next" title="SQL快速入门（持续更新中...）">
+      SQL快速入门（持续更新中...） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是泛型"><span class="nav-number">1.</span> <span class="nav-text">什么是泛型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">1.1.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用泛型"><span class="nav-number">2.</span> <span class="nav-text">使用泛型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型接口"><span class="nav-number">2.1.</span> <span class="nav-text">泛型接口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编写泛型"><span class="nav-number">3.</span> <span class="nav-text">编写泛型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#在静态方法中使用泛型"><span class="nav-number">3.1.</span> <span class="nav-text">在静态方法中使用泛型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多个泛型类型"><span class="nav-number">3.2.</span> <span class="nav-text">多个泛型类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结-1"><span class="nav-number">3.3.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#擦拭法"><span class="nav-number">4.</span> <span class="nav-text">擦拭法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#java泛型的局限"><span class="nav-number">4.1.</span> <span class="nav-text">Java泛型的局限：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不恰当的覆写方法"><span class="nav-number">4.2.</span> <span class="nav-text">不恰当的覆写方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型继承"><span class="nav-number">4.3.</span> <span class="nav-text">泛型继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结-2"><span class="nav-number">4.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#通配符"><span class="nav-number">5.</span> <span class="nav-text">通配符</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#extends通配符"><span class="nav-number">5.1.</span> <span class="nav-text">extends通配符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#extends通配符的作用"><span class="nav-number">5.1.1.</span> <span class="nav-text">extends通配符的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用extends限定t类型"><span class="nav-number">5.1.2.</span> <span class="nav-text">使用extends限定T类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结-3"><span class="nav-number">5.1.3.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#super通配符"><span class="nav-number">5.2.</span> <span class="nav-text">super通配符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对比extends和super通配符"><span class="nav-number">5.3.</span> <span class="nav-text">对比extends和super通配符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一个很好的例子"><span class="nav-number">5.3.1.</span> <span class="nav-text">一个很好的例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pecs原则"><span class="nav-number">5.3.2.</span> <span class="nav-text">PECS原则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无限定通配符"><span class="nav-number">5.4.</span> <span class="nav-text">无限定通配符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结-4"><span class="nav-number">5.5.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#泛型和反射"><span class="nav-number">6.</span> <span class="nav-text">泛型和反射</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#泛型数组"><span class="nav-number">6.1.</span> <span class="nav-text">泛型数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#谨慎使用泛型可变参数"><span class="nav-number">6.2.</span> <span class="nav-text">谨慎使用泛型可变参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结-5"><span class="nav-number">6.3.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Keke"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Keke</p>
+  <div class="site-description" itemprop="description">记录学习的地方</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://libertyunionkjy@gmail.com/" title="E-Mail → https:&#x2F;&#x2F;libertyunionkjy@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Keke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el         : '#valine-comments',
+      path       : location.pathname,
+    }, {"enable":true,"appId":"tnKOKDSuvxOLRFeojycmFGDV-MdYXbMMI","appKey":"Q4ro4ajDoVK1ScWWSlGCxY3G","notify":true,"verify":false,"placeholder":"快来评论吧！柯柯给你举高高ヽ(✿ﾟ▽ﾟ)ノ","avatar":"monsterid","meta":["nick","mail","link"],"pageSize":10,"language":"zh-cn","visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

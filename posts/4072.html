@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="​ 这篇文章是在学SQL的过程中记下来的比较重要的一些笔记，学习资源是来自油管的Mosh的教学视频，感觉是非常简单易懂的教程。如果你也是刚开始学习SQL的小白，可以跟着文章的视频链接学习一遍，其中比较重要的知识点已经在这篇文章中记录下来了。学习之前需要先安装MySQL，网上安装教程很多，并且也非常简单，在此就不赘述了。 点击链接可以访问Mosh油管视频：Thanks for Mosh&#39;s Vide">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL快速入门（持续更新中...）">
+<meta property="og:url" content="https://jyke.xyz/posts/4072.html">
+<meta property="og:site_name" content="柯柯的博客">
+<meta property="og:description" content="​ 这篇文章是在学SQL的过程中记下来的比较重要的一些笔记，学习资源是来自油管的Mosh的教学视频，感觉是非常简单易懂的教程。如果你也是刚开始学习SQL的小白，可以跟着文章的视频链接学习一遍，其中比较重要的知识点已经在这篇文章中记录下来了。学习之前需要先安装MySQL，网上安装教程很多，并且也非常简单，在此就不赘述了。 点击链接可以访问Mosh油管视频：Thanks for Mosh&#39;s Vide">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/213.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/%E4%BF%AE%E6%94%B91.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/%E4%BF%AE%E6%94%B93.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200516145620.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200516150409.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200527022106.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200527022144.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200527022213.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200526205427.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200526210317.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200527022236.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200527022322.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200527022349.png">
+<meta property="article:published_time" content="2020-05-26T16:03:17.000Z">
+<meta property="article:modified_time" content="2020-08-27T12:13:22.945Z">
+<meta property="article:author" content="Keke">
+<meta property="article:tag" content="学习">
+<meta property="article:tag" content="摇滚">
+<meta property="article:tag" content="电影">
+<meta property="article:tag" content="摄影">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/213.png">
+
+<link rel="canonical" href="https://jyke.xyz/posts/4072.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>SQL快速入门（持续更新中...） | 柯柯的博客</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-166231991-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="柯柯的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">柯柯的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">KK's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/4072.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SQL快速入门（持续更新中...）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-27 00:03:17" itemprop="dateCreated datePublished" datetime="2020-05-27T00:03:17+08:00">2020-05-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-27 20:13:22" itemprop="dateModified" datetime="2020-08-27T20:13:22+08:00">2020-08-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/4072.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/4072.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>​ 这篇文章是在学SQL的过程中记下来的比较重要的一些笔记，学习资源是来自油管的Mosh的教学视频，感觉是非常简单易懂的教程。如果你也是刚开始学习SQL的小白，可以跟着文章的视频链接学习一遍，其中比较重要的知识点已经在这篇文章中记录下来了。学习之前需要先安装MySQL，网上安装教程很多，并且也非常简单，在此就不赘述了。</p>
+<p>点击链接可以访问Mosh油管视频：<a href="https://www.youtube.com/watch?v=7S_tz1z_5bA" target="_blank" rel="noopener">Thanks for Mosh's Video</a></p>
+<p>视频有一份配套的pdf笔记，获得笔记需要填写邮箱，填写邮箱之后就会经常收到Mosh推送的他的课程的广告，所以pdf文档可以直接<a href="https://programmingwithmosh.com/wp-content/uploads/2019/03/SQL-Cheat-Sheet.pdf" target="_blank" rel="noopener">点这里下载</a>以免邮箱会收到很多广告。</p>
+<a id="more"></a>
+<h1 id="常用语句初识">常用语句初识</h1>
+<p>数据库分为关系型数据库和非关系型数据库(NoSQL)，而SQL是一种处理关系型数据库的语言。</p>
+<p>SQL是不区分大小写的语言（not a case-sensitive language），但一般来说我们会把关键字大写。</p>
+<h2 id="select-clause">SELECT Clause</h2>
+<p><code>USE sql_store</code>+ 执行或者双击某一个database以选中DB作为当前DB</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">USE sql_store; -- 这条语句说明用哪个database</span><br><span class="line"></span><br><span class="line">SELECT * -- 这条语句说明用哪一列（column）</span><br><span class="line">FROM customers  -- 这条语句说明从哪个表（table）中获取数据</span><br><span class="line">WHERE state &#x3D; ‘CA’ -- 定位</span><br><span class="line">ORDER BY first_name -- sort</span><br><span class="line">LIMIT 3;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>SQL语句的注释：<code>--</code>注意空格</p></li>
+<li>FROM , WHERE , ORDER BY都是可选的语句（clause）</li>
+<li>语句的顺序不可以更改，意味着我们总是先进行<strong>SELECT</strong>，然后进行<strong>FROM</strong>，再<strong>WHERE</strong>，再<strong>ORDER BY</strong>，否则会出现语法错误（syntax error)</li>
+<li><p>SQL语句会忽略换行符(line break)，制表符(tab)，空格(white space)</p></li>
+</ul>
+<h3 id="detial-of-select-clause">Detial Of SELECT Clause</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	last_name,</span><br><span class="line">	first_name,</span><br><span class="line">	points,</span><br><span class="line">	points + 10</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/213.png" /></p>
+<ul>
+<li><p><code>points + 10</code>：可以用算术表达式，表达式可以用括号改变运算顺序</p></li>
+<li>显示的顺序按照SELECT的顺序</li>
+<li>给points + 10列设置别别名可以使用<code>AS</code> : <code>points + 10 AS discount_factor</code>
+<ul>
+<li>如果别名中有空格需要把别名置于单引号或者双引号中间</li>
+</ul></li>
+<li><p>修改值：</p></li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/修改1.png" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/修改3.png" /></p>
+<ul>
+<li>消除重复</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-- Removing duplicates</span><br><span class="line">SELECT DISTINCT state </span><br><span class="line">FROM customers</span><br></pre></td></tr></table></figure>
+<h2 id="where-clause">WHERE Clause</h2>
+<p>SQL使用WHERE语句来进行过滤。</p>
+<h3 id="比较运算">比较运算</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">运算符</th>
+<th style="text-align: center;">意义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">&gt;</td>
+<td style="text-align: center;">大于</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">&gt;=</td>
+<td style="text-align: center;">大于等于</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">&lt;</td>
+<td style="text-align: center;">小于</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">&lt;=</td>
+<td style="text-align: center;">小于等于</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">=</td>
+<td style="text-align: center;">等于</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">!=</td>
+<td style="text-align: center;">不等于</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">&lt;&gt;</td>
+<td style="text-align: center;">不等于</td>
+</tr>
+</tbody>
+</table>
+<p>注意到SQL语句使用了<code>&lt;&gt;</code>和<code>!=</code>两个运算符来表示不相等，并且表示相等的语句不是==。</p>
+<ul>
+<li><p>运算式的右边如果是字符串，同样需要用单引号或者双引号将其括起来</p></li>
+<li><p>如果是日期，参考<code>WHERE birth_date &gt; ‘1990-01-01’ AND points &gt; 1000</code>，代表出生日期在1990年1月1日以后的人，XXXX-XX-XX是标准的日期表示格式</p></li>
+</ul>
+<h3 id="andor和not运算符">AND,OR和NOT运算符</h3>
+<p>AND和OR的运算逻辑和普通的编程语言是一样的，但是AND拥有比OR更高的优先级，并且同样可以使用括号来更改运算优先级。</p>
+<p>NOT运算符相当于取非，例如我们可以这么选出出生日期在1990年1月1号之前的人（包括1990年1月1日）：<code>WHERE NOT (birthdate &gt; ‘1990-01-01’)</code></p>
+<h3 id="in运算符">IN运算符</h3>
+<p>使用方式：<code>WHERE state IN (‘VA’, ‘NY’, ‘CA’)</code></p>
+<p>返回括号里面的key值是或的关系，满足其一即可，同样的，我们依然可以在这里使用NOT运算符，比如：<code>WHERE state NOT IN (‘VA’, ‘NY’, ‘CA’)</code></p>
+<h3 id="between运算符">BETWEEN运算符</h3>
+<p>使用方式：<code>WHERE points BETWEEN 100 AND 200</code>，闭区间</p>
+<h3 id="like运算符">LIKE运算符</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-- Returns customers whose first name starts with b  </span><br><span class="line">SELECT *</span><br><span class="line">FROM customers </span><br><span class="line">WHERE first_name LIKE ‘b%’</span><br></pre></td></tr></table></figure>
+<ul>
+<li>%: 匹配任何数量的任何字符</li>
+<li><p><code>%b%</code>结果中有b即可，b可以在最开始也可以在最后，也可以在中间</p></li>
+<li>_：只匹配一个字符
+<ul>
+<li><code>_b</code>两个字符的结果串且以b结尾</li>
+</ul></li>
+<li><p>如果有多个条件匹配，我们可以这么写：</p></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM customers</span><br><span class="line">WHERE address LIKE &#39;%avenue%&#39; OR</span><br><span class="line">	  address LIKE &#39;%trail%&#39;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>同样的，我们依然可以在这里使用NOT运算符，位置在LIKE运算符之前</li>
+</ul>
+<h3 id="regexp运算符">REGEXP运算符</h3>
+<p><a href="https://jyke.xyz/posts/46563.html">正则表达表达式</a>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-- Returns customers whose first name starts with a  </span><br><span class="line">SELECT *</span><br><span class="line">FROM customers </span><br><span class="line">WHERE first_name REGEXP ‘^a’</span><br><span class="line">-- WHERE first_name REGEXP ‘a’ 与 WHERE first_name LIKE ‘%a%’效果相同</span><br></pre></td></tr></table></figure>
+<ul>
+<li>^: 想要搜索以某一个字符串开头的结果，则在这个字串<strong>前</strong>加上^</li>
+<li>$: 想要搜索以某一个字符串结尾的结果，则在这个字串<strong>后</strong>加上$</li>
+<li>|: 逻辑或，用来合并多个条件</li>
+<li>[abc] : 匹配单个a,b,c</li>
+<li>[a-d] : 等于[abcd]，是个范围，匹配a到d</li>
+</ul>
+<h3 id="null运算符">NULL运算符</h3>
+<p>NULL运算符用于处理有缺失值的record，如果我们想列出phone属性缺失的record，我们可以：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WHERE phone IS NULL</span><br></pre></td></tr></table></figure>
+<p>我们依然可以使用NOT运算符，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WHERE phone IS NOT NULL</span><br></pre></td></tr></table></figure>
+<h2 id="order-by-clause">ORDER BY Clause</h2>
+<p>在customers表格中，我们可以观察到表格是按照customer_id来排列的，因为customer_id是这个table的主键列，默认按照customer_id来排序。如果我们需要按照其他属性来排序，就要用到ORDER BY语句，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ORDER BY first_name</span><br></pre></td></tr></table></figure>
+<p>默认的，排序的属性是按照升序排序的，如果我们想要降序排序，就可以用DESC关键字：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ORDER BY first_name DESC</span><br></pre></td></tr></table></figure>
+<p>可以使用使用多个属性进行排序，比如先使用state排序（降序），state内再使用first_name排序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ORDER BY state DESC, first_name</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>进行排序的属性无需是SELECT中的属性，也可以是算术表达式或者是别名</p>
+</blockquote>
+<h2 id="limit-clause">LIMIT Clause</h2>
+<p>LIMIT会返回排在前面的指定条数的记录，例如以下返回了前三条记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LIMIT 3</span><br></pre></td></tr></table></figure>
+<p>我们可以有偏移量作为可选参数，比如可以忽略前6条记录后返回3条记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LIMIT 6, 3</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>LIMIT子句一定要放在最后！</p>
+</blockquote>
+<h1 id="连接">连接</h1>
+<h2 id="inner-joins内连接">Inner Joins——内连接</h2>
+<p>之前的操作都是在一个table中完成的，如果我们需要使用多个table中的数据，就需要使用内连接。在表格customes中我们存放了顾客的信息，包括电话，姓名，地址等等，还有一个customes_id用以唯一代表一个顾客。在表格orders中我们存放了订单信息，其中就有订单的顾客，用customers_id来表示，我们使用customers_id这个属性来连接这两个表格试试看！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT order_id, o.customer_id, first_name</span><br><span class="line">-- 我们可以给表格设置别名避免重复性的输入，因为为了避免重名在程序中会要求用到表格名作为前缀</span><br><span class="line">FROM customers c</span><br><span class="line">JOIN orders o ON c.customer_id &#x3D; o.customer_id</span><br></pre></td></tr></table></figure>
+<p>连接在数据库查询中是非常有用的，以上操作我们就根据顾客id在每笔订单后连接上了有关顾客信息的列。</p>
+<h3 id="跨数据库连接">跨数据库连接</h3>
+<p>如果我们想要与另一个数据库的表格连接呢？很简单，在需要连接的那个表格前加上数据库名称作为前缀即可，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM table_name1 one</span><br><span class="line">JOIN another_database_name.table_name2 two</span><br><span class="line">	ON one.xxxx &#x3D; two.xxxx</span><br></pre></td></tr></table></figure>
+<h3 id="self-joins-自连接">Self Joins 自连接</h3>
+<p>假设这么一种情况，公司有一份人事表，表中有雇员以及雇员对应的直属上司（直属上司当然也是公司的雇员了），以及每位雇员的相关信息。如果我们想在雇员之后加上有关直属上司的相关信息，该如何操作呢？</p>
+<p>这时候就需要用到自连接了，因为这是表格与自己连接的一个过程。接下来的代码实现了这一查询：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	e.employee_id,</span><br><span class="line">	e.first_name</span><br><span class="line">	m.first_name AS manager</span><br><span class="line">FROM employees e</span><br><span class="line">JOIN employees m</span><br><span class="line">	ON e.reports_to &#x3D; m.employee_id</span><br></pre></td></tr></table></figure>
+<p>大致的结构与内连接相同，但是由于是自连接，所以表格名字是相同的，起别名在自连接中就显得非常必要了。</p>
+<h3 id="joining-multiple-tables-多表连接">Joining Multiple Tables 多表连接</h3>
+<p>连接三个以及三个以上的表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM payments p</span><br><span class="line">JOIN clients c</span><br><span class="line">	ON p.client_id &#x3D; c.client_id</span><br><span class="line">JOIN payment_methods pm</span><br><span class="line">	ON p.payment_method &#x3D; pm.payment_method_id</span><br></pre></td></tr></table></figure>
+<h3 id="compound-join-conditions-复合连接条件">Compound Join Conditions 复合连接条件</h3>
+<p>在下面表中，我们有customer_id可以唯一地确定一条记录：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200516145620.png" /></p>
+<p>但是在某些时候，在一张表中没有一列可以唯一的定义一条记录，但是可以用多列的值来唯一确定一条记录，比如下面的表中，我们用ord_id和product_id来唯一确定一条记录：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeimg/images/20200516150409.png" /></p>
+<p>在连接中需要使用多个条件来连接：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM order_items oi</span><br><span class="line">JOIN order_item_notes oin</span><br><span class="line">	ON oi.order_id &#x3D; oin.order_id</span><br><span class="line">	AND oi.product_id &#x3D; oin.product_ic</span><br></pre></td></tr></table></figure>
+<h3 id="implicit-join-syntax-隐式连接语法">Implicit Join Syntax 隐式连接语法</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM customers c</span><br><span class="line">JOIN orders o</span><br><span class="line">	ON c.customer_id &#x3D; o.customer_id</span><br></pre></td></tr></table></figure>
+<p>意上语句可以等价写成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM customers c, orders o</span><br><span class="line">WHERE c.customer_id &#x3D; o.customer_id</span><br></pre></td></tr></table></figure>
+<p>尽管可以这么写，但是不建议，在连接是尽量使用显式连接语法。</p>
+<h2 id="outer-joins-外连接">Outer Joins 外连接</h2>
+<p>当写JOIN时默认使用内连接，在内连接中，如果某些记录根据表达式无法匹配另一个表中的任何一个记录，那么这条记录就不会返回在结果中，比如一个没买任何东西的顾客，如果我们想强制返回某个表中的所有记录，就需要用外连接。</p>
+<p>外连接分为左连接和右连接，左连接返回<strong>JOIN</strong>关键字左边的表格的所有记录，而右连接则返回<strong>JOIN</strong>关键字右边的表格的所有记录。注意不是条件表达式的左右。看一个左连接的例子，这段语句会返回customers表格中的所有记录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM customers c</span><br><span class="line">LEFT JOIN orders o </span><br><span class="line">ON c.customer_id &#x3D; o.customer_id</span><br></pre></td></tr></table></figure>
+<h2 id="outer-join-between-multiple-tables-多表外连接">Outer Join Between Multiple Tables 多表外连接</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">SELECT </span><br><span class="line">	c.customer_id,</span><br><span class="line">	c.first_name,</span><br><span class="line">	o.order_id,</span><br><span class="line">	sh.name AS shipper</span><br><span class="line">FROM customers c</span><br><span class="line">LEFT JOIN orders o</span><br><span class="line">	ON c.customer_id &#x3D; o.customer_id</span><br><span class="line">LEFT JOIN shippers sh</span><br><span class="line">	ON o.shipper_id &#x3D; sh.shipper_id</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在外连接时，尽量使用左连接来使得代码容易理解。</p>
+</blockquote>
+<h3 id="self-outer-joins-自外连接">Self Outer Joins 自外连接</h3>
+<p>在前文中说到了自连接例子如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	e.employee_id,</span><br><span class="line">	e.first_name</span><br><span class="line">	m.first_name AS manager</span><br><span class="line">FROM employees e</span><br><span class="line">JOIN employees m</span><br><span class="line">	ON e.reports_to &#x3D; m.employee_id</span><br></pre></td></tr></table></figure>
+<p>但是这个查询不会返回直属上司值为空值的雇员（也就是CEO），为了返回所有雇员，这里可以用外连接：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	e.employee_id,</span><br><span class="line">	e.first_name</span><br><span class="line">	m.first_name AS manager</span><br><span class="line">FROM employees e</span><br><span class="line">LEFT JOIN employees m</span><br><span class="line">	ON e.reports_to &#x3D; m.employee_id</span><br></pre></td></tr></table></figure>
+<h2 id="using-clause">USING Clause</h2>
+<p>我们可以使用USING来简化我们JOIN语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT order_id, o.customer_id, first_name</span><br><span class="line">FROM customers c</span><br><span class="line">JOIN orders o </span><br><span class="line">	ON c.customer_id &#x3D; o.customer_id</span><br></pre></td></tr></table></figure>
+<p>等效地用USING为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT order_id, o.customer_id, first_name</span><br><span class="line">FROM customers c</span><br><span class="line">JOIN orders o </span><br><span class="line">	USING (customer_id)</span><br></pre></td></tr></table></figure>
+<p>使用USING的条件为连接的两个表中的属性的名称相同。</p>
+<p>在复合连接中使用USING子句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM order_items oi</span><br><span class="line">JOIN order_item_notes oin</span><br><span class="line">	USING (order_id, product_id)</span><br></pre></td></tr></table></figure>
+<h2 id="natural-join">NATURAL JOIN</h2>
+<p>自然连接是让数据库自己判断连接的方式，不建议使用，因为经常会产生一些意料之外的结果。使用实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT order_id, o.customer_id, first_name</span><br><span class="line">FROM customers c</span><br><span class="line">NATURAL JOIN orders o</span><br></pre></td></tr></table></figure>
+<h2 id="cross-join-交叉连接">CROSS JOIN 交叉连接</h2>
+<p>交叉连接让第一个表的每一条记录和第二个表的每一条记录都进行组合。</p>
+<p>显式语法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT order_id, o.customer_id, first_name</span><br><span class="line">FROM customers c</span><br><span class="line">CROSS JOIN orders o</span><br></pre></td></tr></table></figure>
+<p>隐式语法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT order_id, o.customer_id, first_name</span><br><span class="line">FROM customers c, orders o</span><br></pre></td></tr></table></figure>
+<h2 id="union-联合">Union 联合</h2>
+<p>Union可以结合多个表格的行。比如我们给每笔订单加一个状态，活跃和不活跃。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	order_id,</span><br><span class="line">	order_date,</span><br><span class="line">	&#39;Active&#39; AS status</span><br><span class="line">FROM orders</span><br><span class="line">WHERE order_date &gt;&#x3D; &#39;2019-01-01&#39;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200527022106.png" /></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	order_id,</span><br><span class="line">	order_date,</span><br><span class="line">	&#39;Archived&#39; AS status</span><br><span class="line">FROM orders</span><br><span class="line">WHERE order_date &lt; &#39;2019-01-01&#39;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200527022144.png" /></p>
+<p>如果我们想把以上两类的订单状态合并，我们只需要在SELECT语句中间加上UNION即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">SELECT</span><br><span class="line">	order_id,</span><br><span class="line">	order_date,</span><br><span class="line">	&#39;Active&#39; AS status</span><br><span class="line">FROM orders</span><br><span class="line">WHERE order_date &gt;&#x3D; &#39;2019-01-01&#39;</span><br><span class="line">UNION</span><br><span class="line">SELECT</span><br><span class="line">	order_id,</span><br><span class="line">	order_date,</span><br><span class="line">	&#39;Archived&#39; AS status</span><br><span class="line">FROM orders</span><br><span class="line">WHERE order_date &lt; &#39;2019-01-01&#39;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200527022213.png" /></p>
+<p>同样的，我们可以根据不同的表格进行查询：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT first_name</span><br><span class="line">FROM customers </span><br><span class="line">UNION</span><br><span class="line">SELECT name</span><br><span class="line">FROM shippers</span><br></pre></td></tr></table></figure>
+<ul>
+<li>返回的列的数量必须要一样，否则会出错</li>
+<li>列名是基于第一个SELECT中的列名字</li>
+</ul>
+<h1 id="列属性">列属性</h1>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200526205427.png" /></p>
+<ul>
+<li>Column Name:代表列名称</li>
+<li>Datatype:代表数据类型，VARCHAR(50)代表可变字符串，长度限制为50</li>
+<li>PK：primarily key，主键列</li>
+<li>NN：Non Null</li>
+<li><p>AI： AUTO_INCREMENT</p></li>
+<li><p>Default：默认值</p></li>
+</ul>
+<h2 id="插入单行">插入单行</h2>
+<p>在customers表中插入新的一行：</p>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200526210317.png" /></p>
+<ul>
+<li>第7行使用DEFAULT和NULL的效果是一样的</li>
+<li>也可以不指定具有默认值的列，但是需要修改INSERT INTO语句：</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200527022236.png" /></p>
+<h2 id="插入多行">插入多行</h2>
+<p>插入多行只需要在每一行的值后面加逗号即可：</p>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200527022322.png" /></p>
+<h2 id="插入分层行">插入分层行</h2>
+<p>MySQL中有一个功能函数：<code>LAST_INSERT_ID()</code>，功能：Return the AUTO_INCREMENT id of the last row that has been inserted or updated in a table。通过这个函数，我们可以获取到order_id，因为order_id在表格order_items中是AUTO_INCREMENT的。</p>
+<p>在新增一个order的时候，我们需要在orders和order_items两个表格中插入相应的行。在order_items表格中，需要使用新生成的order_id来标记订单号（在此表中使用order_id和customer_id两列唯一确定一行）。我们使用LAST_INSERT_ID()来获取新生成的order_id。</p>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200527022349.png" /></p>
+<h2 id="创建表复制">创建表复制</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE orders_archived AS</span><br><span class="line">SELECT * FROM orders</span><br></pre></td></tr></table></figure>
+<p>以上操作创建了一个新表orders_archived，并把orders表中所有行都复制到新创建的表中。但是在设计模式中主键列并没有设置成orders_id，也就是说我们要新增行需要指定order_id。</p>
+<p>在以上操作中，SELECT语句是CREATE语句的子查询。</p>
+<blockquote>
+<p>子查询是在另一段SQL语句中的选择语句</p>
+</blockquote>
+<p>如果我们只想复制某一个表中的部分数据呢？可以使用INSERT语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">INSERT INTO orders_archived</span><br><span class="line">SELECT *</span><br><span class="line">FROM orders</span><br><span class="line">WHERE order_date &lt; &#39;2019-01-01&#39;</span><br></pre></td></tr></table></figure>
+<h2 id="更新单行">更新单行</h2>
+<p>如果我们想要修改某一行的某些列的值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UPDATE invoices</span><br><span class="line">SET payment_total &#x3D; 10, payment_date &#x3D; 10</span><br><span class="line">WHERE invoice_id &#x3D; 1</span><br></pre></td></tr></table></figure>
+<p>以上操作修改了invoices表中invoice_id的值为1的payment_total和payment_date列。</p>
+<p>在SET语句中可以使用表达式，并使用其他列的值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">UPDATE invoices</span><br><span class="line">SET </span><br><span class="line">	payment_total &#x3D; invoice_total * 0.5,</span><br><span class="line">	payment_date &#x3D; due_date</span><br><span class="line">WHERE invoice_id &#x3D; 1</span><br></pre></td></tr></table></figure>
+<h2 id="更新多行">更新多行</h2>
+<p>如果我们需要更新多行，可以修改WHERE语句筛选出需要修改的行，已经学过的在WHERE语句中使用的关键字都可以使用，WHERE语句是可选的，如果我们没有写WHERE语句，则会更新所有的行。</p>
+<blockquote>
+<p>MySQL默认在安全更新的模式下运行，需要关闭安全更新的选项。</p>
+</blockquote>
+<h2 id="在update中使用子查询">在UPDATE中使用子查询</h2>
+<p>如果我们在更新invoices表时需要用到client_id，但是我们只知道客户名称怎么办？可以在UPDATE使用子查询来先获得client_id：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">UPDATE invoices</span><br><span class="line">SET </span><br><span class="line">	payment_total &#x3D; invoice_total * 0.5,</span><br><span class="line">	payment_date &#x3D; due_date</span><br><span class="line">WHERE client_id &#x3D; </span><br><span class="line">			(SELECT client_id</span><br><span class="line">            FROM clients</span><br><span class="line">            WHERE name &#x3D; &#39;Myworks&#39;)</span><br></pre></td></tr></table></figure>
+<p>上面是更新单行的值，如果想要更新多行的值，可以修改WHERE语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">UPDATE invoices</span><br><span class="line">SET </span><br><span class="line">	payment_total &#x3D; invoice_total * 0.5,</span><br><span class="line">	payment_date &#x3D; due_date</span><br><span class="line">WHERE client_id IN </span><br><span class="line">			(SELECT client_id</span><br><span class="line">            FROM clients</span><br><span class="line">            WHERE state IN (&#39;CA&#39;, &#39;NY&#39;))</span><br></pre></td></tr></table></figure>
+<p>注意有两个地方都换成了IN，特别是外层的WHERE语句。</p>
+<h2 id="删除行">删除行</h2>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM invoices</span><br><span class="line">WHERE intoice_id &#x3D; 1</span><br></pre></td></tr></table></figure>
+<p>在WHERE语句中依然可以使用子查询，方法和在UPDATE语句中使用子查询一致。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/2053.html" rel="prev" title="廖雪峰JAVA学习笔记（6）——泛型">
+      <i class="fa fa-chevron-left"></i> 廖雪峰JAVA学习笔记（6）——泛型
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/18925.html" rel="next" title="JAVA集合">
+      JAVA集合 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常用语句初识"><span class="nav-number">1.</span> <span class="nav-text">常用语句初识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#select-clause"><span class="nav-number">1.1.</span> <span class="nav-text">SELECT Clause</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#detial-of-select-clause"><span class="nav-number">1.1.1.</span> <span class="nav-text">Detial Of SELECT Clause</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#where-clause"><span class="nav-number">1.2.</span> <span class="nav-text">WHERE Clause</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#比较运算"><span class="nav-number">1.2.1.</span> <span class="nav-text">比较运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#andor和not运算符"><span class="nav-number">1.2.2.</span> <span class="nav-text">AND,OR和NOT运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#in运算符"><span class="nav-number">1.2.3.</span> <span class="nav-text">IN运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#between运算符"><span class="nav-number">1.2.4.</span> <span class="nav-text">BETWEEN运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#like运算符"><span class="nav-number">1.2.5.</span> <span class="nav-text">LIKE运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#regexp运算符"><span class="nav-number">1.2.6.</span> <span class="nav-text">REGEXP运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null运算符"><span class="nav-number">1.2.7.</span> <span class="nav-text">NULL运算符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#order-by-clause"><span class="nav-number">1.3.</span> <span class="nav-text">ORDER BY Clause</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#limit-clause"><span class="nav-number">1.4.</span> <span class="nav-text">LIMIT Clause</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#连接"><span class="nav-number">2.</span> <span class="nav-text">连接</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#inner-joins内连接"><span class="nav-number">2.1.</span> <span class="nav-text">Inner Joins——内连接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#跨数据库连接"><span class="nav-number">2.1.1.</span> <span class="nav-text">跨数据库连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#self-joins-自连接"><span class="nav-number">2.1.2.</span> <span class="nav-text">Self Joins 自连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#joining-multiple-tables-多表连接"><span class="nav-number">2.1.3.</span> <span class="nav-text">Joining Multiple Tables 多表连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#compound-join-conditions-复合连接条件"><span class="nav-number">2.1.4.</span> <span class="nav-text">Compound Join Conditions 复合连接条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#implicit-join-syntax-隐式连接语法"><span class="nav-number">2.1.5.</span> <span class="nav-text">Implicit Join Syntax 隐式连接语法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#outer-joins-外连接"><span class="nav-number">2.2.</span> <span class="nav-text">Outer Joins 外连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#outer-join-between-multiple-tables-多表外连接"><span class="nav-number">2.3.</span> <span class="nav-text">Outer Join Between Multiple Tables 多表外连接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#self-outer-joins-自外连接"><span class="nav-number">2.3.1.</span> <span class="nav-text">Self Outer Joins 自外连接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#using-clause"><span class="nav-number">2.4.</span> <span class="nav-text">USING Clause</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#natural-join"><span class="nav-number">2.5.</span> <span class="nav-text">NATURAL JOIN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cross-join-交叉连接"><span class="nav-number">2.6.</span> <span class="nav-text">CROSS JOIN 交叉连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#union-联合"><span class="nav-number">2.7.</span> <span class="nav-text">Union 联合</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#列属性"><span class="nav-number">3.</span> <span class="nav-text">列属性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#插入单行"><span class="nav-number">3.1.</span> <span class="nav-text">插入单行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入多行"><span class="nav-number">3.2.</span> <span class="nav-text">插入多行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入分层行"><span class="nav-number">3.3.</span> <span class="nav-text">插入分层行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建表复制"><span class="nav-number">3.4.</span> <span class="nav-text">创建表复制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新单行"><span class="nav-number">3.5.</span> <span class="nav-text">更新单行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新多行"><span class="nav-number">3.6.</span> <span class="nav-text">更新多行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在update中使用子查询"><span class="nav-number">3.7.</span> <span class="nav-text">在UPDATE中使用子查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除行"><span class="nav-number">3.8.</span> <span class="nav-text">删除行</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Keke"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Keke</p>
+  <div class="site-description" itemprop="description">记录学习的地方</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://libertyunionkjy@gmail.com/" title="E-Mail → https:&#x2F;&#x2F;libertyunionkjy@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Keke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el         : '#valine-comments',
+      path       : location.pathname,
+    }, {"enable":true,"appId":"tnKOKDSuvxOLRFeojycmFGDV-MdYXbMMI","appKey":"Q4ro4ajDoVK1ScWWSlGCxY3G","notify":true,"verify":false,"placeholder":"快来评论吧！柯柯给你举高高ヽ(✿ﾟ▽ﾟ)ノ","avatar":"monsterid","meta":["nick","mail","link"],"pageSize":10,"language":"zh-cn","visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

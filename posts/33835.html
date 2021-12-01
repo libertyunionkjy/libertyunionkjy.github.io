@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Ubuntu 20.04 LTS 使用指南 基本概念及操作 桌面环境 UNIX&#x2F;Linux 本身是没有图形界面的，我们通常在 UNIX&#x2F;Linux 发行版上看到的图形界面实际都只是运行在 Linux 系统之上的一套软件。实现一个完整的桌面环境需要服务器和客户端  服务器：xorg，xorg实现了X窗口系统（简称为X） 客户端（X Client）：KDE，GNOME，XFCE，LXDE  这也意味着">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux学习笔记（1）">
+<meta property="og:url" content="https://jyke.xyz/posts/33835.html">
+<meta property="og:site_name" content="柯柯的博客">
+<meta property="og:description" content="Ubuntu 20.04 LTS 使用指南 基本概念及操作 桌面环境 UNIX&#x2F;Linux 本身是没有图形界面的，我们通常在 UNIX&#x2F;Linux 发行版上看到的图形界面实际都只是运行在 Linux 系统之上的一套软件。实现一个完整的桌面环境需要服务器和客户端  服务器：xorg，xorg实现了X窗口系统（简称为X） 客户端（X Client）：KDE，GNOME，XFCE，LXDE  这也意味着">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607182501.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607203602.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607203800.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607205127.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607205647.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607210550.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607211922.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607212908.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607222051.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607231235.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607231518.png">
+<meta property="article:published_time" content="2020-06-07T15:22:01.000Z">
+<meta property="article:modified_time" content="2020-06-07T15:25:58.047Z">
+<meta property="article:author" content="Keke">
+<meta property="article:tag" content="学习">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607182501.png">
+
+<link rel="canonical" href="https://jyke.xyz/posts/33835.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>linux学习笔记（1） | 柯柯的博客</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-166231991-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="柯柯的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">柯柯的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">KK's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/33835.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux学习笔记（1）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-06-07 23:22:01 / 修改时间：23:25:58" itemprop="dateCreated datePublished" datetime="2020-06-07T23:22:01+08:00">2020-06-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/33835.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/33835.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a href="https://help.ubuntu.com/lts/ubuntu-help/index.html" target="_blank" rel="noopener">Ubuntu 20.04 LTS 使用指南</a></p>
+<h1 id="基本概念及操作">基本概念及操作</h1>
+<h2 id="桌面环境">桌面环境</h2>
+<p>UNIX/Linux 本身是没有图形界面的，我们通常在 UNIX/Linux 发行版上看到的图形界面实际都只是运行在 Linux 系统之上的一套软件。实现一个完整的桌面环境需要服务器和客户端</p>
+<ul>
+<li>服务器：xorg，xorg实现了X窗口系统（简称为X）</li>
+<li>客户端（X Client）：KDE，GNOME，XFCE，LXDE</li>
+</ul>
+<p>这也意味着在 Linux 上你可以自己选择安装不同的桌面环境，甚至可以定制自己的专属桌面。</p>
+<a id="more"></a>
+<h2 id="linux终端">Linux终端</h2>
+<p>通常我们在使用 Linux 时，并不是直接与系统打交道，而是通过一个叫做 Shell 的中间程序来完成的。</p>
+<p>Terminal：终端模拟器的程序，比较常见的<strong>终端模拟器</strong>： gnome-terminal，Konsole，xterm，rxvt，kvt，nxterm 和 eterm 。</p>
+<p>终端（Terminal）和控制台（Console）是有区别的。</p>
+<p>Linux 默认提供了 6 个纯命令行界面的 “terminal”（准确的说这里应该是 6 个 virtual consoles）来让用户登录。在物理机系统上你可以通过使用<code>[Ctrl]</code>+<code>[Alt]</code>+<code>[F1]～[F6]</code>进行切换</p>
+<h3 id="shell">Shell</h3>
+<p>通常在图形界面中对实际体验带来差异是 Shell（壳）。有壳就有核，这里的核就是指 UNIX/Linux 内核，<strong>Shell 是指“提供给使用者使用界面”的软件（命令解析器）</strong>，类似于 DOS 下的 command（命令行）和后来的 cmd.exe 。普通意义上的 Shell 就是可以接受用户输入命令的程序。<strong>它之所以被称作 Shell 是因为它隐藏了操作系统底层的细节</strong>。</p>
+<p>同样的 UNIX/Linux 下的<strong>图形用户界面 GNOME 和 KDE，有时也被叫做“虚拟 shell”或“图形 shell”。</strong></p>
+<p>在 UNIX/Linux 中<strong>比较流行的常见的 Shell 有 bash、zsh、ksh、csh</strong> 等等，Ubuntu 终端默认使用的是 bash，默认的桌面环境是 GNOME 或者 Unity（基于 GNOME）</p>
+<p>关于命令行、终端、控制台、Shell的区分，可以参考<a href="https://segmentfault.com/a/1190000016129862" target="_blank" rel="noopener">这篇博文</a>。</p>
+<ul>
+<li><strong>命令行界面</strong> (CLI) = 使用文本命令进行交互的用户界面</li>
+<li><strong>终端</strong> (Terminal) = <strong>TTY</strong> = 文本输入/输出环境</li>
+<li><strong>控制台</strong> (Console) = 一种特殊的终端</li>
+<li><strong>Shell</strong> = 命令行解释器，执行用户输入的命令并返回结果</li>
+</ul>
+<p>终端干的活儿是从用户这里接收输入（键盘、鼠标等输入设备），扔给 Shell，然后把 Shell 返回的结果展示给用户（比如通过显示器）。而 Shell 干的活儿是从终端那里拿到用户输入的命令，解析后交给操作系统内核去执行，并把执行结果返回给终端。</p>
+<h2 id="super-键">Super 键</h2>
+<p>此键通常可以在键盘左下角靠近 Alt 键的地方找到，并且经常标记有 Windows/方框键。它有时也会被称为 Windows 键，徽标键或系统键。</p>
+<h2 id="基础操作">基础操作</h2>
+<h3 id="命令">命令</h3>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>功能</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>touch</td>
+<td>创建一个名为 file 的文件</td>
+<td>touch file</td>
+</tr>
+<tr class="even">
+<td>cd</td>
+<td>进入一个目录</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>pwd</td>
+<td>查看当前目录</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="快捷键">快捷键</h3>
+<table>
+<thead>
+<tr class="header">
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Tab</code></td>
+<td>命令补全</td>
+</tr>
+<tr class="even">
+<td><code>Ctrl+c</code></td>
+<td>强行终止当前程序</td>
+</tr>
+<tr class="odd">
+<td><code>Ctrl+d</code></td>
+<td>键盘输入结束或退出终端</td>
+</tr>
+<tr class="even">
+<td><code>Ctrl+s</code></td>
+<td>暂停当前程序，暂停后按下任意键恢复运行</td>
+</tr>
+<tr class="odd">
+<td><code>Ctrl+z</code></td>
+<td>将当前程序放到后台运行，恢复到前台为命令<code>fg</code></td>
+</tr>
+<tr class="even">
+<td><code>Ctrl+a</code></td>
+<td>将光标移至输入行头，相当于<code>Home</code>键</td>
+</tr>
+<tr class="odd">
+<td><code>Ctrl+e</code></td>
+<td>将光标移至输入行末，相当于<code>End</code>键</td>
+</tr>
+<tr class="even">
+<td><code>Ctrl+k</code></td>
+<td>删除从光标所在位置到行末</td>
+</tr>
+<tr class="odd">
+<td><code>Alt+Backspace</code></td>
+<td>向前删除一个单词</td>
+</tr>
+<tr class="even">
+<td><code>Shift+PgUp</code></td>
+<td>将终端显示向上滚动</td>
+</tr>
+<tr class="odd">
+<td><code>Shift+PgDn</code></td>
+<td>将终端显示向下滚动</td>
+</tr>
+</tbody>
+</table>
+<h3 id="通配符">通配符</h3>
+<p>终端里面输入的通配符是由 Shell 处理的，不是由所涉及的命令语句处理的，它只会出现在命令的“参数值”里（它不能出现在命令名称里， 命令不记得，那就用<code>Tab</code>补全）。</p>
+<p>通配符是一种特殊语句，主要有星号（*）和问号（?）。</p>
+<p>在创建文件的时候，如果需要一次性创建多个文件，比如：<strong>“love_1_linux.txt，love_2_linux.txt，... love_10_linux.txt”</strong>。在 Linux 中十分方便：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> touch love_&#123;1..10&#125;_linux.txt</span></span><br></pre></td></tr></table></figure>
+<p>Shell 常用通配符：</p>
+<table>
+<thead>
+<tr class="header">
+<th>字符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>*</code></td>
+<td>匹配 0 或多个字符</td>
+</tr>
+<tr class="even">
+<td><code>?</code></td>
+<td>匹配任意一个字符</td>
+</tr>
+<tr class="odd">
+<td><code>[list]</code></td>
+<td>匹配 list 中的任意单一字符</td>
+</tr>
+<tr class="even">
+<td><code>[^list]</code></td>
+<td>匹配 除 list 中的任意单一字符以外的字符</td>
+</tr>
+<tr class="odd">
+<td><code>[c1-c2]</code></td>
+<td>匹配 c1-c2 中的任意单一字符 如：[0-9][a-z]</td>
+</tr>
+<tr class="even">
+<td><code>{string1,string2,...}</code></td>
+<td>匹配 string1 或 string2 (或更多)其一字符串</td>
+</tr>
+<tr class="odd">
+<td><code>{c1..c2}</code></td>
+<td>匹配 c1-c2 中全部字符 如{1..10}</td>
+</tr>
+</tbody>
+</table>
+<h3 id="在命令行中获取帮助">在命令行中获取帮助</h3>
+<p>用户可以通过执行<code>man</code>命令调用手册页。你可以使用如下方式来获得某个命令的说明和使用方式的详细介绍：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> man &lt;command_name&gt;</span></span><br></pre></td></tr></table></figure>
+<p>比如你想查看 man 命令本身的使用方式，你可以输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ man man</span><br></pre></td></tr></table></figure>
+<p>按下<code>q</code>退出。</p>
+<p>如果你知道某个命令的作用，只是想快速查看一些它的某个具体参数的作用，那么你可以使用<code>--help</code>参数，大部分命令都会带有这个参数，如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ls --<span class="built_in">help</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="用户以及文件权限管理">用户以及文件权限管理</h1>
+<h2 id="如何杀死tty">如何杀死tty</h2>
+<p>在Ubuntu系统中，我们可以使用<code>Ctrl</code>+<code>Alt</code>+<code>F1-6</code>来切换不同的tty，当我们登录了不同的终端之后，如何Kill掉这些终端呢？</p>
+<p>我们可以切换到我们要终止的tty，这里我们登录了tty2终端。</p>
+<p>使用<code>w -s</code>命令，可以得到终端名，这里我们已经知道了是tty2终端</p>
+<ol type="1">
+<li><p>使用<code>ps -t</code>命令可以得到终端的进程号</p></li>
+<li><p>使用<code>kill -9</code>命令终止bash进程</p></li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607182501.png" /></p>
+<p>查看用户：<code>who</code>命令</p>
+<h2 id="用户管理">用户管理</h2>
+<h3 id="创建用户">创建用户</h3>
+<p>要创建用户需要 root 权限，这里就要用到 <code>sudo</code> 这个命令。使用这个命令有两个前提：</p>
+<ul>
+<li>知道当前登录用户的密码；</li>
+<li>当前用户必须在 <code>sudo</code> 用户组。</li>
+</ul>
+<p><code>su &lt;user&gt;</code> 可以切换到用户 user，执行时需要输入目标用户的密码；</p>
+<p><code>sudo &lt;cmd&gt;</code> 可以以特权级别运行 cmd 命令，需要当前用户属于 sudo 组，且需要输入当前用户的密码。</p>
+<p><code>su - &lt;user&gt;</code> 命令也是切换用户，但是同时用户的环境变量和工作目录也会跟着改变成目标用户所对应的。</p>
+<p>新建一个的用户：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo adduser &lt;user&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607203602.png" /></p>
+<p>这个命令不但可以添加用户到系统，同时也会默认为新用户在 /home 目录下创建一个工作目录：</p>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607203800.png" /></p>
+<p>使用如下命令切换登录用户：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ su -l &lt;user&gt;</span><br></pre></td></tr></table></figure>
+<p>退出当前用户跟退出终端一样，可以使用 <code>exit</code> 命令或者使用快捷键 <code>Ctrl+D</code>。</p>
+<h3 id="用户组">用户组</h3>
+<p>在 Linux 里面每个用户都有一个归属（用户组），用户组简单地理解就是一组用户的集合，它们共享一些资源和权限，同时拥有私有资源。当然一个用户是可以属于多个用户组的，正如你既属于家庭，又属于学校或公司。</p>
+<p>在 Linux 里面如何知道自己属于哪些用户组呢？</p>
+<h4 id="方法一使用-groups-命令">方法一：使用 groups 命令</h4>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607205127.png" /></p>
+<p>其中冒号之前表示用户，后面表示该用户所属的用户组。这里可以看到 shiyanlou 用户属于 shiyanlou 用户组，每次新建用户如果不指定用户组的话，默认会自动创建一个与用户名相同的用户组（差不多就相当于家长的意思）。</p>
+<p>默认情况下在 sudo 用户组里的可以使用 sudo 命令获得 root 权限。</p>
+<h4 id="方法二查看-etcgroup-文件">方法二：查看 <code>/etc/group</code> 文件</h4>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/group | sort</span><br></pre></td></tr></table></figure>
+<p>可以使用 <code>grep</code> 命令过滤掉一些你不想看到的结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat /etc/group | grep -E <span class="string">"shiyanlou"</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607205647.png" /></p>
+<p>/etc/group 的内容包括用户组（Group）、用户组口令、GID（组 ID） 及该用户组所包含的用户（User），每个用户组一条记录。格式如下：</p>
+<blockquote>
+<p>group_name:password:GID:user_list</p>
+</blockquote>
+<p>你看到上面的 password 字段为一个 <code>x</code>，并不是说密码就是它，只是表示密码不可见而已。</p>
+<p>这里需要注意，如果用户的 GID 等于用户组的 GID，那么最后一个字段 <code>user_list</code> 就是空的。比如 shiyanlou 用户，在 <code>/etc/group</code> 中的 shiyanlou 用户组后面是不会显示的。</p>
+<h4 id="将其它用户加入-sudo-用户组">将其它用户加入 sudo 用户组</h4>
+<p>使用 <code>usermod</code> 命令可以为用户添加用户组，同样使用该命令你必须有 root 权限。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo usermod -G sudo shiyanlou</span><br><span class="line">$ groups shiyanlou</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607210550.png" /></p>
+<h3 id="删除用户和用户组">删除用户和用户组</h3>
+<p>删除用户是很简单的事：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo deluser shiyanlou --remove-home</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用 <code>--remove-home</code> 参数在删除用户时候会一并将该用户的工作目录一并删除。如果不使用那么系统会自动在 /home 目录为该用户保留工作目录。</p>
+</blockquote>
+<p>删除用户组可以使用 <code>groupdel</code> 命令，倘若该群组中仍包括某些用户，则必须先删除这些用户后，才能删除群组。</p>
+<h3 id="总结">总结</h3>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>w -s</code></td>
+<td>得到终端名</td>
+</tr>
+<tr class="even">
+<td><code>ps -t</code></td>
+<td>得到终端的进程号</td>
+</tr>
+<tr class="odd">
+<td><code>sudo adduser &lt;user&gt;</code></td>
+<td>新建一个用户</td>
+</tr>
+<tr class="even">
+<td><code>su &lt;user&gt;</code></td>
+<td>切换到用户 user</td>
+</tr>
+<tr class="odd">
+<td><code>su - &lt;user&gt;</code></td>
+<td>切换用户同时用户的环境变量和工作目录也会跟着改变</td>
+</tr>
+<tr class="even">
+<td><code>exit</code></td>
+<td>退出当前用户/终端</td>
+</tr>
+<tr class="odd">
+<td><code>groups &lt;user&gt;</code></td>
+<td>查看user所在的用户组</td>
+</tr>
+<tr class="even">
+<td><code>sudo usermod -G &lt;group&gt; &lt;user&gt;</code></td>
+<td>将user移到group用户组</td>
+</tr>
+<tr class="odd">
+<td><code>sudo deluser &lt;user&gt; --remove-home</code></td>
+<td>删除用户user，并且删除相应的目录</td>
+</tr>
+</tbody>
+</table>
+<h2 id="linux文件权限">Linux文件权限</h2>
+<h3 id="查看文件权限">查看文件权限</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls -l</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607211922.png" /></p>
+<blockquote>
+<p>从左到右依次为：文件类型和权限、链接数、所有者、所属用户组、文件大小、最后修改时间、文件名</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607212908.png" /></p>
+<ul>
+<li>文件类型</li>
+</ul>
+<p>关于文件类型， <strong>Linux 里面一切皆文件</strong>，正因为这一点才有了设备文件（ <code>/dev</code> 目录下有各种设备文件，大都跟具体的硬件设备相关）这一说。</p>
+<p>​ <code>socket</code>：网络套接字</p>
+<p>​ <code>pipe</code> 管道</p>
+<p>​ <code>软链接文件</code>：链接文件是分为两种的，另一种当然是“硬链接”（硬链接不常用，而软链接等同于 Windows 上的快捷方式）</p>
+<ul>
+<li>文件权限</li>
+</ul>
+<p>需要注意的一点是，<strong>一个目录同时具有读权限和执行权限才可以打开并查看内部文件，而一个目录要有写权限才允许在其中创建其它文件</strong>，这是因为目录文件实际保存着该目录里面的文件的列表等信息。</p>
+<ul>
+<li>链接数</li>
+</ul>
+<p>链接到该文件所在的 inode 结点的文件名数目</p>
+<ul>
+<li>文件大小</li>
+</ul>
+<p>以 inode 结点大小为单位来表示的文件大小，你可以给 ls 加上 <code>-lh</code> 参数来更直观的查看文件的大小。</p>
+<p>关于 <code>ls</code> 命令的一些参数</p>
+<p><strong>参数</strong> :</p>
+<ul>
+<li>-a 显示所有文件及目录 (ls内定将文件名或目录名称开头为"."的视为隐藏档，不会列出)</li>
+<li>-l 除文件名称外，亦将文件型态、权限、拥有者、文件大小等资讯详细列出</li>
+<li>-t 将文件依建立时间之先后次序列出</li>
+<li>-F 在列出的文件名称后加一符号；例如可执行档则加 "*", 目录则加 "/"</li>
+<li>-R 若目录下有文件，则以下之文件亦皆依序列出</li>
+</ul>
+<p>可以同时使用 <code>-a</code> 和 <code>-l</code> 参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls -al</span><br></pre></td></tr></table></figure>
+<p>查看某一个目录的完整属性，而不是显示目录里面的文件属性：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls -dl &lt;目录名&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>显示所有文件大小，并以普通人类能看懂的方式呈现：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls -asSh</span><br></pre></td></tr></table></figure>
+<p>其中小 s 为显示文件大小，大 S 为按文件大小排序，若需要知道如何按其它方式排序，可以使用 <code>man ls</code> 命令查询。</p>
+<h3 id="变更文件所有者">变更文件所有者</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo chown &lt;owner&gt; &lt;file&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="修改文件权限">修改文件权限</h3>
+<h4 id="方法一二进制修改">方法一：二进制修改</h4>
+<p>每个文件有三组权限，每组中有三类权限：</p>
+<p>每个文件有<strong>三组</strong>固定的权限，分别对应拥有者，所属用户组，其他用户，<strong>记住这个顺序是固定的</strong>。</p>
+<p>文件的读写执行对应字母 <code>rwx</code>，以二进制表示就是 <code>111</code>，用十进制表示就是 <code>7</code>。例如我们新建的文件的权限是 <code>rw-rw-rw-</code>，换成对应的十进制表示就是 666，这就表示这个文件的拥有者，所属用户组和其他用户具有读写权限，不具有执行权限。</p>
+<p>如果我要将文件 <code>iphone11</code> 的权限改为只有我自己可以用那么就可以用这个方法更改它的权限。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ chmod 600 iphone11</span><br></pre></td></tr></table></figure>
+<h4 id="方式二加减赋值操作">方式二：加减赋值操作</h4>
+<p>要完成上述实验相同的效果，你可以：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ chmod go-rw iphone11</span><br></pre></td></tr></table></figure>
+<p><code>g</code>、<code>o</code> 还有 <code>u</code> 分别表示 group（用户组）、others（其他用户） 和 user（用户），<code>+</code> 和 <code>-</code> 分别表示增加和去掉相应的权限。</p>
+<h1 id="linux-目录结构及文件基本操作">Linux 目录结构及文件基本操作</h1>
+<h2 id="linux目录结构">Linux目录结构</h2>
+<h3 id="fhs标准">FHS标准</h3>
+<p>Linux 的大部分目录结构是规定好了的（FHS 标准），是死的，当你掌握后，你在里面的一切操作都会变得井然有序。</p>
+<blockquote>
+<p>FHS（英文：Filesystem Hierarchy Standard 中文：文件系统层次结构标准），多数 Linux 版本采用这种文件组织形式，FHS 定义了系统中每个区域的用途、所需要的最小构成的文件和目录同时还给出了例外处理与矛盾处理。</p>
+</blockquote>
+<p>FHS 定义了两层规范，第一层是， <code>/</code> 下面的各个目录应该要放什么文件数据，例如 <code>/etc</code> 应该放置设置文件，<code>/bin</code> 与 <code>/sbin</code> 则应该放置可执行文件等等。</p>
+<p>第二层则是针对 <code>/usr</code> 及 <code>/var</code> 这两个目录的子目录来定义。例如 <code>/var/log</code> 放置系统日志文件，<code>/usr/share</code> 放置共享数据等等。</p>
+<p><a href="https://refspecs.linuxfoundation.org/FHS_3.0/fhs-3.0.pdf" target="_blank" rel="noopener">FHS_3.0 标准文档</a></p>
+<p>FHS 是根据以往无数 Linux 用户和开发者的经验总结出来的，并且会维持更新，FHS 依据文件系统使用的频繁与否以及是否允许用户随意改动（注意，不是不能，学习过程中，不要怕这些），将目录定义为四种交互作用的形态，如下表所示：</p>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607222051.png" /></p>
+<h3 id="目录路径">目录路径</h3>
+<p><code>cd</code>命令的参数：</p>
+<p><code>-</code> 表示上一次所在目录，<code>～</code> 通常表示当前用户的 <code>home</code> 目录。使用 <code>pwd</code> 命令可以获取当前所在路径（绝对路径）。</p>
+<p>在进行目录切换的过程中请多使用 <code>Tab</code> 键自动补全，可避免输入错误，连续按两次 <code>Tab</code> 可以显示全部候选结果。</p>
+<h2 id="linux文件的基本操作">Linux文件的基本操作</h2>
+<h3 id="新建">新建</h3>
+<h4 id="新建空白文件">新建空白文件</h4>
+<p>使用 <code>touch</code> 命令创建空白文件，关于 <code>touch</code> 命令，其主要作用是来更改已有文件的时间戳的（比如，最近访问时间，最近修改时间），但其在不加任何参数的情况下，只指定一个文件名，则可以创建一个指定文件名的空白文件（不会覆盖已有同名文件），当然你也可以同时指定该文件的时间戳。</p>
+<h4 id="新建目录">新建目录</h4>
+<p>使用 <code>mkdir</code>（make directories）命令可以创建一个空目录，也可同时指定创建目录的权限属性。</p>
+<p>使用 <code>-p</code> 参数，同时创建父目录（如果不存在该父目录），如下我们同时创建一个多级目录（这在安装软件、配置安装路径时非常有用）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p father/son/grandson</span><br></pre></td></tr></table></figure>
+<p>这里使用的路径是相对路径，代表在当前目录下生成，当然我们直接以绝对路径的方式表示也是可以的。</p>
+<p>还有一点需要注意的是，若当前目录已经创建了一个 test 文件，再使用 <code>mkdir test</code> 新建同名的文件夹，系统会报错文件已存在。这符合 Linux 一切介文件的理念。</p>
+<p>若当前目录存在一个 test 文件夹，则 <code>touch</code> 命令，则会更改该文件夹的时间戳而不是新建文件。</p>
+<h3 id="复制">复制</h3>
+<p>使用<code>cp</code>命令进行复制文件，如果需要复制目录，需要加上 <code>-r</code> 或者 <code>-R</code> 参数，表示递归复制。</p>
+<h3 id="删除">删除</h3>
+<h4 id="删除文件">删除文件</h4>
+<p>使用 <code>rm</code>（remove files or directories）命令删除一个文件：</p>
+<p>有时候你会遇到想要删除一些为只读权限的文件，直接使用 <code>rm</code> 删除会显示一个提示，如果想忽略这提示，直接删除文件，可以使用 <code>-f</code> 参数强制删除。</p>
+<h4 id="删除目录">删除目录</h4>
+<p>跟复制目录一样，要删除一个目录，也需要加上 <code>-r</code> 或 <code>-R</code> 参数：</p>
+<p>遇到权限不足删除不了的目录也可以和删除文件一样加上 <code>-f</code> 参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rm -rf family</span><br></pre></td></tr></table></figure>
+<h3 id="移动文件与文件重命名">移动文件与文件重命名</h3>
+<h4 id="移动文件">移动文件</h4>
+<p>使用 <code>mv</code>（move or rename files）命令移动文件（剪切）。命令格式是 <code>mv 源目录文件 目的目录</code>。</p>
+<p>例如将文件“ file1 ”移动到 <code>Documents</code> 目录：</p>
+<h4 id="重命名文件">重命名文件</h4>
+<p><code>mv</code> 命令除了能移动文件外，还能给文件重命名。命令格式为 <code>mv 旧的文件名 新的文件名</code>。</p>
+<p>例如将文件“ file1 ”重命名为“ myfile ”：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mv file1 myfile</span><br></pre></td></tr></table></figure>
+<h4 id="批量重命名">批量重命名</h4>
+<p>要实现批量重命名，<code>mv</code> 命令就有点力不从心了，我们可以使用一个看起来更专业的命令 <code>rename</code> 来实现。不过它要用 perl 正则表达式来作为参数，</p>
+<p><code>rename</code> 命令并不是内置命令，若提示无该命令可以使用 <code>sudo apt-get install rename</code> 命令自行安装。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /home/shiyanlou/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用通配符批量创建 5 个文件:</span></span><br><span class="line">$ touch file&#123;1..5&#125;.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 批量将这 5 个后缀为 .txt 的文本文件重命名为以 .c 为后缀的文件:</span></span><br><span class="line">$ rename <span class="string">'s/\.txt/\.c/'</span> *.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 批量将这 5 个文件，文件名和后缀改为大写:</span></span><br><span class="line">$ rename <span class="string">'y/a-z/A-Z/'</span> *.c</span><br></pre></td></tr></table></figure>
+<p><code>rename</code> 是先使用第二个参数的通配符匹配所有后缀为 <code>.txt</code> 的文件，然后使用第一个参数提供的正则表达式将匹配的这些文件的 <code>.txt</code> 后缀替换为 <code>.c</code>。</p>
+<p>可能在输入时出现命令未闭合的状态，命令行会出现 <code>quote&gt;</code> 开头的提示符。这是因为上述命令中的 <code>'</code> 未输入完成，这时按下 ctrl+c 即可退出该模式。</p>
+<h3 id="查看文件">查看文件</h3>
+<h4 id="使用-cattac-和-nl-命令查看文件">使用 <code>cat</code>，<code>tac</code> 和 <code>nl</code> 命令查看文件</h4>
+<p>前两个命令都是用来打印文件内容到标准输出（终端），其中 <code>cat</code> 为正序显示，<code>tac</code> 为倒序显示。</p>
+<blockquote>
+<p>标准输入输出：当我们执行一个 shell 命令行时通常会自动打开三个标准文件，即标准输入文件（stdin），默认对应终端的键盘、标准输出文件（stdout）和标准错误输出文件（stderr），后两个文件都对应被重定向到终端的屏幕，以便我们能直接看到输出内容。进程将从标准输入文件中得到输入数据，将正常输出数据输出到标准输出文件，而将错误信息送到标准错误文件中。</p>
+</blockquote>
+<p>比如我们要查看之前从 <code>/etc</code> 目录下拷贝来的 <code>passwd</code> 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /home/shiyanlou</span><br><span class="line">$ cp /etc/passwd passwd</span><br><span class="line">$ cat passwd</span><br></pre></td></tr></table></figure>
+<p>可以加上 <code>-n</code> 参数显示行号：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat -n passwd</span><br></pre></td></tr></table></figure>
+<p><code>nl</code> 命令，添加行号并打印，这是个比 <code>cat -n</code> 更专业的行号打印命令。</p>
+<p>这里简单列举它的常用的几个参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-b : 指定添加行号的方式，主要有两种：</span><br><span class="line">    -b a:表示无论是否为空行，同样列出行号(<span class="string">"cat -n"</span>就是这种方式)</span><br><span class="line">    -b t:只列出非空行的编号并列出（默认为这种方式）</span><br><span class="line">-n : 设置行号的样式，主要有三种：</span><br><span class="line">    -n ln:在行号字段最左端显示</span><br><span class="line">    -n rn:在行号字段最右边显示，且不加 0</span><br><span class="line">    -n rz:在行号字段最右边显示，且加 0</span><br><span class="line">-w : 行号字段占用的位数(默认为 6 位)</span><br></pre></td></tr></table></figure>
+<h4 id="使用-more-和-less-命令分页查看文件">使用 <code>more</code> 和 <code>less</code> 命令分页查看文件</h4>
+<p>如果说上面的 <code>cat</code> 是用来快速查看一个文件的内容的，那么这个 <code>more</code> 和 <code>less</code> 就是天生用来"阅读"一个文件的内容的，比如说 man 手册内部就是使用的 <code>less</code> 来显示内容。其中 <code>more</code> 命令比较简单，只能向一个方向滚动，而 <code>less</code> 功能更强大。<code>less</code> 的使用基本和 <code>more</code> 一致，具体使用请查看 man 手册，这里只介绍 <code>more</code> 命令的使用。</p>
+<p>使用 <code>more</code> 命令打开 <code>passwd</code> 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ more passwd</span><br></pre></td></tr></table></figure>
+<p>打开后默认只显示一屏内容，终端底部显示当前阅读的进度。可以使用 <code>Enter</code> 键向下滚动一行，使用 <code>Space</code> 键向下滚动一屏，按下 <code>h</code> 显示帮助，<code>q</code> 退出。</p>
+<h4 id="使用-head-和-tail-命令查看文件">使用 <code>head</code> 和 <code>tail</code> 命令查看文件</h4>
+<p>只查看文件的头几行（默认为 10 行，不足 10 行则显示全部）和尾几行。还是拿 passwd 文件举例，比如当我们想要查看最近新增加的用户，那么这时候我们就可以使用 <code>tail</code> 命令了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tail /etc/passwd</span><br></pre></td></tr></table></figure>
+<p>只看一行， 加上 <code>-n</code> 参数，后面紧跟行数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tail -n 1 /etc/passwd</span><br></pre></td></tr></table></figure>
+<p>关于 <code>tail</code> 命令，参数 <code>-f</code>，这个参数可以实现不停地读取某个文件的内容并显示。这可以让我们动态查看日志，达到实时监视的目的。</p>
+<h3 id="查看文件类型">查看文件类型</h3>
+<p>我们可以使用 <code>file</code> 命令查看文件的类型：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ file /bin/ls</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607231235.png" /></p>
+<p>说明这是一个可执行文件，运行在 64 位平台，并使用了动态链接文件（共享库）。</p>
+<p>与 Windows 不同的是，如果新建了一个.txt 文件，Windows 会自动把它识别为文本文件，而 <code>file</code> 命令会识别为一个空文件。在 Linux 中文件的类型不是根据文件后缀来判断的。当在文件里输入内容后才会显示文件类型。</p>
+<p><img src="https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200607231518.png" /></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag"># 学习</a>
+              <a href="/tags/linux/" rel="tag"># linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/46586.html" rel="prev" title="LeetCode刷题记录（JAVA语言）">
+      <i class="fa fa-chevron-left"></i> LeetCode刷题记录（JAVA语言）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/45117.html" rel="next" title="vim编辑器基本操作">
+      vim编辑器基本操作 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本概念及操作"><span class="nav-number">1.</span> <span class="nav-text">基本概念及操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#桌面环境"><span class="nav-number">1.1.</span> <span class="nav-text">桌面环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux终端"><span class="nav-number">1.2.</span> <span class="nav-text">Linux终端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#shell"><span class="nav-number">1.2.1.</span> <span class="nav-text">Shell</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#super-键"><span class="nav-number">1.3.</span> <span class="nav-text">Super 键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础操作"><span class="nav-number">1.4.</span> <span class="nav-text">基础操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令"><span class="nav-number">1.4.1.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#快捷键"><span class="nav-number">1.4.2.</span> <span class="nav-text">快捷键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通配符"><span class="nav-number">1.4.3.</span> <span class="nav-text">通配符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在命令行中获取帮助"><span class="nav-number">1.4.4.</span> <span class="nav-text">在命令行中获取帮助</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用户以及文件权限管理"><span class="nav-number">2.</span> <span class="nav-text">用户以及文件权限管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何杀死tty"><span class="nav-number">2.1.</span> <span class="nav-text">如何杀死tty</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户管理"><span class="nav-number">2.2.</span> <span class="nav-text">用户管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建用户"><span class="nav-number">2.2.1.</span> <span class="nav-text">创建用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户组"><span class="nav-number">2.2.2.</span> <span class="nav-text">用户组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法一使用-groups-命令"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">方法一：使用 groups 命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方法二查看-etcgroup-文件"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">方法二：查看 &#x2F;etc&#x2F;group 文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将其它用户加入-sudo-用户组"><span class="nav-number">2.2.2.3.</span> <span class="nav-text">将其它用户加入 sudo 用户组</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除用户和用户组"><span class="nav-number">2.2.3.</span> <span class="nav-text">删除用户和用户组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">2.2.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux文件权限"><span class="nav-number">2.3.</span> <span class="nav-text">Linux文件权限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看文件权限"><span class="nav-number">2.3.1.</span> <span class="nav-text">查看文件权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变更文件所有者"><span class="nav-number">2.3.2.</span> <span class="nav-text">变更文件所有者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改文件权限"><span class="nav-number">2.3.3.</span> <span class="nav-text">修改文件权限</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方法一二进制修改"><span class="nav-number">2.3.3.1.</span> <span class="nav-text">方法一：二进制修改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方式二加减赋值操作"><span class="nav-number">2.3.3.2.</span> <span class="nav-text">方式二：加减赋值操作</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#linux-目录结构及文件基本操作"><span class="nav-number">3.</span> <span class="nav-text">Linux 目录结构及文件基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#linux目录结构"><span class="nav-number">3.1.</span> <span class="nav-text">Linux目录结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fhs标准"><span class="nav-number">3.1.1.</span> <span class="nav-text">FHS标准</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目录路径"><span class="nav-number">3.1.2.</span> <span class="nav-text">目录路径</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux文件的基本操作"><span class="nav-number">3.2.</span> <span class="nav-text">Linux文件的基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新建"><span class="nav-number">3.2.1.</span> <span class="nav-text">新建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#新建空白文件"><span class="nav-number">3.2.1.1.</span> <span class="nav-text">新建空白文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#新建目录"><span class="nav-number">3.2.1.2.</span> <span class="nav-text">新建目录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复制"><span class="nav-number">3.2.2.</span> <span class="nav-text">复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除"><span class="nav-number">3.2.3.</span> <span class="nav-text">删除</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#删除文件"><span class="nav-number">3.2.3.1.</span> <span class="nav-text">删除文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除目录"><span class="nav-number">3.2.3.2.</span> <span class="nav-text">删除目录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移动文件与文件重命名"><span class="nav-number">3.2.4.</span> <span class="nav-text">移动文件与文件重命名</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#移动文件"><span class="nav-number">3.2.4.1.</span> <span class="nav-text">移动文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重命名文件"><span class="nav-number">3.2.4.2.</span> <span class="nav-text">重命名文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#批量重命名"><span class="nav-number">3.2.4.3.</span> <span class="nav-text">批量重命名</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看文件"><span class="nav-number">3.2.5.</span> <span class="nav-text">查看文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-cattac-和-nl-命令查看文件"><span class="nav-number">3.2.5.1.</span> <span class="nav-text">使用 cat，tac 和 nl 命令查看文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-more-和-less-命令分页查看文件"><span class="nav-number">3.2.5.2.</span> <span class="nav-text">使用 more 和 less 命令分页查看文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-head-和-tail-命令查看文件"><span class="nav-number">3.2.5.3.</span> <span class="nav-text">使用 head 和 tail 命令查看文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看文件类型"><span class="nav-number">3.2.6.</span> <span class="nav-text">查看文件类型</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Keke"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Keke</p>
+  <div class="site-description" itemprop="description">记录学习的地方</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://libertyunionkjy@gmail.com/" title="E-Mail → https:&#x2F;&#x2F;libertyunionkjy@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Keke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el         : '#valine-comments',
+      path       : location.pathname,
+    }, {"enable":true,"appId":"tnKOKDSuvxOLRFeojycmFGDV-MdYXbMMI","appKey":"Q4ro4ajDoVK1ScWWSlGCxY3G","notify":true,"verify":false,"placeholder":"快来评论吧！柯柯给你举高高ヽ(✿ﾟ▽ﾟ)ノ","avatar":"monsterid","meta":["nick","mail","link"],"pageSize":10,"language":"zh-cn","visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
