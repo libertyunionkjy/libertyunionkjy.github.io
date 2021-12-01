@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="inode号 linux中文件分为两个部分：  user data：用户数据 metadata：元数据  文件名：方便人识别和使用 inode号：文件的唯一标识，系统通过inode号找到用户数据 ...    linux中查看inode号的命令：stat、ls -i 文件的移动和重命名不会改变inode号  所以，真正代表一个文件的是它的inode号。两个inode号一样的文件，指向的是同一个文件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux中的软链接和硬链接">
+<meta property="og:url" content="https://jyke.xyz/posts/43970.html">
+<meta property="og:site_name" content="柯柯的博客">
+<meta property="og:description" content="inode号 linux中文件分为两个部分：  user data：用户数据 metadata：元数据  文件名：方便人识别和使用 inode号：文件的唯一标识，系统通过inode号找到用户数据 ...    linux中查看inode号的命令：stat、ls -i 文件的移动和重命名不会改变inode号  所以，真正代表一个文件的是它的inode号。两个inode号一样的文件，指向的是同一个文件">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-25T16:32:25.000Z">
+<meta property="article:modified_time" content="2021-03-25T16:43:00.000Z">
+<meta property="article:author" content="Keke">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://jyke.xyz/posts/43970.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Linux中的软链接和硬链接 | 柯柯的博客</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-166231991-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="柯柯的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">柯柯的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">KK's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/43970.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux中的软链接和硬链接
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-26 00:32:25 / 修改时间：00:43:00" itemprop="dateCreated datePublished" datetime="2021-03-26T00:32:25+08:00">2021-03-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/43970.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/43970.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="inode号">inode号</h2>
+<p>linux中文件分为两个部分：</p>
+<ol type="1">
+<li>user data：用户数据</li>
+<li>metadata：元数据
+<ol type="1">
+<li>文件名：方便人识别和使用</li>
+<li>inode号：文件的唯一标识，系统通过inode号找到用户数据</li>
+<li>...</li>
+</ol></li>
+</ol>
+<blockquote>
+<p>linux中查看inode号的命令：stat、ls -i</p>
+<p>文件的移动和重命名不会改变inode号</p>
+</blockquote>
+<p><strong>所以，真正代表一个文件的是它的inode号。两个inode号一样的文件，指向的是同一个文件数据块。</strong></p>
+<a id="more"></a>
+<h2 id="软链接和硬链接">软链接和硬链接</h2>
+<p>硬链接：hard link</p>
+<p>软连接：soft link</p>
+<blockquote>
+<p>软链接又称为符号链接（symbolic link）</p>
+</blockquote>
+<h3 id="为什么要引入软链接和硬链接">为什么要引入软链接和硬链接？</h3>
+<p>最重要的原因：解决共享文件的使用。</p>
+<p>此外引入了链接后还带来以下好处：</p>
+<ol type="1">
+<li>隐藏文件路径；</li>
+<li>增加权限安全；</li>
+<li>节省存储；</li>
+<li>...</li>
+</ol>
+<h3 id="硬链接">硬链接</h3>
+<p>概念：一个inode号对应多个文件名，那么称这些文件为硬链接。</p>
+<p>解释：由上面解释可以知道，多个文件共用一个inode号代表指向的是同一个文件数据块，他们本质上指向的是同一份数据。换句话说，硬链接就是同一份数据有了多个名字。</p>
+<p>创建硬链接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">link oldfile newfile</span><br><span class="line">ln oldfile newfile</span><br></pre></td></tr></table></figure>
+<p>硬链接的特点：</p>
+<ol type="1">
+<li><p>这些文件有相同的inode号和data block；</p></li>
+<li><p>只能对已经存在的文件创建硬链接；</p>
+<blockquote>
+<p>只有inode存在而且链接计数器不为0的时候才可以创建硬链接</p>
+</blockquote></li>
+<li><p>不能对目录创建硬链接；</p></li>
+<li><p>不能交叉文件系统创建硬链接；</p>
+<blockquote>
+<p>因为inode号仅仅在单一文件系统中是唯一的，不能保证跨文件系统的唯一性</p>
+</blockquote></li>
+<li><p>删除一个硬链接文件并不影响其他有相同inode号的文件；</p></li>
+<li><p>硬链接的文件有相同的文件权限。</p></li>
+</ol>
+<p>一些说明：</p>
+<ol type="1">
+<li>特定的dir下查找有相同inode号的文件</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> find [dir] -inum [inode_num]</span></span><br></pre></td></tr></table></figure>
+<ol start="2" type="1">
+<li>存在inode号被用完但是磁盘空间还有剩余的情况，此时不能再新建文件</li>
+<li>系统根据磁盘的大小默认设定了 inode 的值，如若必要，可在格式文件系统前对该值进行修改。</li>
+</ol>
+<h3 id="软链接">软链接</h3>
+<p>概念：若文件用户数据块中存放的内容是另一文件的路径名的指向，则该文件就是软连接。</p>
+<p>解释：软链接就是一个普通文件，只是文件本身的内容有点特殊。</p>
+<p>特点：</p>
+<ol type="1">
+<li>有自己的inode号和文件权限；</li>
+<li>可以对不存在的文件或者目录创建软链接；</li>
+<li>可以对目录创建；</li>
+<li>可以跨文件系统；</li>
+<li>软链接增加时链接计数器不会增加；</li>
+<li>软链接本身以及指向的文件都可以正常的进行删除或者创建，只是指向的文件不存在的话称为死链接；</li>
+<li>软链接可以指向别的软链接。</li>
+</ol>
+<blockquote>
+<p>在创建软链接时，建议使用绝对路径。</p>
+</blockquote>
+<h2 id="链接相关的命令">链接相关的命令</h2>
+<ol type="1">
+<li><p>mount：查看系统已经挂载的文件系统类型</p></li>
+<li><p>fine命令的使用</p>
+<ol type="1">
+<li><p>查找在路径 /home 下的文件 data.txt 的软链接</p>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># find /home -lname data.txt</span></span><br></pre></td></tr></table></figure></li>
+<li><p>查看路径 /home 有相同 inode 的所有硬链接</p>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># find /home -samefile </span></span><br><span class="line"><span class="meta"># find /home -inum 660650</span></span><br></pre></td></tr></table></figure></li>
+<li><p>列出路径 /home/harris/debug/ 下的所有软链接文件</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">find</span> /home/harris/<span class="keyword">debug</span>/ -<span class="built_in">type</span> <span class="keyword">l</span> -<span class="keyword">ls</span></span><br></pre></td></tr></table></figure></li>
+</ol></li>
+<li><p>创建软链接</p>
+<p><code>ln  -s [源文件或目录] [目标文件或目录]</code></p>
+<p>例如：</p>
+<p>当前路径创建test 引向/var/www/test 文件夹</p>
+<p><code>ln –s  /var/www/test test</code></p>
+<p>创建/var/test 引向/var/www/test 文件夹</p>
+<p><code>ln –s  /var/www/test  /var/test</code></p></li>
+<li><p>删除软链接</p>
+<p>和删除普通的文件是一眼的，删除都是使用rm来进行操作</p></li>
+<li><p>修改软链接</p>
+<p><code>ln –snf  [新的源文件或目录] [目标文件或目录]</code></p>
+<p>例如：</p>
+<p>创建一个软链接</p>
+<p><code>ln –s  /var/www/test  /var/test</code></p>
+<p>修改指向的新路径</p>
+<p><code>ln –snf  /var/www/test1  /var/test</code></p></li>
+</ol>
+<p><a href="https://www.ibm.com/developerworks/cn/linux/l-cn-hardandsymb-links/#fig2" target="_blank" rel="noopener">参考链接</a></p>
+<p><a href="https://blog.csdn.net/m290345792/article/details/78518360" target="_blank" rel="noopener">参考链接</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/42035.html" rel="prev" title="Linux守护进程">
+      <i class="fa fa-chevron-left"></i> Linux守护进程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/32169.html" rel="next" title="(四)进程调度——linux内核设计与实现读书笔记">
+      (四)进程调度——linux内核设计与实现读书笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#inode号"><span class="nav-number">1.</span> <span class="nav-text">inode号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软链接和硬链接"><span class="nav-number">2.</span> <span class="nav-text">软链接和硬链接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要引入软链接和硬链接"><span class="nav-number">2.1.</span> <span class="nav-text">为什么要引入软链接和硬链接？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#硬链接"><span class="nav-number">2.2.</span> <span class="nav-text">硬链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#软链接"><span class="nav-number">2.3.</span> <span class="nav-text">软链接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链接相关的命令"><span class="nav-number">3.</span> <span class="nav-text">链接相关的命令</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Keke"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Keke</p>
+  <div class="site-description" itemprop="description">记录学习的地方</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://libertyunionkjy@gmail.com/" title="E-Mail → https:&#x2F;&#x2F;libertyunionkjy@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Keke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el         : '#valine-comments',
+      path       : location.pathname,
+    }, {"enable":true,"appId":"tnKOKDSuvxOLRFeojycmFGDV-MdYXbMMI","appKey":"Q4ro4ajDoVK1ScWWSlGCxY3G","notify":true,"verify":false,"placeholder":"快来评论吧！柯柯给你举高高ヽ(✿ﾟ▽ﾟ)ノ","avatar":"monsterid","meta":["nick","mail","link"],"pageSize":10,"language":"zh-cn","visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="参考链接 前提知识 lspci命令 加入系统装有1G的RAM，1G以后的物理内存地址空间都是外部设备IO在系统内存地址空间上的映射。&#x2F;proc&#x2F;iomem描述了系统中所有的设备I&#x2F;O在内存地址空间上的映射。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VFIO入门">
+<meta property="og:url" content="https://jyke.xyz/posts/11156.html">
+<meta property="og:site_name" content="柯柯的博客">
+<meta property="og:description" content="参考链接 前提知识 lspci命令 加入系统装有1G的RAM，1G以后的物理内存地址空间都是外部设备IO在系统内存地址空间上的映射。&#x2F;proc&#x2F;iomem描述了系统中所有的设备I&#x2F;O在内存地址空间上的映射。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-25T15:58:15.000Z">
+<meta property="article:modified_time" content="2021-03-25T16:03:56.000Z">
+<meta property="article:author" content="Keke">
+<meta property="article:tag" content="虚拟化">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://jyke.xyz/posts/11156.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>VFIO入门 | 柯柯的博客</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-166231991-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="柯柯的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">柯柯的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">KK's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/11156.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          VFIO入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-25 23:58:15" itemprop="dateCreated datePublished" datetime="2021-03-25T23:58:15+08:00">2021-03-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-26 00:03:56" itemprop="dateModified" datetime="2021-03-26T00:03:56+08:00">2021-03-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">虚拟化</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/11156.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/11156.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a href="https://www.jianshu.com/p/bfbb5095d8fd" target="_blank" rel="noopener">参考链接</a></p>
+<h2 id="前提知识">前提知识</h2>
+<h3 id="lspci命令">lspci命令</h3>
+<p>加入系统装有1G的RAM，1G以后的物理内存地址空间都是外部设备IO在系统内存地址空间上的映射。/proc/iomem描述了系统中所有的设备I/O在内存地址空间上的映射。</p>
+<a id="more"></a>
+<p>0000:00:1f.1则是一个PCI外设的地址,它以冒号和逗号分隔为4个部分：</p>
+<ol type="1">
+<li>第一个16位表示域</li>
+<li>第二个8位表示一个总线编号---每个 PCI域可以拥有最多256个总线</li>
+<li>第三个5位表示一 个设备号---每个总线上可支持32个设备</li>
+<li>最后3位表示功能号---每个设备上最多可有8种功能</li>
+</ol>
+<p>lspci没有标明域，但是对于一台PC而言，一般只有一个域（0号域）</p>
+<p>单个系统上，插入多个总线是通过桥来完成的。桥是一种用来连接总线的特殊pci外设。所以电脑的PCI系统是一个树形结构。</p>
+<blockquote>
+<p>lspci怎么看有多少个设备？</p>
+<p>数不同的总线上有多少个不同的设备号。</p>
+</blockquote>
+<h3 id="iommu">IOMMU</h3>
+<p>IOMMU可以实现设备的隔离特性。包括设备之间的隔离以及设备和某块内存间的有效隔离。</p>
+<h4 id="iommu的隔离粒度">IOMMU的隔离粒度</h4>
+<p>IOMMU可以达到设备级的隔离粒度（辨识出每一个PCI设备并进行隔离），但是通常情况下为了达到更好的性能，不需要达到设备级别的隔离。</p>
+<blockquote>
+<p>比如：相关的<strong>一组设备</strong>可能会使用同一块内存空间。</p>
+</blockquote>
+<p><strong>Group:</strong></p>
+<p>所以IOMMU API因此也支持IOMMU group的概念。一个group是一组设备的集合。这组设备隔离于系统的其他设备。group也是VFIO使用的最小粒度。</p>
+<p><strong>Container:</strong></p>
+<p>虽然group是保证用户访问安全的最小粒度，它并不一定是最好的粒度。</p>
+<blockquote>
+<p>比如：在使用页表的IOMMU中，可以<strong>在不同group之间共享一组页表</strong>，从而减少平台（减少TLB抖动、减少重复页表）和用户（仅编程一组地址转换）的开销。</p>
+</blockquote>
+<p>因此，<strong>VFIO</strong>使用了一个container类的概念，一个类可以包括一个或者多个groups。创建一个container很简单，只要打开<code>/dev/vfio/vfio</code>字符设备即可。</p>
+<p>没有group的container本身提供的功能很少，用户需要在容器中添加一个group以获得下一级功能，即IOMMU。</p>
+<h2 id="什么是vfio">什么是VFIO</h2>
+<p>先总结一下IOMMU：许多硬件平台提供DMA和中断重映射功能，以确保I/O设备只在分配给它们的域内访问内存，一般这样的硬件单元称为IOMMU。而不同架构的IOMMU可能提供的接口不同，因此container并未提供统一接口访问IOMMU。</p>
+<p>而<strong>VFIO驱动程序是一个与IOMMU具体硬件无关的框架</strong>，可以支持x86架构的VT-D、AMD-Vi，POWER PE，ARM等各种IOMMU硬件架构。有了VFIO，用户态可以以非特权的身份安全地访问pci设备。</p>
+<p>注意两个词：1.安全的；2.非特权的。</p>
+<p>与VFIO经常做对比的是UIO，UIO也是一个用户空间驱动，但是不受IOMMU的保护，且中断支持有限，并且需要root权限运行。</p>
+<p>总结一下：</p>
+<ol type="1">
+<li>VFIO是一个可以安全的把设备I/O、中断、DMA等暴露到用户空间（userspace），从而可以在用户空间完成设备驱动的<strong>框架</strong>。</li>
+<li>得益于vfio低开销的用户空间直接设备访问，虚拟机设备分配（device assignment）、高性能应用等可以获得更高的I/O性能。</li>
+</ol>
+<h2 id="vfio的使用">vfio的使用</h2>
+<h3 id="准备group">准备group</h3>
+<p>一个重要的文件：<code>/dev/vfio/{group}</code>，组的标识，其中<code>{group}</code>是iommu的组号。</p>
+<ol type="1">
+<li><p>怎么绑定设备到一个group？---&gt;绑定设备到vfio驱动程序</p></li>
+<li><p>一个设备关联到一个group后，用户首先需要标识这个group。</p></li>
+</ol>
+<h3 id="将group添加到container中">将group添加到container中</h3>
+<h3 id="vfio使用示例">vfio使用示例</h3>
+<ol type="1">
+<li><p>获取设备所属的iommu组号</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> readlink /sys/bus/pci/devices/0000:06:0d.0/iommu_group</span></span><br><span class="line">../../../../kernel/iommu_groups/26</span><br></pre></td></tr></table></figure></li>
+<li><p>加载内核模块vfio-pci</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> modprobe vfio-pci</span></span><br></pre></td></tr></table></figure></li>
+<li><p>绑定设备到vfio驱动上</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> lspci -n -s 0000:06:0d.0 (查看设备的PCI vendor id和device id号)</span></span><br><span class="line">06:0d.0 0401: 1102:0002 (rev 08)</span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">echo</span> 0000:06:0d.0 &gt; /sys/bus/pci/devices/0000:06:0d.0/driver/unbind</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">echo</span> 1102 0002 &gt; /sys/bus/pci/drivers/vfio-pci/new_id</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：和所绑定设备处在同一个iommu_group下的设备必须同时也绑定到vfio或者不绑定任何驱动</p>
+</blockquote></li>
+<li><p>此时<code>dev/vfio/{group}</code>已经生成，需要修改<code>/dev/vfio/{group}</code>的owner，并确保它的权限是0666；保证非root用户有读写权限。之前的步骤都需要在root下执行，在此之后可以在非root用户下执行了</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> chown user:user /dev/vfio/26</span></span><br></pre></td></tr></table></figure>
+<h2 id="其他链接">其他链接</h2>
+<p><a href="https://github.com/torvalds/linux/blob/master/Documentation/driver-api/vfio.rst" target="_blank" rel="noopener">kernel_doc/vfio</a></p></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag"># 虚拟化</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/30959.html" rel="prev" title="Ubuntu20.04下安装mesa">
+      <i class="fa fa-chevron-left"></i> Ubuntu20.04下安装mesa
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/42035.html" rel="next" title="Linux守护进程">
+      Linux守护进程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前提知识"><span class="nav-number">1.</span> <span class="nav-text">前提知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lspci命令"><span class="nav-number">1.1.</span> <span class="nav-text">lspci命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iommu"><span class="nav-number">1.2.</span> <span class="nav-text">IOMMU</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#iommu的隔离粒度"><span class="nav-number">1.2.1.</span> <span class="nav-text">IOMMU的隔离粒度</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是vfio"><span class="nav-number">2.</span> <span class="nav-text">什么是VFIO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vfio的使用"><span class="nav-number">3.</span> <span class="nav-text">vfio的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备group"><span class="nav-number">3.1.</span> <span class="nav-text">准备group</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将group添加到container中"><span class="nav-number">3.2.</span> <span class="nav-text">将group添加到container中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vfio使用示例"><span class="nav-number">3.3.</span> <span class="nav-text">vfio使用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他链接"><span class="nav-number">4.</span> <span class="nav-text">其他链接</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Keke"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Keke</p>
+  <div class="site-description" itemprop="description">记录学习的地方</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://libertyunionkjy@gmail.com/" title="E-Mail → https:&#x2F;&#x2F;libertyunionkjy@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Keke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el         : '#valine-comments',
+      path       : location.pathname,
+    }, {"enable":true,"appId":"tnKOKDSuvxOLRFeojycmFGDV-MdYXbMMI","appKey":"Q4ro4ajDoVK1ScWWSlGCxY3G","notify":true,"verify":false,"placeholder":"快来评论吧！柯柯给你举高高ヽ(✿ﾟ▽ﾟ)ノ","avatar":"monsterid","meta":["nick","mail","link"],"pageSize":10,"language":"zh-cn","visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

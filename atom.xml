@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2020-05-12T13:06:50.052Z</updated>
+  <updated>2021-12-01T02:25:33.627Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -17,15 +17,22 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Hello World</title>
-    <link href="https://jyke.xyz/posts/16107.html"/>
-    <id>https://jyke.xyz/posts/16107.html</id>
-    <published>2021-11-17T03:42:27.524Z</published>
-    <updated>2020-05-12T13:06:50.052Z</updated>
+    <title>摇滚入门聆听指南</title>
+    <link href="https://jyke.xyz/posts/11943.html"/>
+    <id>https://jyke.xyz/posts/11943.html</id>
+    <published>2021-12-01T02:25:33.495Z</published>
+    <updated>2021-12-01T02:25:33.627Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+      
+      
+        
+        
+          
+
+        
+      
     
     </summary>
     
@@ -34,121 +41,73 @@
   </entry>
   
   <entry>
-    <title>Cloud-init是什么？</title>
-    <link href="https://jyke.xyz/posts/3112.html"/>
-    <id>https://jyke.xyz/posts/3112.html</id>
-    <published>2020-09-02T13:42:00.000Z</published>
-    <updated>2020-09-02T13:45:37.151Z</updated>
+    <title>虚拟内存详解</title>
+    <link href="https://jyke.xyz/posts/34444.html"/>
+    <id>https://jyke.xyz/posts/34444.html</id>
+    <published>2021-04-15T16:28:53.000Z</published>
+    <updated>2021-04-15T16:33:37.000Z</updated>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;cloud-init&quot;&gt;Cloud-init&lt;/h1&gt;
-&lt;p&gt;&lt;strong&gt;cloud-init是云平台为Linux操作系统的虚拟机做系统初始化配置的开源服务软件。&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;目前大部分公有云（openstack, AWS, Aliyun）都在使用cloud-init, 已经成为虚拟机元数据管理和OS系统配置初始化的事实标准。&lt;/p&gt;
-&lt;p&gt;可以完成包括但不限于以下的工作：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;默认语言环境&lt;/li&gt;
-&lt;li&gt;实例的主机名&lt;/li&gt;
-&lt;li&gt;注入ssh key到.ssh/authorized_keys&lt;/li&gt;
-&lt;li&gt;设置用户密码&lt;/li&gt;
-&lt;li&gt;配置网络&lt;/li&gt;
-&lt;li&gt;安装软件包&lt;/li&gt;
-&lt;/ul&gt;
+      &lt;h2 id=&quot;虚拟内存&quot;&gt;虚拟内存&lt;/h2&gt;
+&lt;p&gt;虚拟内存的实现是一门复杂的学问，各种细节非常繁杂，对于这些实现的细节我们不必深究，但作为一名软件工程从业者，虚拟内存的设计思想是非常重要的，所以我们依然有必要从整体上对其的设计有一定的了解。本篇文章从以下几个方面来讨论虚拟内存，相信看完后一定会对虚拟内存会有一个总体的认识：&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;为什么要有虚拟内存？、物理内存存在什么问题？&lt;/li&gt;
+&lt;li&gt;什么是虚拟内存？&lt;/li&gt;
+&lt;li&gt;虚拟内存的实现用到了什么技术？&lt;/li&gt;
+&lt;li&gt;虚拟内存到物理内存的转换？&lt;/li&gt;
+&lt;/ol&gt;
     
     </summary>
     
     
-      <category term="分布式与云计算" scheme="https://jyke.xyz/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
+      <category term="操作系统" scheme="https://jyke.xyz/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
     
-      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
-    
-      <category term="虚拟化" scheme="https://jyke.xyz/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
+      <category term="操作系统" scheme="https://jyke.xyz/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
   <entry>
-    <title>Git学习笔记（二）</title>
-    <link href="https://jyke.xyz/posts/63098.html"/>
-    <id>https://jyke.xyz/posts/63098.html</id>
-    <published>2020-08-23T18:03:50.000Z</published>
-    <updated>2020-08-27T11:51:40.322Z</updated>
+    <title>Mysql中的主键、外键、索引的区别和联系</title>
+    <link href="https://jyke.xyz/posts/62631.html"/>
+    <id>https://jyke.xyz/posts/62631.html</id>
+    <published>2021-04-15T16:27:07.000Z</published>
+    <updated>2021-04-15T16:33:37.000Z</updated>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;git&quot;&gt;Git&lt;/h1&gt;
-&lt;p&gt;Git和代码托管中心&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;代码托管中心：维护远程库&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;局域网环境下：gitlab&lt;/li&gt;
-&lt;li&gt;外网环境下：github、码云&lt;/li&gt;
-&lt;/ul&gt;
+      &lt;h2 id=&quot;主键&quot;&gt;主键&lt;/h2&gt;
+&lt;p&gt;主键的作用：为了唯一的确定某一条记录&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;任意两条记录的主键不能重复&lt;/li&gt;
+&lt;li&gt;记录一旦插入表中，主键不要修改了&lt;/li&gt;
+&lt;li&gt;选取主键的原则：不使用业务相关的字段作为主键（这个字段在业务中不会用到，基本上来说就是我们自己为每条数据定义一个id）&lt;/li&gt;
+&lt;li&gt;联合主键：多列确定一个数据，没有必要的时候不要用&lt;/li&gt;
+&lt;/ol&gt;
     
     </summary>
     
     
+      <category term="Mysql" scheme="https://jyke.xyz/categories/Mysql/"/>
+    
+    
+      <category term="Mysql" scheme="https://jyke.xyz/tags/Mysql/"/>
     
   </entry>
   
   <entry>
-    <title>正则表达式</title>
-    <link href="https://jyke.xyz/posts/46563.html"/>
-    <id>https://jyke.xyz/posts/46563.html</id>
-    <published>2020-08-13T18:04:40.000Z</published>
-    <updated>2020-08-13T18:06:29.510Z</updated>
+    <title>Maven入门</title>
+    <link href="https://jyke.xyz/posts/63612.html"/>
+    <id>https://jyke.xyz/posts/63612.html</id>
+    <published>2021-04-15T16:23:53.000Z</published>
+    <updated>2021-04-15T16:33:37.000Z</updated>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;正则表达式&quot;&gt;正则表达式&lt;/h2&gt;
-&lt;p&gt;正则表达式可以用&lt;strong&gt;字符串&lt;/strong&gt;来描述规则，并用来匹配字符串。&lt;/p&gt;
-&lt;p&gt;正则表达式是一套标准，它可以用于任何语言。&lt;/p&gt;
-&lt;p&gt;正则表达式是一串字符串。&lt;/p&gt;
-&lt;p&gt;在JAVA中使用正则表达式匹配：&lt;/p&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Main&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String[] args)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        String regex = &lt;span class=&quot;string&quot;&gt;&quot;20\\d\\d&quot;&lt;/span&gt;;&lt;span class=&quot;comment&quot;&gt;//对应的正则表达式是20\d\d，匹配20##年&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;2019&quot;&lt;/span&gt;.matches(regex)); &lt;span class=&quot;comment&quot;&gt;// true&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;2100&quot;&lt;/span&gt;.matches(regex)); &lt;span class=&quot;comment&quot;&gt;// false&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CentOS 7下firewalld的安装与常用操作</title>
-    <link href="https://jyke.xyz/posts/24271.html"/>
-    <id>https://jyke.xyz/posts/24271.html</id>
-    <published>2020-08-07T07:13:54.000Z</published>
-    <updated>2020-08-07T07:19:03.595Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;firewalld是Linux操作系统的防火墙管理工具。它通过充当Linux内核的netfilter框架的前端来提供防火墙功能，就像iptables一样。&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>廖雪峰JAVA学习笔记（7）——多线程</title>
-    <link href="https://jyke.xyz/posts/63211.html"/>
-    <id>https://jyke.xyz/posts/63211.html</id>
-    <published>2020-07-30T17:19:27.000Z</published>
-    <updated>2020-08-07T07:18:37.722Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;中断线程&quot;&gt;中断线程&lt;/h3&gt;
-&lt;h4 id=&quot;interrupt方法&quot;&gt;interrupt()方法&lt;/h4&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Main&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String[] args)&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; InterruptedException &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Thread t = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; MyThread();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        t.start();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Thread.sleep(&lt;span class=&quot;number&quot;&gt;1000&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        t.interrupt(); &lt;span class=&quot;comment&quot;&gt;// 中断t线程&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        t.join(); &lt;span class=&quot;comment&quot;&gt;// 等待t线程结束&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;end&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;MyThread&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Thread&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Thread hello = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; HelloThread();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        hello.start(); &lt;span class=&quot;comment&quot;&gt;// 启动hello线程&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            hello.join(); &lt;span class=&quot;comment&quot;&gt;// 等待hello线程结束&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125; &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (InterruptedException e) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;interrupted!&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        hello.interrupt();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;HelloThread&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Thread&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; n = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;while&lt;/span&gt; (!isInterrupted()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            n++;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            System.out.println(n + &lt;span class=&quot;string&quot;&gt;&quot; hello!&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                Thread.sleep(&lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125; &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt; (InterruptedException e) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;keyword&quot;&gt;break&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;blockquote&gt;
-&lt;p&gt;1 hello! 2 hello! 3 hello! 4 hello! 5 hello! 6 hello! 7 hello! 8 hello! 9 hello! interrupted! end&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;每次输出的&lt;code&gt;hello!&lt;/code&gt;个数都是不一样的。&lt;/p&gt;
+      &lt;h2 id=&quot;maven能解决什么问题&quot;&gt;Maven能解决什么问题？&lt;/h2&gt;
+&lt;p&gt;想像一个场景，我们一个项目A需要依赖一个B的jar包，如果我们去B的官网上寻找B的jar包并把它放到我们的classpath中，这个过程是非常繁琐的，因为很可能我们在一个项目中需要依赖很多个组件。&lt;/p&gt;
+&lt;p&gt;通过使用Maven，可以自动解析依赖，并导入相应的依赖。&lt;/p&gt;
     
     </summary>
     
@@ -158,112 +117,313 @@
     
       <category term="JAVA" scheme="https://jyke.xyz/tags/JAVA/"/>
     
-  </entry>
-  
-  <entry>
-    <title>什么是VLAN和VXLAN？</title>
-    <link href="https://jyke.xyz/posts/58599.html"/>
-    <id>https://jyke.xyz/posts/58599.html</id>
-    <published>2020-07-30T17:15:57.000Z</published>
-    <updated>2020-07-30T17:21:25.833Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;VXLAN的东西说起来很简单，深挖的东西又太多了，先挖个坑，有时间填上...&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="分布式与云计算" scheme="https://jyke.xyz/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
-    
-    
-      <category term="分布式与云计算" scheme="https://jyke.xyz/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
+      <category term="Maven" scheme="https://jyke.xyz/tags/Maven/"/>
     
   </entry>
   
   <entry>
-    <title>什么是KVM和QEMU</title>
-    <link href="https://jyke.xyz/posts/20354.html"/>
-    <id>https://jyke.xyz/posts/20354.html</id>
-    <published>2020-07-24T05:34:25.000Z</published>
-    <updated>2020-07-24T07:44:04.952Z</updated>
+    <title>JAVA多线程笔记</title>
+    <link href="https://jyke.xyz/posts/44802.html"/>
+    <id>https://jyke.xyz/posts/44802.html</id>
+    <published>2021-04-13T01:21:27.000Z</published>
+    <updated>2021-04-13T14:13:34.000Z</updated>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;kvm&quot;&gt;KVM&lt;/h1&gt;
-&lt;p&gt;KVM实际是linux内核提供的虚拟化架构，可将内核直接充当hypervisor来使用。KVM需要处理器硬件本身支持虚拟化扩展，如intel VT 和AMD AMD-V技术。KVM本身不实现任何模拟，仅仅是暴露了一个/dev/kvm接口，这个接口可被宿主机用来主要负责vCPU的创建，虚拟内存的地址空间分配，vCPU寄存器的读写以及vCPU的运行。 有了KVM以后，guest os的CPU指令不用再经过QEMU来转译便可直接运行，大大提高了运行速度。但KVM的kvm.ko本身只提供了CPU和内存的虚拟化，所以它必须结合QEMU才能构成一个完整的虚拟化技术，&lt;/p&gt;
+      &lt;h2 id=&quot;多线程&quot;&gt;多线程&lt;/h2&gt;
+&lt;p&gt;线程创建：4种方式&lt;/p&gt;
+&lt;p&gt;解决线程安全问题：3种方式&lt;/p&gt;
+&lt;p&gt;一个java.exe，至少有三个线程：&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;main()：主线程&lt;/li&gt;
+&lt;li&gt;gc()垃圾回收线程&lt;/li&gt;
+&lt;li&gt;异常处理线程&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;并行和并发：&lt;/p&gt;
+&lt;p&gt;并行：多个CPU&lt;/p&gt;
+&lt;p&gt;并发：一个CPU&lt;/p&gt;
     
     </summary>
     
     
-      <category term="分布式与云计算" scheme="https://jyke.xyz/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
+      <category term="JAVA多线程" scheme="https://jyke.xyz/categories/JAVA%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
     
     
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
+      <category term="JAVA" scheme="https://jyke.xyz/tags/JAVA/"/>
+    
+      <category term="多线程" scheme="https://jyke.xyz/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux环境变量</title>
+    <link href="https://jyke.xyz/posts/12972.html"/>
+    <id>https://jyke.xyz/posts/12972.html</id>
+    <published>2021-04-02T15:12:52.000Z</published>
+    <updated>2021-04-02T15:17:17.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;linux环境变量的分类&quot;&gt;Linux环境变量的分类&lt;/h2&gt;
+&lt;p&gt;从生命周期分为：&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;永久的——修改配置文件&lt;/li&gt;
+&lt;li&gt;临时的——export命令&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;从作用域分：&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;系统环境变量：对所有用户生效&lt;/li&gt;
+&lt;li&gt;用户环境变量：对某一个用户生效&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/categories/linux/"/>
+    
     
       <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
+    
+      <category term="环境变量" scheme="https://jyke.xyz/tags/%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux中的动态库和静态库</title>
+    <link href="https://jyke.xyz/posts/23615.html"/>
+    <id>https://jyke.xyz/posts/23615.html</id>
+    <published>2021-04-02T15:10:29.000Z</published>
+    <updated>2021-04-02T15:15:31.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;什么是库&quot;&gt;什么是库？&lt;/h2&gt;
+&lt;p&gt;库是写好的现有的，成熟的，可以复用的代码。&lt;/p&gt;
+&lt;p&gt;本质上来说库是一种可执行代码的二进制形式，可以被操作系统载入内存执行。&lt;strong&gt;库有两种：静态库（.a、.lib）和动态库（.so、.dll）。 windows上对应的是.lib .dll linux上对应的是.a .so&lt;/strong&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Studying" scheme="https://jyke.xyz/categories/Studying/"/>
+    
+    
+      <category term="c language" scheme="https://jyke.xyz/tags/c-language/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>内存对齐一把梭</title>
+    <link href="https://jyke.xyz/posts/43297.html"/>
+    <id>https://jyke.xyz/posts/43297.html</id>
+    <published>2021-04-02T15:04:26.000Z</published>
+    <updated>2021-04-02T15:15:31.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前提知识&quot;&gt;前提知识&lt;/h2&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;现代操作系统的内存空间都是按照byte划分的&lt;/li&gt;
+&lt;li&gt;但是读取这些数据的时候处理器并不一定是按照字节块来读取这些数据，而是以两个字节/四个字节/八个字节...为单位来存取，具体的读取粒度根据硬件平台的不同而有所不同&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;现在考虑以4个字节为内存存取粒度的平台（32位系统），代表处理器只能从地址为4的倍数的内存单元处读取数据。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="操作系统" scheme="https://jyke.xyz/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+    
+      <category term="操作系统" scheme="https://jyke.xyz/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>(四)进程调度——linux内核设计与实现读书笔记</title>
+    <link href="https://jyke.xyz/posts/32169.html"/>
+    <id>https://jyke.xyz/posts/32169.html</id>
+    <published>2021-03-25T16:41:05.000Z</published>
+    <updated>2021-03-25T16:43:00.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;调度程序的作用：将哪个进程投入运行，以及运行多长时间&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="linux kernel" scheme="https://jyke.xyz/categories/linux-kernel/"/>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
+    
+      <category term="linux kernel" scheme="https://jyke.xyz/tags/linux-kernel/"/>
+    
+      <category term="linux内核设计与实现" scheme="https://jyke.xyz/tags/linux%E5%86%85%E6%A0%B8%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux中的软链接和硬链接</title>
+    <link href="https://jyke.xyz/posts/43970.html"/>
+    <id>https://jyke.xyz/posts/43970.html</id>
+    <published>2021-03-25T16:32:25.000Z</published>
+    <updated>2021-03-25T16:43:00.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;inode号&quot;&gt;inode号&lt;/h2&gt;
+&lt;p&gt;linux中文件分为两个部分：&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;user data：用户数据&lt;/li&gt;
+&lt;li&gt;metadata：元数据
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;文件名：方便人识别和使用&lt;/li&gt;
+&lt;li&gt;inode号：文件的唯一标识，系统通过inode号找到用户数据&lt;/li&gt;
+&lt;li&gt;...&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;linux中查看inode号的命令：stat、ls -i&lt;/p&gt;
+&lt;p&gt;文件的移动和重命名不会改变inode号&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;所以，真正代表一个文件的是它的inode号。两个inode号一样的文件，指向的是同一个文件数据块。&lt;/strong&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux守护进程</title>
+    <link href="https://jyke.xyz/posts/42035.html"/>
+    <id>https://jyke.xyz/posts/42035.html</id>
+    <published>2021-03-25T16:30:21.000Z</published>
+    <updated>2021-03-25T16:43:00.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;http://www.ruanyifeng.com/blog/2016/02/linux-daemon.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;参考链接&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;前台任务与后台任务&quot;&gt;前台任务与后台任务&lt;/h2&gt;
+&lt;p&gt;前台任务：独占命令行窗口，只有运行完了或者手动中止，才能执行其他命令。&lt;/p&gt;
+&lt;p&gt;后台任务：只要在命令的尾部加上符号&lt;code&gt;&amp;amp;&lt;/code&gt;，启动的进程就会成为&quot;后台任务&quot;。如果要让正在运行的&quot;前台任务&quot;变为&quot;后台任务&quot;，可以先按&lt;code&gt;ctrl + z&lt;/code&gt;，然后执行&lt;code&gt;bg&lt;/code&gt;命令（让最近一个暂停的&quot;后台任务&quot;继续执行）。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>VFIO入门</title>
+    <link href="https://jyke.xyz/posts/11156.html"/>
+    <id>https://jyke.xyz/posts/11156.html</id>
+    <published>2021-03-25T15:58:15.000Z</published>
+    <updated>2021-03-25T16:03:56.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/bfbb5095d8fd&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;参考链接&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;前提知识&quot;&gt;前提知识&lt;/h2&gt;
+&lt;h3 id=&quot;lspci命令&quot;&gt;lspci命令&lt;/h3&gt;
+&lt;p&gt;加入系统装有1G的RAM，1G以后的物理内存地址空间都是外部设备IO在系统内存地址空间上的映射。/proc/iomem描述了系统中所有的设备I/O在内存地址空间上的映射。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="虚拟化" scheme="https://jyke.xyz/categories/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
+    
     
       <category term="虚拟化" scheme="https://jyke.xyz/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
     
-      <category term="分布式与云计算" scheme="https://jyke.xyz/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
-    
   </entry>
   
   <entry>
-    <title>JAVA的取模和取余操作</title>
-    <link href="https://jyke.xyz/posts/13488.html"/>
-    <id>https://jyke.xyz/posts/13488.html</id>
-    <published>2020-06-27T07:05:48.000Z</published>
-    <updated>2020-06-27T07:10:43.213Z</updated>
+    <title>Ubuntu20.04下安装mesa</title>
+    <link href="https://jyke.xyz/posts/30959.html"/>
+    <id>https://jyke.xyz/posts/30959.html</id>
+    <published>2020-12-08T15:34:54.000Z</published>
+    <updated>2020-12-08T15:36:31.000Z</updated>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;java中取模和取余的区别&quot;&gt;JAVA中取模和取余的区别&lt;/h1&gt;
-&lt;p&gt;Java 中的取余运算是 %，而取模运算是 Math.floorMod()。&lt;/p&gt;
-&lt;h2 id=&quot;计算过程&quot;&gt;计算过程&lt;/h2&gt;
-&lt;p&gt;在JAVA中，取模和取余的计算过程都是相同的：&lt;/p&gt;
-&lt;ol type=&quot;1&quot;&gt;
-&lt;li&gt;求整数商：c=a/b&lt;/li&gt;
-&lt;li&gt;取模或者取余：r=a-c*b&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;两者的区别在于第一步计算c时的不同，由于c计算的方式不同导致第二步取模或者取余的值不一定相同。&lt;/p&gt;
-&lt;p&gt;取模运算在计算c时，向负无穷方向舍入。取余运算在计算c时，向0舍入。&lt;/p&gt;
+      &lt;h1 id=&quot;在ubuntu20.04上安装mesa&quot;&gt;在Ubuntu20.04上安装Mesa&lt;/h1&gt;
+&lt;h2 id=&quot;安装meson&quot;&gt;安装Meson&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://mesonbuild.com/Quick-guide.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quickstart Guide&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;环境准备&quot;&gt;环境准备&lt;/h3&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;apt-get install python3 python3-pip python3-setuptools python3-wheel ninja-build&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;安装Ninja&lt;/p&gt;
+&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;pip3 install ninja&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
     
     </summary>
     
     
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
+      <category term="linux" scheme="https://jyke.xyz/categories/linux/"/>
     
     
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
+      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
     
-      <category term="JAVA" scheme="https://jyke.xyz/tags/JAVA/"/>
+      <category term="OpenGL" scheme="https://jyke.xyz/tags/OpenGL/"/>
+    
+      <category term="mesa" scheme="https://jyke.xyz/tags/mesa/"/>
     
   </entry>
   
   <entry>
-    <title>linux学习笔记（2）</title>
-    <link href="https://jyke.xyz/posts/49195.html"/>
-    <id>https://jyke.xyz/posts/49195.html</id>
-    <published>2020-06-14T08:14:46.000Z</published>
-    <updated>2020-06-14T12:44:05.576Z</updated>
+    <title>Linux内核的下载与编译安装</title>
+    <link href="https://jyke.xyz/posts/39689.html"/>
+    <id>https://jyke.xyz/posts/39689.html</id>
+    <published>2020-12-08T15:31:56.000Z</published>
+    <updated>2020-12-08T15:36:31.000Z</updated>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;环境变量与文件查找&quot;&gt;环境变量与文件查找&lt;/h1&gt;
-&lt;h2 id=&quot;环境变量&quot;&gt;环境变量&lt;/h2&gt;
-&lt;p&gt;在 Shell 中如何创建一个变量，如何给变量赋值和如何读取变量的值呢？&lt;/p&gt;
-&lt;p&gt;使用 &lt;code&gt;declare&lt;/code&gt; 命令创建一个变量名为 tmp 的变量：&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ &lt;span class=&quot;built_in&quot;&gt;declare&lt;/span&gt; tmp&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+      &lt;h1 id=&quot;linux内核的下载与编译安装&quot;&gt;Linux内核的下载与编译安装&lt;/h1&gt;
+&lt;h2 id=&quot;两种方式获取源码&quot;&gt;两种方式获取源码&lt;/h2&gt;
+&lt;p&gt;首先进入&lt;a href=&quot;https://www.kernel.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;内核官方网站&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;方式一：下载tarall并解压&lt;/p&gt;
+&lt;p&gt;方式二：使用Git获取最新的源码：&lt;a href=&quot;https://blog.csdn.net/wukongmingjing/article/details/81353040&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;参考&lt;/a&gt;&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;其实也可以不用 declare 预声明一个变量，直接即用即创建&lt;/p&gt;
+&lt;p&gt;内核源码一般置于/usr/src/*中，但是请不要把这些目录中的linux kernel源码用于开发&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;使用 &lt;code&gt;=&lt;/code&gt; 号赋值运算符，将变量 tmp 赋值为lemon。注意，与其他语言不同的是， Shell 中的赋值操作，&lt;code&gt;=&lt;/code&gt; 两边不可以输入空格，否则会报错。&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# 正确的赋值&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ tmp=lemon&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;# 错误的赋值&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ tmp = lemon&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;读取变量的值，使用 &lt;code&gt;echo&lt;/code&gt; 命令和 &lt;code&gt;$&lt;/code&gt; 符号（&lt;strong&gt;$ 符号用于表示引用一个变量的值，初学者经常忘记输入&lt;/strong&gt;）：&lt;/p&gt;
-&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ &lt;span class=&quot;built_in&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;variable&quot;&gt;$tmp&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200614162027.png&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;注意：并不是任何形式的变量名都是可用的，变量名只能是英文字母、数字或者下划线，且不能以数字作为开头。&lt;/strong&gt;&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
+    
+      <category term="kernel" scheme="https://jyke.xyz/tags/kernel/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Shell学习笔记</title>
+    <link href="https://jyke.xyz/posts/59949.html"/>
+    <id>https://jyke.xyz/posts/59949.html</id>
+    <published>2020-11-17T15:05:16.000Z</published>
+    <updated>2020-11-17T15:06:11.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;最基本的两个问题&quot;&gt;最基本的两个问题&lt;/h1&gt;
+&lt;h2 id=&quot;shell是什么&quot;&gt;shell是什么？&lt;/h2&gt;
+&lt;p&gt;shell是一个用C语言编写的程序，是用户使用Linux的桥梁。他提供了一个界面，用户通过这个界面访问操作系统服务。&lt;/p&gt;
+&lt;p&gt;而Shell脚本（Shell Script）是一种为shell编写的脚本程序。也就是我们通常说的Shell脚本编程。&lt;/p&gt;
+&lt;h2 id=&quot;bash是什么&quot;&gt;bash是什么？&lt;/h2&gt;
+&lt;p&gt;shell编程和其他的编程一样，需要文本编辑器和脚本解释器。&lt;/p&gt;
+&lt;p&gt;而Bash是Linux的一种Shell类型，是解释脚本文件的一个shell程序。&lt;/p&gt;
+&lt;p&gt;Linux的Shell种类众多，常见的有：&lt;/p&gt;
     
     </summary>
     
@@ -271,284 +431,139 @@
       <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
+      <category term="Shell" scheme="https://jyke.xyz/tags/Shell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>剑指Offer刷题记录</title>
+    <link href="https://jyke.xyz/posts/41647.html"/>
+    <id>https://jyke.xyz/posts/41647.html</id>
+    <published>2020-11-17T15:02:02.000Z</published>
+    <updated>2020-11-26T17:23:09.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;二维数组中的查找&quot;&gt;04.&lt;a href=&quot;https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;二维数组中的查找&lt;/a&gt;&lt;/h2&gt;
+    
+    </summary>
+    
+    
+      <category term="算法" scheme="https://jyke.xyz/categories/%E7%AE%97%E6%B3%95/"/>
+    
+    
+      <category term="算法" scheme="https://jyke.xyz/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="剑指Offer" scheme="https://jyke.xyz/tags/%E5%89%91%E6%8C%87Offer/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OpenCL, OpenGL, DirectX</title>
+    <link href="https://jyke.xyz/posts/9976.html"/>
+    <id>https://jyke.xyz/posts/9976.html</id>
+    <published>2020-11-17T14:57:07.000Z</published>
+    <updated>2020-11-17T15:06:11.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;opencl&quot;&gt;OpenCL&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;是由苹果（Apple）公司发起，业界众多著名厂商共同制作的面向异构系统通用目的并行编程的开放式、免费标准，也是一个统一的编程环境&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;OpenCL实际上是针对异构系统进行并行编程的一个全新的API，OpenCL可以利用GPU进行一些并行计算的工作。&lt;/li&gt;
+&lt;li&gt;OpenGL是针对图形的，而OpenCL则是针对并行计算的API。&lt;/li&gt;
+&lt;li&gt;它是一个连接硬件和软件的API接口，OpenCL的作用就是通过调用处理器和GPU的计算资源，释放硬件潜力，让程序运行得更快更好。&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="OpenGL" scheme="https://jyke.xyz/tags/OpenGL/"/>
+    
+      <category term="OpenCL" scheme="https://jyke.xyz/tags/OpenCL/"/>
+    
+      <category term="DirectX" scheme="https://jyke.xyz/tags/DirectX/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux启动过程分析</title>
+    <link href="https://jyke.xyz/posts/25242.html"/>
+    <id>https://jyke.xyz/posts/25242.html</id>
+    <published>2020-11-17T14:55:21.000Z</published>
+    <updated>2020-11-17T15:06:11.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;linux启动过程分析&quot;&gt;Linux启动过程分析&lt;/h1&gt;
+&lt;p&gt;以RedHat启动方式分析（Ubuntu的启动过程不太一样），可以分为5个阶段：&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;引导内核&lt;/li&gt;
+&lt;li&gt;运行init&lt;/li&gt;
+&lt;li&gt;系统初始化&lt;/li&gt;
+&lt;li&gt;建立终端&lt;/li&gt;
+&lt;li&gt;用户登录&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
+    
     
       <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
     
   </entry>
   
   <entry>
-    <title>vim编辑器基本操作</title>
-    <link href="https://jyke.xyz/posts/45117.html"/>
-    <id>https://jyke.xyz/posts/45117.html</id>
-    <published>2020-06-11T03:26:44.000Z</published>
-    <updated>2020-07-31T10:09:05.752Z</updated>
+    <title>Linux各个目录的作用</title>
+    <link href="https://jyke.xyz/posts/13366.html"/>
+    <id>https://jyke.xyz/posts/13366.html</id>
+    <published>2020-11-17T14:53:29.000Z</published>
+    <updated>2020-11-17T15:06:11.000Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/libertyunionkjy/jykeImg/master/images/20200611182352.png&quot; /&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/30617845&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;参考链接&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;文件系统的类型&quot;&gt;文件系统的类型&lt;/h1&gt;
+&lt;p&gt;LINUX有四种基本文件系统类型：普通文件、目录文件、连接文件和特殊文件，可用file命令来识别.&lt;/p&gt;
     
     </summary>
     
     
       <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
     
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
     
       <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
     
   </entry>
   
   <entry>
-    <title>linux学习笔记（1）</title>
-    <link href="https://jyke.xyz/posts/33835.html"/>
-    <id>https://jyke.xyz/posts/33835.html</id>
-    <published>2020-06-07T15:22:01.000Z</published>
-    <updated>2020-06-07T15:25:58.047Z</updated>
+    <title>LightDM, GDM, GNOME, KDE等的区别与联系</title>
+    <link href="https://jyke.xyz/posts/60263.html"/>
+    <id>https://jyke.xyz/posts/60263.html</id>
+    <published>2020-11-17T14:37:13.000Z</published>
+    <updated>2020-11-17T14:45:48.000Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;&lt;a href=&quot;https://help.ubuntu.com/lts/ubuntu-help/index.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Ubuntu 20.04 LTS 使用指南&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=&quot;基本概念及操作&quot;&gt;基本概念及操作&lt;/h1&gt;
-&lt;h2 id=&quot;桌面环境&quot;&gt;桌面环境&lt;/h2&gt;
-&lt;p&gt;UNIX/Linux 本身是没有图形界面的，我们通常在 UNIX/Linux 发行版上看到的图形界面实际都只是运行在 Linux 系统之上的一套软件。实现一个完整的桌面环境需要服务器和客户端&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;服务器：xorg，xorg实现了X窗口系统（简称为X）&lt;/li&gt;
-&lt;li&gt;客户端（X Client）：KDE，GNOME，XFCE，LXDE&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;这也意味着在 Linux 上你可以自己选择安装不同的桌面环境，甚至可以定制自己的专属桌面。&lt;/p&gt;
+      &lt;h1 id=&quot;linux窗口管理器wm&quot;&gt;linux窗口管理器（WM）&lt;/h1&gt;
+&lt;p&gt;窗口管理器（Window Manager）是&lt;strong&gt;控制窗口行为与位置&lt;/strong&gt;的软件。&lt;/p&gt;
+&lt;h1 id=&quot;linux桌面环境&quot;&gt;linux桌面环境&lt;/h1&gt;
+&lt;p&gt;桌面环境可能仅仅是一个简单的窗口管理器， 也可能是一个像 KDE 或者 GNOME这样的完整桌面应用程序套件。&lt;/p&gt;
     
     </summary>
     
     
       <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
     
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
     
       <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LeetCode刷题记录（JAVA语言）</title>
-    <link href="https://jyke.xyz/posts/46586.html"/>
-    <id>https://jyke.xyz/posts/46586.html</id>
-    <published>2020-06-02T07:56:35.000Z</published>
-    <updated>2020-06-29T06:39:44.358Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;这篇文章是自己刷LeetCode的记录，本意是通过自己把题目思路写出来来捋清楚思路，也为了日后的复习更方便，所以语言没有非常严谨，各位谨慎参考。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="LeetCode" scheme="https://jyke.xyz/categories/LeetCode/"/>
-    
-    
-      <category term="LeetCode" scheme="https://jyke.xyz/tags/LeetCode/"/>
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>排序算法整理</title>
-    <link href="https://jyke.xyz/posts/3248.html"/>
-    <id>https://jyke.xyz/posts/3248.html</id>
-    <published>2020-06-01T16:27:28.000Z</published>
-    <updated>2020-06-04T16:12:22.053Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;排序算法是数据结构中非常重要的一个部分，在面试的时候对于一些经典的排序算法应该做到信手拈来的程度，正好最近在准备暑期实习，也趁此机会把经典的排序算法做一个梳理，方便以后查阅。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="数据结构与算法" scheme="https://jyke.xyz/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"/>
-    
-    
-      <category term="数据结构" scheme="https://jyke.xyz/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JAVA——IO</title>
-    <link href="https://jyke.xyz/posts/50275.html"/>
-    <id>https://jyke.xyz/posts/50275.html</id>
-    <published>2020-06-01T11:15:15.000Z</published>
-    <updated>2020-06-01T16:25:53.381Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;io&quot;&gt;IO&lt;/h1&gt;
-&lt;p&gt;&lt;strong&gt;InputStream / OutputStream：&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;IO流以&lt;code&gt;byte&lt;/code&gt;（字节）为最小单位，因此也称为字节流。&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;在Java中，&lt;code&gt;InputStream&lt;/code&gt;代表输入字节流，&lt;code&gt;OuputStream&lt;/code&gt;代表输出字节流，这是最基本的两种IO流。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Reader / Writer：&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;如果我们需要读写的是字符，并且字符不全是单字节表示的ASCII字符，那么，按照&lt;code&gt;char&lt;/code&gt;来读写显然更方便，这种流称为字符流。&lt;/p&gt;
-&lt;p&gt;Java提供了&lt;code&gt;Reader&lt;/code&gt;和&lt;code&gt;Writer&lt;/code&gt;表示字符流，字符流传输的最小数据单位是&lt;code&gt;char&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;例如，我们把&lt;code&gt;char[]&lt;/code&gt;数组&lt;code&gt;Hi你好&lt;/code&gt;这4个字符用&lt;code&gt;Writer&lt;/code&gt;字符流写入文件，并且使用UTF-8编码，得到的最终文件内容是8个字节，英文字符&lt;code&gt;H&lt;/code&gt;和&lt;code&gt;i&lt;/code&gt;各占一个字节，中文字符&lt;code&gt;你好&lt;/code&gt;各占3个字节：&lt;/p&gt;
-&lt;p&gt;反过来，我们用&lt;code&gt;Reader&lt;/code&gt;读取以UTF-8编码的这8个字节，会从&lt;code&gt;Reader&lt;/code&gt;中得到&lt;code&gt;Hi你好&lt;/code&gt;这4个字符。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="JAVA" scheme="https://jyke.xyz/tags/JAVA/"/>
-    
-      <category term="廖雪峰" scheme="https://jyke.xyz/tags/%E5%BB%96%E9%9B%AA%E5%B3%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JAVA集合</title>
-    <link href="https://jyke.xyz/posts/18925.html"/>
-    <id>https://jyke.xyz/posts/18925.html</id>
-    <published>2020-05-31T08:26:29.000Z</published>
-    <updated>2020-05-31T14:05:14.450Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;集合&quot;&gt;集合&lt;/h1&gt;
-&lt;h2 id=&quot;java集合简介&quot;&gt;JAVA集合简介&lt;/h2&gt;
-&lt;p&gt;Java标准库自带的&lt;code&gt;java.util&lt;/code&gt;包提供了集合类：&lt;code&gt;Collection&lt;/code&gt;，它是除&lt;code&gt;Map&lt;/code&gt;外所有其他集合类的根接口。&lt;/p&gt;
-&lt;p&gt;Java的&lt;code&gt;java.util&lt;/code&gt;包主要提供了以下三种类型的集合：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;List&lt;/code&gt;：一种有序列表的集合，例如，按索引排列的&lt;code&gt;Student&lt;/code&gt;的&lt;code&gt;List&lt;/code&gt;；&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Set&lt;/code&gt;：一种保证&lt;strong&gt;没有重复元素&lt;/strong&gt;的集合，例如，所有无重复名称的&lt;code&gt;Student&lt;/code&gt;的&lt;code&gt;Set&lt;/code&gt;；&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Map&lt;/code&gt;：一种通过键值（key-value）查找的映射表集合，例如，根据&lt;code&gt;Student&lt;/code&gt;的&lt;code&gt;name&lt;/code&gt;查找对应&lt;code&gt;Student&lt;/code&gt;的&lt;code&gt;Map&lt;/code&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Java集合的设计有几个特点：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;一是实现了&lt;strong&gt;接口和实现类相分离&lt;/strong&gt;，例如，有序表的接口是&lt;code&gt;List&lt;/code&gt;，具体的实现类有&lt;code&gt;ArrayList&lt;/code&gt;，&lt;code&gt;LinkedList&lt;/code&gt;等；&lt;/li&gt;
-&lt;li&gt;二是&lt;strong&gt;支持泛型&lt;/strong&gt;，我们可以限制在一个集合中只能放入同一种数据类型的元素，例如：&lt;/li&gt;
-&lt;/ul&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;List&amp;lt;String&amp;gt; list = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ArrayList&amp;lt;&amp;gt;(); &lt;span class=&quot;comment&quot;&gt;// 只能放入String类型&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;Java访问集合总是通过统一的方式——迭代器（Iterator）来实现，它最明显的好处在于无需知道集合内部元素是按什么方式存储的。&lt;/p&gt;
-&lt;p&gt;注意到有一小部分集合类是遗留类，不应该继续使用。&lt;/p&gt;
-&lt;h3 id=&quot;小结&quot;&gt;小结&lt;/h3&gt;
-&lt;p&gt;Java的集合类定义在&lt;code&gt;java.util&lt;/code&gt;包中，支持泛型，主要提供了3种集合类，包括&lt;code&gt;List&lt;/code&gt;，&lt;code&gt;Set&lt;/code&gt;和&lt;code&gt;Map&lt;/code&gt;。Java集合使用统一的&lt;code&gt;Iterator&lt;/code&gt;遍历，尽量不要使用遗留接口。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="JAVA" scheme="https://jyke.xyz/tags/JAVA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SQL快速入门（持续更新中...）</title>
-    <link href="https://jyke.xyz/posts/4072.html"/>
-    <id>https://jyke.xyz/posts/4072.html</id>
-    <published>2020-05-26T16:03:17.000Z</published>
-    <updated>2020-08-27T12:13:22.945Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;​ 这篇文章是在学SQL的过程中记下来的比较重要的一些笔记，学习资源是来自油管的Mosh的教学视频，感觉是非常简单易懂的教程。如果你也是刚开始学习SQL的小白，可以跟着文章的视频链接学习一遍，其中比较重要的知识点已经在这篇文章中记录下来了。学习之前需要先安装MySQL，网上安装教程很多，并且也非常简单，在此就不赘述了。&lt;/p&gt;
-&lt;p&gt;点击链接可以访问Mosh油管视频：&lt;a href=&quot;https://www.youtube.com/watch?v=7S_tz1z_5bA&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Thanks for Mosh&#39;s Video&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;视频有一份配套的pdf笔记，获得笔记需要填写邮箱，填写邮箱之后就会经常收到Mosh推送的他的课程的广告，所以pdf文档可以直接&lt;a href=&quot;https://programmingwithmosh.com/wp-content/uploads/2019/03/SQL-Cheat-Sheet.pdf&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;点这里下载&lt;/a&gt;以免邮箱会收到很多广告。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>廖雪峰JAVA学习笔记（6）——泛型</title>
-    <link href="https://jyke.xyz/posts/2053.html"/>
-    <id>https://jyke.xyz/posts/2053.html</id>
-    <published>2020-05-24T18:02:00.000Z</published>
-    <updated>2020-05-24T18:03:29.109Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;什么是泛型&quot;&gt;什么是泛型&lt;/h1&gt;
-&lt;p&gt;一个简单的泛型例子：&lt;/p&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;ArrayList&lt;/span&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;T&lt;/span&gt;&amp;gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; T[] array;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; size;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(T e)&lt;/span&gt; &lt;/span&gt;&amp;#123;...&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;remove&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; index)&lt;/span&gt; &lt;/span&gt;&amp;#123;...&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; T &lt;span class=&quot;title&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; index)&lt;/span&gt; &lt;/span&gt;&amp;#123;...&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;code&gt;T&lt;/code&gt;可以是任何class。这样一来，我们就实现了：编写一次模版，可以创建任意类型的&lt;code&gt;ArrayList&lt;/code&gt;：&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="JAVA" scheme="https://jyke.xyz/tags/JAVA/"/>
-    
-      <category term="廖雪峰" scheme="https://jyke.xyz/tags/%E5%BB%96%E9%9B%AA%E5%B3%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>廖雪峰JAVA学习笔记（5）——注解</title>
-    <link href="https://jyke.xyz/posts/32221.html"/>
-    <id>https://jyke.xyz/posts/32221.html</id>
-    <published>2020-05-19T09:10:48.000Z</published>
-    <updated>2020-05-19T10:01:30.807Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;使用注解&quot;&gt;使用注解&lt;/h1&gt;
-&lt;p&gt;什么是注解（Annotation）？注解是放在Java源码的类、方法、字段、参数前的一种特殊“注释”：&lt;/p&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// this is a component:&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Resource&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;hello&quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Hello&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;meta&quot;&gt;@Inject&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; n;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;meta&quot;&gt;@PostConstruct&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;hello&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(@Param String name)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(name);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;meta&quot;&gt;@Override&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; String &lt;span class=&quot;title&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;string&quot;&gt;&quot;Hello&quot;&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;strong&gt;注释会被编译器直接忽略，注解则可以被编译器打包进入class文件&lt;/strong&gt;，因此，注解是一种用作标注的“元数据”。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="JAVA" scheme="https://jyke.xyz/tags/JAVA/"/>
-    
-      <category term="廖雪峰" scheme="https://jyke.xyz/tags/%E5%BB%96%E9%9B%AA%E5%B3%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>TCP/UDP知识点汇总</title>
-    <link href="https://jyke.xyz/posts/40445.html"/>
-    <id>https://jyke.xyz/posts/40445.html</id>
-    <published>2020-05-18T13:16:32.000Z</published>
-    <updated>2020-05-19T08:58:18.373Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;前-言&quot;&gt;前 言&lt;/h1&gt;
-&lt;p&gt;网络层只把分组发送到目的主机，但是真正通信的并不是主机而是主机中的进程。传输层提供了进程间的逻辑通信，传输层向高层用户屏蔽了下面网络层的核心细节，使应用程序看起来像是在两个传输层实体之间有一条端到端的逻辑通信信道。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/tags/%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="计算机网络" scheme="https://jyke.xyz/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
     
   </entry>
   

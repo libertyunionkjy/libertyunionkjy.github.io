@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="OpenCL  是由苹果（Apple）公司发起，业界众多著名厂商共同制作的面向异构系统通用目的并行编程的开放式、免费标准，也是一个统一的编程环境   OpenCL实际上是针对异构系统进行并行编程的一个全新的API，OpenCL可以利用GPU进行一些并行计算的工作。 OpenGL是针对图形的，而OpenCL则是针对并行计算的API。 它是一个连接硬件和软件的API接口，OpenCL的作用就是通过调用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCL, OpenGL, DirectX">
+<meta property="og:url" content="https://jyke.xyz/posts/9976.html">
+<meta property="og:site_name" content="柯柯的博客">
+<meta property="og:description" content="OpenCL  是由苹果（Apple）公司发起，业界众多著名厂商共同制作的面向异构系统通用目的并行编程的开放式、免费标准，也是一个统一的编程环境   OpenCL实际上是针对异构系统进行并行编程的一个全新的API，OpenCL可以利用GPU进行一些并行计算的工作。 OpenGL是针对图形的，而OpenCL则是针对并行计算的API。 它是一个连接硬件和软件的API接口，OpenCL的作用就是通过调用">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-17T14:57:07.000Z">
+<meta property="article:modified_time" content="2020-11-17T15:06:11.000Z">
+<meta property="article:author" content="Keke">
+<meta property="article:tag" content="OpenGL">
+<meta property="article:tag" content="OpenCL">
+<meta property="article:tag" content="DirectX">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://jyke.xyz/posts/9976.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>OpenCL, OpenGL, DirectX | 柯柯的博客</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-166231991-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="柯柯的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">柯柯的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">KK's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/9976.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OpenCL, OpenGL, DirectX
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-17 22:57:07 / 修改时间：23:06:11" itemprop="dateCreated datePublished" datetime="2020-11-17T22:57:07+08:00">2020-11-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/9976.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/9976.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="opencl">OpenCL</h1>
+<blockquote>
+<p>是由苹果（Apple）公司发起，业界众多著名厂商共同制作的面向异构系统通用目的并行编程的开放式、免费标准，也是一个统一的编程环境</p>
+</blockquote>
+<ul>
+<li>OpenCL实际上是针对异构系统进行并行编程的一个全新的API，OpenCL可以利用GPU进行一些并行计算的工作。</li>
+<li>OpenGL是针对图形的，而OpenCL则是针对并行计算的API。</li>
+<li>它是一个连接硬件和软件的API接口，OpenCL的作用就是通过调用处理器和GPU的计算资源，释放硬件潜力，让程序运行得更快更好。</li>
+</ul>
+<a id="more"></a>
+<h1 id="opengl">OpenGL</h1>
+<p>OpenGL是个专业的图形程序接口，是一个底层图形库。全称是Open Graphics Library。</p>
+<p>DirectX在家用市场领先，但是在专业领域OpenGL是个不能被取代的主角。</p>
+<h1 id="directx">DirectX</h1>
+<p>他是一个API。按照性质分类，这些API可以分为显示部分、声音部分、输入部分和网络部分。</p>
+<h1 id="三者之间的区别">三者之间的区别：</h1>
+<p>DirectX仅支持Windows。</p>
+<p>OpenGL和Apple:</p>
+<p>​ 90年代末Apple放弃了自己的QuickDraw 3D，将OpenGL作为Mac OS X的官方3D库。Apple的系统给OpenGL程序带来了不少拥护者。之后OpenGL正式被Linux采用，现在主流的游戏平台，包括PSP，PS3 和Wii都支持该技术。但是微软的Xbox360例外，它采用了自己的DirectX 图形库，而将OpenGL排除在外。</p>
+<p>​ 如今OpenGL对DirectX来说比以前更有竞争力了。Apple的OpenCL能更紧密地与OpenGL代码协同工作，能带来更广泛的支持。 Apple还将OpenCL作为一个免费的，开源的标准，让任何人都能参与到该平台中来。 　　OpenGL和OpenCL设计的相似性，使开发者更易于开发。比如在OpenCL下进行数据虚拟化计算，可以把相同的对象在OpenGL上进行图形渲染。同时OpenGL下的图形渲染可以在OpenCL下进行处理和转换。 　　OpenCL得到了GPU厂商NVIDIA和AMD的支持，同时支持Apple，SONY,任天堂的平台，还支持Linux和Windows，而且任何公司的开发者都可以参与到该技术的发展中来。</p>
+<h1 id="cuda">CUDA</h1>
+<p>CUDA是一个基于Nvidia GPU的并行计算的架构。 CUDA最主要的包含两个方面：</p>
+<ol type="1">
+<li>ISA指令集架构；</li>
+<li>硬件计算引擎；实际上是硬件和指令集。</li>
+</ol>
+<p>也就是说我们可以把CUDA看做是与X86或者cell类似的架构，但是是基于是GPU，而不是传统的CPU</p>
+<h1 id="relationship-between-opencl-and-cuda">Relationship Between OpenCL And CUDA</h1>
+<ul>
+<li><p>CUDA和OpenCL的关系并不是冲突关系，而是<strong>包容关系</strong>。OpenCL是一个API，在第一个级别，CUDA架构是更高一个级别，在这个架构上不管是OpenCL还是DX11这样的API，还是像C语言、Fortran、DX11计算，都可以支持。作为程序开发员来讲，一般他们只懂这些语言或者API，可以采用多种语言开发自己的程序，不管他选择什么语言，只要是希望调用GPU的计算能，在这个架构上都可以用CUDA来编程。</p></li>
+<li><p>关于OpenCL与CUDA之间的技术区别，<strong>主要体现在实现方法上</strong>。基于C语言的CUDA被包装成一种容易编写的代码，因此即使是不熟悉芯片构造的科研人员，也可能利用CUDA工具编写出实用的程序。而OpenCL虽然句法上与CUDA接近，但是它更加强调底层操作，因此难度较高，但正因为如此，OpenCL才能跨平台运行。</p></li>
+<li><p>CUDA是一个并行计算的架构，包含有一个指令集架构和相应的硬件引擎。OpenCL是一个并行计算的应用程序编程接口（API），在NVIDIA CUDA架构上OpenCL是除了C for CUDA外新增的一个CUDA程序开发途径。</p></li>
+<li><p>如果你想获得更多的对硬件上的控制权的话，你可以使用OpenCL这个API来进行编程，如果对API不是太了解，也可以用CUDA C语言来编程，这是两种不同编程的方式，他们有他们相同点和不同点。</p>
+<blockquote>
+<p>OpenCL和CUDA C语言进行开发的时候，在并行计算这块，他们的概念是差不多的，这两种程序在程序上是有很大的相似度，所以程序之间的相互移植相对来说也是比较容易。</p>
+</blockquote></li>
+<li><p>CUDA C语言与OpenCL的定位不同，或者说是用人群不同。CUDA C是一种高级语言，那些对硬件了解不多的非专业人士也能轻松上手；而OpenCL则是针对硬件的应用程序开发接口，它能给程序员更多对硬件的控制权，相应的上手及开发会比较难一些。</p></li>
+<li><p>程序员的使用习惯也是非常重要的一方面，那些在<code>X86 CPU</code>平台使用C语言的人员，会很容易接受基于CUDA GPU平台的C语言；而习惯于使用OpenGL图形开发的人员，看到OpenCL会更加亲切一些，在其基础上开发与图形、视频有关的计算程序会非常容易。</p></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
+              <a href="/tags/OpenCL/" rel="tag"># OpenCL</a>
+              <a href="/tags/DirectX/" rel="tag"># DirectX</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/25242.html" rel="prev" title="Linux启动过程分析">
+      <i class="fa fa-chevron-left"></i> Linux启动过程分析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/41647.html" rel="next" title="剑指Offer刷题记录">
+      剑指Offer刷题记录 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#opencl"><span class="nav-number">1.</span> <span class="nav-text">OpenCL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#opengl"><span class="nav-number">2.</span> <span class="nav-text">OpenGL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#directx"><span class="nav-number">3.</span> <span class="nav-text">DirectX</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三者之间的区别"><span class="nav-number">4.</span> <span class="nav-text">三者之间的区别：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cuda"><span class="nav-number">5.</span> <span class="nav-text">CUDA</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#relationship-between-opencl-and-cuda"><span class="nav-number">6.</span> <span class="nav-text">Relationship Between OpenCL And CUDA</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Keke"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Keke</p>
+  <div class="site-description" itemprop="description">记录学习的地方</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://libertyunionkjy@gmail.com/" title="E-Mail → https:&#x2F;&#x2F;libertyunionkjy@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Keke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el         : '#valine-comments',
+      path       : location.pathname,
+    }, {"enable":true,"appId":"tnKOKDSuvxOLRFeojycmFGDV-MdYXbMMI","appKey":"Q4ro4ajDoVK1ScWWSlGCxY3G","notify":true,"verify":false,"placeholder":"快来评论吧！柯柯给你举高高ヽ(✿ﾟ▽ﾟ)ノ","avatar":"monsterid","meta":["nick","mail","link"],"pageSize":10,"language":"zh-cn","visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

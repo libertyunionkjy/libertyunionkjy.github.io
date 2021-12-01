@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="前提知识  现代操作系统的内存空间都是按照byte划分的 但是读取这些数据的时候处理器并不一定是按照字节块来读取这些数据，而是以两个字节&#x2F;四个字节&#x2F;八个字节...为单位来存取，具体的读取粒度根据硬件平台的不同而有所不同  现在考虑以4个字节为内存存取粒度的平台（32位系统），代表处理器只能从地址为4的倍数的内存单元处读取数据。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内存对齐一把梭">
+<meta property="og:url" content="https://jyke.xyz/posts/43297.html">
+<meta property="og:site_name" content="柯柯的博客">
+<meta property="og:description" content="前提知识  现代操作系统的内存空间都是按照byte划分的 但是读取这些数据的时候处理器并不一定是按照字节块来读取这些数据，而是以两个字节&#x2F;四个字节&#x2F;八个字节...为单位来存取，具体的读取粒度根据硬件平台的不同而有所不同  现在考虑以4个字节为内存存取粒度的平台（32位系统），代表处理器只能从地址为4的倍数的内存单元处读取数据。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-04-02T15:04:26.000Z">
+<meta property="article:modified_time" content="2021-04-02T15:15:31.000Z">
+<meta property="article:author" content="Keke">
+<meta property="article:tag" content="操作系统">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://jyke.xyz/posts/43297.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>内存对齐一把梭 | 柯柯的博客</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-166231991-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="柯柯的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">柯柯的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">KK's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/43297.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          内存对齐一把梭
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-02 23:04:26 / 修改时间：23:15:31" itemprop="dateCreated datePublished" datetime="2021-04-02T23:04:26+08:00">2021-04-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/43297.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/43297.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前提知识">前提知识</h2>
+<ol type="1">
+<li>现代操作系统的内存空间都是按照byte划分的</li>
+<li>但是读取这些数据的时候处理器并不一定是按照字节块来读取这些数据，而是以两个字节/四个字节/八个字节...为单位来存取，具体的读取粒度根据硬件平台的不同而有所不同</li>
+</ol>
+<p>现在考虑以4个字节为内存存取粒度的平台（32位系统），代表处理器只能从地址为4的倍数的内存单元处读取数据。</p>
+<a id="more"></a>
+<h2 id="内存对齐是什么">内存对齐是什么</h2>
+<p>内存对齐是计算机系统对基本类型的数据存放的内存位置的一种规则。</p>
+<h2 id="为什么要内存对齐">为什么要内存对齐</h2>
+<p>考虑一个int型变量，32位系统上占四个字节。</p>
+<p>如果不按内存对齐的规则存放数据，即随便存放数据（前面说过，内存对齐是计算机系统对数据存放位置的一种规则）。</p>
+<p>如果是下面这一种情况：一个int变量存放在从地址1开始的连续四个字节地址中。</p>
+<p>那么以前提知识中提到的，处理器只能从4的倍数的地址取数据，就需要取两次数据，先从0地址开始读取第一个4字节块,剔除不想要的字节（0地址），然后从地址4开始读取下一个4字节块，同样剔除不要的数据（5，6，7地址），最后留下的两块数据合并放入寄存器。这需要做很多工作。</p>
+<p>如果制定一种规则，可以使得数据“刚好出现”在适当的内存地址中，使得处理器既可以通过尽量少的总线周期读取数据，又可以不用“剔除”掉一些数据，岂不美哉？内存对齐就是做了这个工作。</p>
+<h2 id="内存对齐规则">内存对齐规则</h2>
+<p>先来了解一些基本的术语：</p>
+<ol type="1">
+<li><p>对齐系数：每个特定平台上都有自己的对齐系数，可以通过预编译命令<code>#pragma pack(n)</code>，n=1,2,4,8,16 来改变这一系数，其中 n 就是你要指定的“对齐系数”。</p></li>
+<li><p>有效对齐值（对齐单位）：是 <code>#pragma pack</code>指定值和<strong>结构体中最长数据类型长度</strong>中<strong>较小</strong>的那个。</p>
+<blockquote>
+<p>VS、VC 默认是#pragma pack(8)，而 gcc 默认是#pragma pack(4)，并且gcc只支持1，2，4对齐。</p>
+<p>结构体中最长数据类型长度：内存对齐对结构体的存储影响是非常大的，看下面例子就知道啦！</p>
+</blockquote></li>
+</ol>
+<p>具体规则：</p>
+<ol type="1">
+<li>结构体变量的<strong>首地址</strong>是有效对齐值（对齐单位）的整数倍。</li>
+<li>结构体第一个成员的<strong>偏移量（offset）</strong>为0，以后每个成员相对于结构体首地址的offset 都是<strong>该成员大小与有效对齐值中较小那个</strong>的整数倍，如有需要编译器会在成员之间加上填充字节。</li>
+<li><strong>结构体的总大小</strong>为有效对齐值 的<strong>整数倍</strong>，如有需要编译器会在最末一个成员之后加上填充字节。</li>
+<li>结构体内类型相同的连续元素将在连续的空间内，和数组一样。</li>
+</ol>
+<h2 id="举例">举例</h2>
+<p>环境VS2012，默认是#pragma pack(8)</p>
+<h3 id="例1">例1</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> i;    <span class="comment">// 4个字节</span></span><br><span class="line">    <span class="keyword">char</span> c1;  <span class="comment">// 1个字节</span></span><br><span class="line">    <span class="keyword">char</span> c2;  <span class="comment">// 1个字节</span></span><br><span class="line">&#125;x1;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">char</span> c1;  <span class="comment">// 1个字节</span></span><br><span class="line">    <span class="keyword">int</span> i;    <span class="comment">// 4个字节</span></span><br><span class="line">    <span class="keyword">char</span> c2;  <span class="comment">// 1个字节</span></span><br><span class="line">&#125;x2;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">char</span> c1;  <span class="comment">// 1个字节</span></span><br><span class="line">    <span class="keyword">char</span> c2;  <span class="comment">// 1个字节</span></span><br><span class="line">    <span class="keyword">int</span> i;    <span class="comment">// 4个字节</span></span><br><span class="line">&#125;x3;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,<span class="keyword">sizeof</span>(x1));  <span class="comment">// 输出8</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,<span class="keyword">sizeof</span>(x2));  <span class="comment">// 输出12</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,<span class="keyword">sizeof</span>(x3));  <span class="comment">// 输出8</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>有效对齐值：三个结构体的数据元素都是一样的，只是结构体中元素排列的顺序不同，最长数据结构为int，占用4个字节，与#pragma pack(8)相比，得出有效对齐值为4</p>
+<p><strong>考虑x2的存储结构</strong></p></li>
+<li><p>首地址为有效对齐值（4）的整数倍</p></li>
+<li><p><code>char c1</code>的偏移量为0；</p></li>
+<li><p><code>int i</code>长度与有效对齐值都是4，故较小值是4，所以<code>int i</code>的偏移量为4的整数倍，这里为4，需要在<code>char c1</code>后填充3个字节；</p></li>
+<li><p><code>char c2</code>长度为1，有效对齐值是4，故较小值是1，所以<code>char c2</code>的偏移量为1的整数倍，这里为5，不用填充</p></li>
+<li><p>结构体的总大小为有效对齐值的整数倍，需要在<code>char c2</code>后面填充3个字节达到12个字节</p></li>
+</ul>
+<h3 id="例2">例2</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> a;      <span class="comment">// 4个字节</span></span><br><span class="line">    <span class="keyword">char</span> b[<span class="number">6</span>];  <span class="comment">// 6个字节</span></span><br><span class="line">    <span class="keyword">double</span> c;   <span class="comment">// 8个字节</span></span><br><span class="line">&#125;st;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,<span class="keyword">sizeof</span>(st));  <span class="comment">// 输出24</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有效对齐值为8，<code>char b[6]</code>可以看作连续6个单独的char成员</p>
+<h2 id="参考链接">参考链接</h2>
+<p><a href="https://songlee24.github.io/2014/09/20/memory-alignment/" target="_blank" rel="noopener">神奕的博客</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"># 操作系统</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/32169.html" rel="prev" title="(四)进程调度——linux内核设计与实现读书笔记">
+      <i class="fa fa-chevron-left"></i> (四)进程调度——linux内核设计与实现读书笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/23615.html" rel="next" title="Linux中的动态库和静态库">
+      Linux中的动态库和静态库 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前提知识"><span class="nav-number">1.</span> <span class="nav-text">前提知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存对齐是什么"><span class="nav-number">2.</span> <span class="nav-text">内存对齐是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要内存对齐"><span class="nav-number">3.</span> <span class="nav-text">为什么要内存对齐</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存对齐规则"><span class="nav-number">4.</span> <span class="nav-text">内存对齐规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#举例"><span class="nav-number">5.</span> <span class="nav-text">举例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例1"><span class="nav-number">5.1.</span> <span class="nav-text">例1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例2"><span class="nav-number">5.2.</span> <span class="nav-text">例2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考链接"><span class="nav-number">6.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Keke"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Keke</p>
+  <div class="site-description" itemprop="description">记录学习的地方</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://libertyunionkjy@gmail.com/" title="E-Mail → https:&#x2F;&#x2F;libertyunionkjy@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Keke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el         : '#valine-comments',
+      path       : location.pathname,
+    }, {"enable":true,"appId":"tnKOKDSuvxOLRFeojycmFGDV-MdYXbMMI","appKey":"Q4ro4ajDoVK1ScWWSlGCxY3G","notify":true,"verify":false,"placeholder":"快来评论吧！柯柯给你举高高ヽ(✿ﾟ▽ﾟ)ノ","avatar":"monsterid","meta":["nick","mail","link"],"pageSize":10,"language":"zh-cn","visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="参考链接 前台任务与后台任务 前台任务：独占命令行窗口，只有运行完了或者手动中止，才能执行其他命令。 后台任务：只要在命令的尾部加上符号&amp;，启动的进程就会成为&quot;后台任务&quot;。如果要让正在运行的&quot;前台任务&quot;变为&quot;后台任务&quot;，可以先按ctrl + z，然后执行bg命令（让最近一个暂停的&quot;后台任务&quot;继续执行）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux守护进程">
+<meta property="og:url" content="https://jyke.xyz/posts/42035.html">
+<meta property="og:site_name" content="柯柯的博客">
+<meta property="og:description" content="参考链接 前台任务与后台任务 前台任务：独占命令行窗口，只有运行完了或者手动中止，才能执行其他命令。 后台任务：只要在命令的尾部加上符号&amp;，启动的进程就会成为&quot;后台任务&quot;。如果要让正在运行的&quot;前台任务&quot;变为&quot;后台任务&quot;，可以先按ctrl + z，然后执行bg命令（让最近一个暂停的&quot;后台任务&quot;继续执行）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-25T16:30:21.000Z">
+<meta property="article:modified_time" content="2021-03-25T16:43:00.000Z">
+<meta property="article:author" content="Keke">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://jyke.xyz/posts/42035.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Linux守护进程 | 柯柯的博客</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-166231991-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="柯柯的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">柯柯的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">KK's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/42035.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux守护进程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-26 00:30:21 / 修改时间：00:43:00" itemprop="dateCreated datePublished" datetime="2021-03-26T00:30:21+08:00">2021-03-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/42035.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/42035.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a href="http://www.ruanyifeng.com/blog/2016/02/linux-daemon.html" target="_blank" rel="noopener">参考链接</a></p>
+<h2 id="前台任务与后台任务">前台任务与后台任务</h2>
+<p>前台任务：独占命令行窗口，只有运行完了或者手动中止，才能执行其他命令。</p>
+<p>后台任务：只要在命令的尾部加上符号<code>&amp;</code>，启动的进程就会成为"后台任务"。如果要让正在运行的"前台任务"变为"后台任务"，可以先按<code>ctrl + z</code>，然后执行<code>bg</code>命令（让最近一个暂停的"后台任务"继续执行）。</p>
+<a id="more"></a>
+<p>"后台任务"有两个特点。</p>
+<blockquote>
+<ol type="1">
+<li>继承当前 session （对话）的标准输出（stdout）和标准错误（stderr）。因此，后台任务的所有输出依然会同步地在命令行下显示。</li>
+<li>不再继承当前 session 的标准输入（stdin）。你无法向这个任务输入指令了。如果它试图读取标准输入，就会暂停执行（halt）。</li>
+</ol>
+</blockquote>
+<h2 id="sighup信号">SIGHUP信号</h2>
+<p>Q：用户退出session以后，“后台任务”是否还会执行？</p>
+<p>Linux系统是这样设计的：</p>
+<blockquote>
+<ol type="1">
+<li>用户准备退出 session</li>
+<li>系统向该 session 发出<code>SIGHUP</code>信号</li>
+<li>session 将<code>SIGHUP</code>信号发给所有子进程</li>
+<li>子进程收到<code>SIGHUP</code>信号后，自动退出</li>
+</ol>
+</blockquote>
+<p>A：由shell的huponexit参数决定</p>
+<p>​ <code>shopt | grep huponexit</code></p>
+<p>​ 执行上面的命令，就会看到<code>huponexit</code>参数的值。</p>
+<p>​ 大多数Linux系统，这个参数默认关闭（<code>off</code>）。</p>
+<h2 id="disowm命令">disowm命令</h2>
+<p>将指定任务从"后台任务"列表（<code>jobs</code>命令的返回结果）之中移除。一个"后台任务"只要不在这个列表之中，session 就肯定不会向它发出<code>SIGHUP</code>信号。</p>
+<p><code>disown</code>的用法如下。</p>
+<blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 移出最近一个正在执行的后台任务</span></span><br><span class="line">$ <span class="built_in">disown</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 移出所有正在执行的后台任务</span></span><br><span class="line">$ <span class="built_in">disown</span> -r</span><br><span class="line"></span><br><span class="line"><span class="comment"># 移出所有后台任务</span></span><br><span class="line">$ <span class="built_in">disown</span> -a</span><br><span class="line"></span><br><span class="line"><span class="comment"># 不移出后台任务，但是让它们不会收到SIGHUP信号</span></span><br><span class="line">$ <span class="built_in">disown</span> -h</span><br><span class="line"></span><br><span class="line"><span class="comment"># 根据jobId，移出指定的后台任务</span></span><br><span class="line">$ <span class="built_in">disown</span> %2</span><br><span class="line">$ <span class="built_in">disown</span> -h %2</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="标准io">标准I/O</h2>
+<p>使用<code>disown</code>命令之后，还有一个问题。那就是，退出 session 以后，如果后台进程与标准I/O有交互，它还是会挂掉。</p>
+<p>这是因为"后台任务"的标准 I/O 继承自当前 session，<code>disown</code>命令并没有改变这一点。一旦"后台任务"读写标准 I/O，就会发现它已经不存在了，所以就报错终止执行。</p>
+<p>为了解决这个问题，需要对"后台任务"的标准 I/O 进行重定向。</p>
+<blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ node server.js &gt; stdout.txt 2&gt; stderr.txt &lt; /dev/null &amp;</span><br><span class="line">$ <span class="built_in">disown</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>上面这样执行，基本上就没有问题了。</p>
+<h2 id="nohup命令">nohup命令</h2>
+<p>还有比<code>disown</code>更方便的命令，就是<code>nohup</code>。</p>
+<blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nohup node server.js &amp;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><code>nohup</code>命令对<code>server.js</code>进程做了三件事。</p>
+<blockquote>
+<ul>
+<li>阻止<code>SIGHUP</code>信号发到这个进程。</li>
+<li>关闭标准输入。该进程不再能够接收任何输入，即使运行在前台。</li>
+<li>重定向标准输出和标准错误到文件<code>nohup.out</code>。</li>
+</ul>
+</blockquote>
+<p>也就是说，<code>nohup</code>命令<strong>实际上将子进程与它所在的 session 分离了。</strong></p>
+<p>注意，<code>nohup</code>命令不会自动把进程变为"后台任务"，所以必须加上<code>&amp;</code>符号。</p>
+<h2 id="screen命令与tmux命令">Screen命令与Tmux命令</h2>
+<p>使用 terminal multiplexer （终端复用器：在同一个终端里面，管理多个session），典型的就是 <a href="https://www.gnu.org/software/screen/" target="_blank" rel="noopener">Screen</a> 命令和 <a href="https://tmux.github.io/" target="_blank" rel="noopener">Tmux</a> 命令。</p>
+<p>它们可以在当前 session 里面，新建另一个 session。这样的话，当前 session 一旦结束，不影响其他 session。而且，以后重新登录，还可以再连上早先新建的 session。</p>
+<h3 id="screen">Screen</h3>
+<blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新建一个 session</span></span><br><span class="line">$ screen</span><br><span class="line">$ node server.js</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>然后，按下<code>ctrl + A</code>和<code>ctrl + D</code>，回到原来的 session，从那里退出登录。下次登录时，再切回去。</p>
+<blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ screen -r</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>如果新建多个后台 session，就需要为它们指定名字。</p>
+<blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ screen -S name</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切回指定 session</span></span><br><span class="line">$ screen -r name</span><br><span class="line">$ screen -r pid_number</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出所有 session</span></span><br><span class="line">$ screen -ls</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>如果要停掉某个 session，可以先切回它，然后按下<code>ctrl + c</code>和<code>ctrl + d</code>。</p>
+<h3 id="tmux">Tmux</h3>
+<p>Tmux 比 Screen 功能更多、更强大，它的基本用法如下。</p>
+<blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ tmux</span><br><span class="line">$ node server.js</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回原来的session</span></span><br><span class="line">$ tmux detach</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>除了<code>tmux detach</code>，另一种方法是按下<code>Ctrl + B</code>和<code>d</code> ，也可以回到原来的 session。</p>
+<blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下次登录时，返回后台正在运行服务session</span></span><br><span class="line">$ tmux attach</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>如果新建多个 session，就需要为每个 session 指定名字。</p>
+<blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新建 session</span></span><br><span class="line">$ tmux new -s session_name</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换到指定 session</span></span><br><span class="line">$ tmux attach -t session_name</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出所有 session</span></span><br><span class="line">$ tmux list-sessions</span><br><span class="line"></span><br><span class="line"><span class="comment"># 退出当前 session，返回前一个 session </span></span><br><span class="line">$ tmux detach</span><br><span class="line"></span><br><span class="line"><span class="comment"># 杀死指定 session</span></span><br><span class="line">$ tmux <span class="built_in">kill</span>-session -t session-name</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="systemd">Systemd</h2>
+<p><a href="http://www.ruanyifeng.com/blog/2016/03/systemd-tutorial-commands.html" target="_blank" rel="noopener">参考链接</a></p>
+<p>除了专用工具以外，Linux系统有自己的守护进程管理工具 Systemd 。它是操作系统的一部分，直接与内核交互，性能出色，功能极其强大。</p>
+<h3 id="systemd主要命令">Systemd主要命令</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl:管理系统</span><br></pre></td></tr></table></figure>
+<h2 id="systemctl和servicechkconfig命令的区别">systemctl和service、chkconfig命令的区别</h2>
+<p><strong>总结：service和chkconfig命令的功能现在已经被systemctl命令所取代</strong></p>
+<p><a href="https://www.bilibili.com/read/cv5007123/" target="_blank" rel="noopener">参考链接</a></p>
+<p><strong>service命令的功能：启动、停止、重启动和查看服务</strong></p>
+<p>以下命令可以取代service命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">systemctl start cups</span></span><br><span class="line"><span class="meta">$</span><span class="bash">systemctl stop cups</span></span><br><span class="line"><span class="meta">$</span><span class="bash">systemctl restart cups</span></span><br><span class="line"><span class="meta">$</span><span class="bash">systemctl status cups</span></span><br></pre></td></tr></table></figure>
+<p><strong>chkconfig命令的功能：查看开机自动启动的服务</strong></p>
+<p>以下命令可以取代chkconfig命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">systemctl <span class="built_in">disable</span> cups</span></span><br><span class="line"><span class="meta">$</span><span class="bash">systemctl <span class="built_in">enable</span> cups</span></span><br><span class="line"><span class="meta">#</span><span class="bash">查看开机启动项</span></span><br><span class="line"><span class="meta">$</span><span class="bash">systemctl list-unit-files</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/11156.html" rel="prev" title="VFIO入门">
+      <i class="fa fa-chevron-left"></i> VFIO入门
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/43970.html" rel="next" title="Linux中的软链接和硬链接">
+      Linux中的软链接和硬链接 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前台任务与后台任务"><span class="nav-number">1.</span> <span class="nav-text">前台任务与后台任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sighup信号"><span class="nav-number">2.</span> <span class="nav-text">SIGHUP信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#disowm命令"><span class="nav-number">3.</span> <span class="nav-text">disowm命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准io"><span class="nav-number">4.</span> <span class="nav-text">标准I&#x2F;O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nohup命令"><span class="nav-number">5.</span> <span class="nav-text">nohup命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#screen命令与tmux命令"><span class="nav-number">6.</span> <span class="nav-text">Screen命令与Tmux命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#screen"><span class="nav-number">6.1.</span> <span class="nav-text">Screen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tmux"><span class="nav-number">6.2.</span> <span class="nav-text">Tmux</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#systemd"><span class="nav-number">7.</span> <span class="nav-text">Systemd</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#systemd主要命令"><span class="nav-number">7.1.</span> <span class="nav-text">Systemd主要命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#systemctl和servicechkconfig命令的区别"><span class="nav-number">8.</span> <span class="nav-text">systemctl和service、chkconfig命令的区别</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Keke"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Keke</p>
+  <div class="site-description" itemprop="description">记录学习的地方</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://libertyunionkjy@gmail.com/" title="E-Mail → https:&#x2F;&#x2F;libertyunionkjy@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Keke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el         : '#valine-comments',
+      path       : location.pathname,
+    }, {"enable":true,"appId":"tnKOKDSuvxOLRFeojycmFGDV-MdYXbMMI","appKey":"Q4ro4ajDoVK1ScWWSlGCxY3G","notify":true,"verify":false,"placeholder":"快来评论吧！柯柯给你举高高ヽ(✿ﾟ▽ﾟ)ノ","avatar":"monsterid","meta":["nick","mail","link"],"pageSize":10,"language":"zh-cn","visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

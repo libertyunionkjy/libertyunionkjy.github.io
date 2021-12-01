@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="参考链接 文件系统的类型 LINUX有四种基本文件系统类型：普通文件、目录文件、连接文件和特殊文件，可用file命令来识别.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux各个目录的作用">
+<meta property="og:url" content="https://jyke.xyz/posts/13366.html">
+<meta property="og:site_name" content="柯柯的博客">
+<meta property="og:description" content="参考链接 文件系统的类型 LINUX有四种基本文件系统类型：普通文件、目录文件、连接文件和特殊文件，可用file命令来识别.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-17T14:53:29.000Z">
+<meta property="article:modified_time" content="2020-11-17T15:06:11.000Z">
+<meta property="article:author" content="Keke">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://jyke.xyz/posts/13366.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Linux各个目录的作用 | 柯柯的博客</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-166231991-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="柯柯的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">柯柯的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">KK's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/13366.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux各个目录的作用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-17 22:53:29 / 修改时间：23:06:11" itemprop="dateCreated datePublished" datetime="2020-11-17T22:53:29+08:00">2020-11-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/13366.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/13366.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a href="https://zhuanlan.zhihu.com/p/30617845" target="_blank" rel="noopener">参考链接</a></p>
+<h1 id="文件系统的类型">文件系统的类型</h1>
+<p>LINUX有四种基本文件系统类型：普通文件、目录文件、连接文件和特殊文件，可用file命令来识别.</p>
+<a id="more"></a>
+<h2 id="普通文件">1) 普通文件：</h2>
+<p>如文本文件、C语言元代码、SHELL脚本、二进制的可执行文件等，可用cat、less、more、vi、emacs来察看内容，用mv来改名。</p>
+<h2 id="目录文件">2) 目录文件：</h2>
+<p>包括文件名、子目录名及其指针。它是LINUX储存文件名的唯一地方，可用ls列出目录文件。</p>
+<h2 id="连接文件">3) 连接文件：</h2>
+<p>是指向同一索引节点的那些目录条目。用ls来查看是，连接文件的标志用l开头，而文件面后以"-&gt;"指向所连接的文件。</p>
+<h2 id="特殊文件">4) 特殊文件：</h2>
+<p>LINUX的一些设备如磁盘、终端、打印机等都在文件系统中表示出来，则一类文件就是特殊文件，常放在/dev目录内。例如，软驱A称为/dev/fd0。LINUX无C：的概念，而是用/dev/had来自第一硬盘。</p>
+<p>对于linux新手来说，最感到迷惑的问题之一就是文件都存在哪里呢?特别是对于那些从windows转过来的新手来说，linux的目录结构看起来有些奇怪哦。所以，在这里讲一下linux下的主要目录以及它们都是用来干什么的。</p>
+<h1 id="系统目录简介">系统目录简介</h1>
+<h2 id="section">1) /</h2>
+<p>这就是根目录。对你的电脑来说，有且只有一个根目录。所有的东西，我是说所有的东西都是从这里开始。举个例子：当你在终端里输入“/home”，你其实是在告诉电脑，先从/(根目录)开始，再进入到home目录。</p>
+<p>/</p>
+<p>This is the root directory. The mothership. The home field. The one and only top directory for your whole computer. Everything, and I mean EVERYTHING starts here. When you type ‘/home’ what you’re really saying is “start at / and then go to the home directory.”</p>
+<h2 id="root">2) /root</h2>
+<p>这是系统管理员(root user)的目录。对于系统来说，系统管理员就好比是上帝，它能对系统做任何事情，甚至包括删除你的文件。因此，请小心使用root帐号。</p>
+<p>/root</p>
+<p>This is where the root user lives. The root user is the god of your system. Root can do anything, up to and including removing your entire filesystem. So be careful using root.</p>
+<h2 id="bin">3) /bin</h2>
+<p>这里存放了标准的(或者说是缺省的)linux的工具，比如像“ls”、“vi”还有“more”等等。通常来说，这个目录已经包含在你的“path”系 统变量里面了。什么意思呢?就是：当你在终端里输入ls，系统就会去/bin目录下面查找是不是有ls这个程序。</p>
+<p>/bin</p>
+<p>Here’s where your standard linux utilities(read programs) live — things like “ls” and “vi” and “more”. Generally this directory is included in your path. What this means is that if you type ‘ls’, /bin is one of the places your shell will look to see if ‘ls’ means anything.</p>
+<h2 id="etc">4) /etc</h2>
+<p>这里主要存放了系统配置方面的文件。举个例子：你安装了samba这个套件，当你想要修改samba配置文件的时候，你会发现它们(配置文件)就在/etc/samba目录下。</p>
+<p>/etc</p>
+<p>Here’s where the administrative and system configuration stuff lives. For instance, if you have samba installed, and you want to modify the samba configuration files, you’d find them in /etc/samba.</p>
+<h2 id="dev">5) /dev</h2>
+<p>这里主要存放与设备(包括外设)有关的文件(unix和linux系统均把设备当成文件)。想连线打印机吗?系统就是从这个目录开始工作的。另外还有一些包括磁盘驱动、USB驱动等都放在这个目录。</p>
+<p>/dev</p>
+<p>Here’s where files that control peripherals live. Talking to a printer? Your computer is doing it from here. Same goes for disk drives, usb devices, and other such stuff.</p>
+<h2 id="home">6) /home</h2>
+<p>这里主要存放你的个人数据。具体每个用户的设置文件，用户的桌面文件夹，还有用户的数据都放在这里。每个用户都有自己的用户目录，位置为：/home/用户名。当然，root用户除外。</p>
+<p>/home</p>
+<p>Here’s where your data is stored. Config files specific to users, your Desktop folder(whick makes your desktop what it is), and any data related to your user. Each user will have their own /home/username folder, with the exception of the root user.</p>
+<h2 id="tmp">7) /tmp</h2>
+<p>这是临时目录。对于某些程序来说，有些文件被用了一次两次之后，就不会再被用到，像这样的文件就放在这里。有些linux系统会定期自动对这个目录进行清理，因此，千万不要把重要的数据放在这里。</p>
+<p>/tmp</p>
+<p>This is the Temporary folder. Think of it as a scratch directory for your Linux system. Files that won’t be needed by programs once their used once or twice are put here. Many Linux systems are set to automatically wipe the /tmp folder at certain intervals, so don’t put things you want to keep here.</p>
+<h2 id="usr">8) /usr</h2>
+<p>在这个目录下，你可以找到那些不适合放在/bin或/etc目录下的额外的工具。比如像游戏阿，一些打印工具拉等等。/usr目录包含了许多子目录： /usr/bin目录用于存放程序;/usr/share用于存放一些共享的数据，比如音乐文件或者图标等等;/usr/lib目录用于存放那些不能直接 运行的，但却是许多程序运行所必需的一些函数库文件。你的软件包管理器(应该是“新立得”吧)会自动帮你管理好/usr目录的。</p>
+<p>/usr</p>
+<p>Here’s where you’ll find extra utilities that don’t fit under /bin or /etc. Things like games, printer utilities, and whatnot. /usr is divided into sections like /usr/bin for programs, /usr/share for shared data like sound files or icons, /usr/lib for libraries whick cannot be directly run but are essential for running other programs.Your package manager takes care of the things in /usr for you.</p>
+<h2 id="opt">9) /opt</h2>
+<p>这里主要存放那些可选的程序。你想尝试最新的firefox测试版吗?那就装到/opt目录下吧，这样，当你尝试完，想删掉firefox的时候，你就可 以直接删除它，而不影响系统其他任何设置。安装到/opt目录下的程序，它所有的数据、库文件等等都是放在同个目录下面。</p>
+<p>举个例子：刚才装的测试版firefox，就可以装到/opt/firefox_beta目录下，/opt/firefox_beta目录下面就包含了运 行firefox所需要的所有文件、库、数据等等。要删除firefox的时候，你只需删除/opt/firefox_beta目录即可，非常简单。</p>
+<p>/opt</p>
+<p>Here’s where optional stuff is put. Trying out the latest Firefox beta? Install it to /opt where you can delete it without affecting other settings. Programs in here usually live inside a single folder whick contains all of their data, libraries, etc.</p>
+<h2 id="usrlocal">10) /usr/local</h2>
+<p>这里主要存放那些手动安装的软件，即不是通过“新立得”或apt-get安装的软件。它和/usr目录具有相类似的目录结构。让软件包管理器来管理/usr目录，而把自定义的脚本(scripts)放到/usr/local目录下面，我想这应该是个不错的主意。</p>
+<p>/usr/local</p>
+<p>This is where most manually installed(ie. outside of your package manager) software goes. It has the same structure as /usr. It is a good idea to leave /usr to your package manager and put any custom scripts and things into /usr/local, since nothing important normally lives in /usr/local.</p>
+<h2 id="media">11) /media</h2>
+<p>有些linux的发行版使用这个目录来挂载那些usb接口的移动硬盘(包括U盘)、CD/DVD驱动器等等。</p>
+<p>/media</p>
+<p>Some distros use this folder to mount things like usb disks, cd or dvd drives and other filesystems.</p>
+<h1 id="补充">补充</h1>
+<h2 id="bin-1">1) /bin</h2>
+<p>系统所需要的那些命令位于此目录，比如 ls、cp、mkdir等命令；功能和 /usr/bin (谨以此为例) 类似，这个目录中的文件都是可执行的、普通用户都可以使用的命令。</p>
+<p>作为LINUX系统所需要的最基础的命令就是放在这里（类似于 /usr/bin )</p>
+<p>但不用于基本的启动（譬如，在紧急维护中）。</p>
+<p>大多数命令都在这个目录下。</p>
+<h2 id="boot">2) /boot</h2>
+<p>Linux的内核及引导系统程序所需要的文件目录，比如 vmlinuz initrd.img 文件都位于这个目录中。在一般情况下，GRUB或LILO系统引导管理器也位于这个目录。</p>
+<h2 id="lostfound">3) /lost+found</h2>
+<p>在ext2或ext3文件系统中，当系统意外崩溃或机器意外关机，而产生一些文件碎片放在这里。当系统启动的过程中fsck工具会检查这里，并修复已经损 坏的文件系统。 有时系统发生问题，有很多的文件被移到这个目录中，可能会用手工的方式来修复，或移到文件到原来的位置上。</p>
+<h2 id="mnt">4) /mnt</h2>
+<p>这个目录一般是用于存放 "挂载储存设备的挂载目录" 的，比如有cdrom 等目录。</p>
+<p>可以参看/etc/fstab的定义。有时我们可以把让系统开机自动挂载文件系统，把挂载点放在这里也是可以的。主要看/etc/fstab中怎 么定义了；比如光驱可以挂载到/mnt/cdrom 。</p>
+<h2 id="opt-1">5) /opt</h2>
+<p>表示的是可选择的意思</p>
+<p>有些软件包也会被安装在这里，也就是自定义软件包，比如在Fedora Core 5.0中，OpenOffice就是安装在这里。有些我们自己编译的软件包，就可以安装在这个目录中；</p>
+<p>通过源码包安装的软件，可以通过如下命令行指定安装目录 :</p>
+<p>./configure --prefix=/opt/ [ 自定义目录 ] //其中 [ 自定义目录 ] 替换为 你自己的 安装目录</p>
+<h2 id="proc">6) /proc</h2>
+<p>操作系统运行时，进程信息及内核信息（比如cpu、硬盘分区、内存信息等）存放在这里。/proc目录伪装的文件系统proc的挂载目录，proc并不是真正的文件系统，它的定义可以参见 /etc/fstab 。</p>
+<h2 id="sbin">7) /sbin</h2>
+<p>大多是涉及系统管理的命令的存放，是超级权限用户root的可执行命令存放地，普通用户无权限执行这个目录下的命令，这个目录和 /usr/sbin 或 /usr/local/sbin 目录是相似的；</p>
+<p>我们记住一点就行，凡是目录sbin中包含的都是root权限才能执行的。</p>
+<h2 id="usr-1">8) /usr</h2>
+<p>这个是系统存放程序的目录，比如命令、帮助文件等。这个目录下有很多的文件和目录。当我们安装一个Linux发行版官方提供的软件包时，大多安装在这里。</p>
+<p>如果有涉及服务器配置文件的，会把配置文件安装在/etc目录中。/usr目录下包括 字体目录/usr/share/fonts ，帮助目录 /usr/share/man或/usr/share/doc，普通用户可执行文件目录/usr/bin 或/usr/local/bin ，超级权限用户root的可执行命令存放目录，比如 /usr/sbin 或/usr/X11R6/sbin 或/usr/local/sbin 等；还有程序的头文件存放目录/usr/include。</p>
+<h2 id="var">9) /var</h2>
+<p>这个目录的内容是经常变动的，看名字就知道，我们可以理解为vary的缩写，/var下有/var/log 这是用来存放系统日志的目录。/var/www目录是定义Apache服务器站点存放目录；/var/lib 用来存放一些库文件，比如MySQL的，以及MySQL数据库的的存放地；</p>
+<h1 id="彩蛋">彩蛋</h1>
+<p>在Linux中，</p>
+<p>/opt目录是存放某些大型软件或者某些特殊软件的目录，比如谷歌浏览器(Google Chrome)默认就是安装在/opt中。</p>
+<p>但是我们一般不会把opt单独分在一个区，因为/opt中大多数时候是空的，即使安装了软件也不会太多，而且有 些软件的容量还比较大，这样就会占用/的容量，我们可以在其它你愿意的地方建立一个目录来将/opt“转移”到别处，比如我的的/usr是单独分在一个 区，容量有50G，这么大的空间不要浪费了不是？而且/usr本来就是安装软件的地方，所以我可以/usr下建立一个叫opt的文件夹，然后右键点击这个 /usr下的opt，选择“创建链接”，得到一个名为“到 opt 的链接”文件，然后把这个文件剪切到/下，将原来的/opt删除，再将“到 opt 的链接”改名为opt就可以了，以后我们安装在/opt的软件实际上是安装到了/usr/opt下（实际上是一个符号链接）。</p>
+<p>/usr/local 这个目录一般是用来存放用户自编译安装软件的存放目录；一般是通过源码包安装的软件，如果没有特别指定安装目录的话，一般是安装在这个目录中。这个目录下面有子目录。自己看看吧。</p>
+<p>/usr/share 系统共用的东西存放地，比如 /usr/share/fonts 是字体目录，/usr/share/doc和/usr/share/man帮助文件。</p>
+<p>/var/log 系统日志存放，分析日志要看这个目录的东西；</p>
+<p>/var/spool 打印机、邮件、代理服务器等脱机目录；</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/60263.html" rel="prev" title="LightDM, GDM, GNOME, KDE等的区别与联系">
+      <i class="fa fa-chevron-left"></i> LightDM, GDM, GNOME, KDE等的区别与联系
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/25242.html" rel="next" title="Linux启动过程分析">
+      Linux启动过程分析 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#文件系统的类型"><span class="nav-number">1.</span> <span class="nav-text">文件系统的类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#普通文件"><span class="nav-number">1.1.</span> <span class="nav-text">1) 普通文件：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录文件"><span class="nav-number">1.2.</span> <span class="nav-text">2) 目录文件：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接文件"><span class="nav-number">1.3.</span> <span class="nav-text">3) 连接文件：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊文件"><span class="nav-number">1.4.</span> <span class="nav-text">4) 特殊文件：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#系统目录简介"><span class="nav-number">2.</span> <span class="nav-text">系统目录简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#section"><span class="nav-number">2.1.</span> <span class="nav-text">1) &#x2F;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#root"><span class="nav-number">2.2.</span> <span class="nav-text">2) &#x2F;root</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bin"><span class="nav-number">2.3.</span> <span class="nav-text">3) &#x2F;bin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#etc"><span class="nav-number">2.4.</span> <span class="nav-text">4) &#x2F;etc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dev"><span class="nav-number">2.5.</span> <span class="nav-text">5) &#x2F;dev</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#home"><span class="nav-number">2.6.</span> <span class="nav-text">6) &#x2F;home</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tmp"><span class="nav-number">2.7.</span> <span class="nav-text">7) &#x2F;tmp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#usr"><span class="nav-number">2.8.</span> <span class="nav-text">8) &#x2F;usr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#opt"><span class="nav-number">2.9.</span> <span class="nav-text">9) &#x2F;opt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#usrlocal"><span class="nav-number">2.10.</span> <span class="nav-text">10) &#x2F;usr&#x2F;local</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#media"><span class="nav-number">2.11.</span> <span class="nav-text">11) &#x2F;media</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#补充"><span class="nav-number">3.</span> <span class="nav-text">补充</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bin-1"><span class="nav-number">3.1.</span> <span class="nav-text">1) &#x2F;bin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#boot"><span class="nav-number">3.2.</span> <span class="nav-text">2) &#x2F;boot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lostfound"><span class="nav-number">3.3.</span> <span class="nav-text">3) &#x2F;lost+found</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mnt"><span class="nav-number">3.4.</span> <span class="nav-text">4) &#x2F;mnt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#opt-1"><span class="nav-number">3.5.</span> <span class="nav-text">5) &#x2F;opt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#proc"><span class="nav-number">3.6.</span> <span class="nav-text">6) &#x2F;proc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sbin"><span class="nav-number">3.7.</span> <span class="nav-text">7) &#x2F;sbin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#usr-1"><span class="nav-number">3.8.</span> <span class="nav-text">8) &#x2F;usr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#var"><span class="nav-number">3.9.</span> <span class="nav-text">9) &#x2F;var</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#彩蛋"><span class="nav-number">4.</span> <span class="nav-text">彩蛋</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Keke"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Keke</p>
+  <div class="site-description" itemprop="description">记录学习的地方</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://libertyunionkjy@gmail.com/" title="E-Mail → https:&#x2F;&#x2F;libertyunionkjy@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Keke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el         : '#valine-comments',
+      path       : location.pathname,
+    }, {"enable":true,"appId":"tnKOKDSuvxOLRFeojycmFGDV-MdYXbMMI","appKey":"Q4ro4ajDoVK1ScWWSlGCxY3G","notify":true,"verify":false,"placeholder":"快来评论吧！柯柯给你举高高ヽ(✿ﾟ▽ﾟ)ノ","avatar":"monsterid","meta":["nick","mail","link"],"pageSize":10,"language":"zh-cn","visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
