@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2021-12-01T05:07:09.560Z</updated>
+  <updated>2021-12-01T05:18:52.085Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -17,11 +17,42 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>SSM框架整合</title>
+    <link href="https://jyke.xyz/posts/10555.html"/>
+    <id>https://jyke.xyz/posts/10555.html</id>
+    <published>2021-12-01T05:17:50.000Z</published>
+    <updated>2021-12-01T05:18:52.085Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;ssmspringspringmvcmybatis&quot;&gt;SSM（Spring、SpringMVC、MyBatis）&lt;/h2&gt;
+&lt;h3 id=&quot;整合步骤&quot;&gt;整合步骤&lt;/h3&gt;
+&lt;ol
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Sam" scheme="https://jyke.xyz/categories/Sam/"/>
+    
+    
+      <category term="java" scheme="https://jyke.xyz/tags/java/"/>
+    
+      <category term="Sam" scheme="https://jyke.xyz/tags/Sam/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Debug Linux Kernel by Qemu and GDB</title>
     <link href="https://jyke.xyz/posts/42781.html"/>
     <id>https://jyke.xyz/posts/42781.html</id>
     <published>2021-12-01T04:58:44.000Z</published>
-    <updated>2021-12-01T05:07:09.560Z</updated>
+    <updated>2021-12-01T05:07:52.560Z</updated>
     
     <summary type="html">
     
@@ -532,30 +563,6 @@
       &lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/30617845&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;参考链接&lt;/a&gt;&lt;/p&gt;
 &lt;h1 id=&quot;文件系统的类型&quot;&gt;文件系统的类型&lt;/h1&gt;
 &lt;p&gt;LINUX有四种基本文件系统类型：普通文件、目录文件、连接文件和特殊文件，可用file命令来识别.&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LightDM, GDM, GNOME, KDE等的区别与联系</title>
-    <link href="https://jyke.xyz/posts/60263.html"/>
-    <id>https://jyke.xyz/posts/60263.html</id>
-    <published>2020-11-17T14:37:13.000Z</published>
-    <updated>2020-11-17T14:45:48.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;linux窗口管理器wm&quot;&gt;linux窗口管理器（WM）&lt;/h1&gt;
-&lt;p&gt;窗口管理器（Window Manager）是&lt;strong&gt;控制窗口行为与位置&lt;/strong&gt;的软件。&lt;/p&gt;
-&lt;h1 id=&quot;linux桌面环境&quot;&gt;linux桌面环境&lt;/h1&gt;
-&lt;p&gt;桌面环境可能仅仅是一个简单的窗口管理器， 也可能是一个像 KDE 或者 GNOME这样的完整桌面应用程序套件。&lt;/p&gt;
     
     </summary>
     
