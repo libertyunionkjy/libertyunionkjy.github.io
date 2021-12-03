@@ -211,7 +211,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-12-03 14:23:35 / 修改时间：14:28:48" itemprop="dateCreated datePublished" datetime="2021-12-03T14:23:35+08:00">2021-12-03</time>
+              <time title="创建时间：2021-12-03 14:23:35 / 修改时间：14:30:32" itemprop="dateCreated datePublished" datetime="2021-12-03T14:23:35+08:00">2021-12-03</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -249,291 +249,14 @@
 
       
           <p><a href="https://www.usenix.org/conference/atc14/technical-sessions/presentation/tian" target="_blank" rel="noopener">论文地址</a></p>
-<h2 id="摘要">摘要</h2>
-<ol type="1">
-<li>是一种全虚拟化技术：full-flaged GPU</li>
-<li>主要特性：性能，全功能，可伸缩性，隔离性</li>
-<li>达到了95%的本机性能和最多支持7个VM</li>
-</ol>
-<h2 id="介绍">介绍</h2>
-<p>现阶段GPU虚拟化有三个方式：</p>
-<figure>
-<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112021112383.png" alt="image-20211202111153349" /><figcaption>image-20211202111153349</figcaption>
-</figure>
-<p>设备仿真法：巨大的复杂性和极低的性能</p>
-<p>API 转发：面临着全功能的挑战，因为侵入性地修改guest的图形软件栈（个人理解为guest的图形驱动）很复杂；</p>
-<p>设备直通：无法共享</p>
-<p>gvt：第一个产品级的GPU虚拟化的实现</p>
-<ol type="1">
-<li>原生驱动</li>
-<li>中介传递</li>
-<li>大多数情况下虚拟机可以直接访问性能关键资源而不用虚拟机监视器（KVM）的干扰</li>
-<li>虚拟机的特权操作则被捕获以保证隔离性</li>
-</ol>
-<p>这篇文章做了什么工作？</p>
-<ol type="1">
-<li>全GPU虚拟化，原生驱动；</li>
-<li>显存资源分区，地址空间膨胀，直接执行虚拟机command buffer这三个技术来完成性能关键资源的使用</li>
-<li>提交命令时通过审核和保护命令缓冲区来隔离虚拟机</li>
-<li>在图形驱动中做了虚拟化扩展来提高性能</li>
-<li>提供了开源的代码库</li>
-<li>95%的native性能</li>
-</ol>
-<h2 id="gpu概述">GPU概述</h2>
-<h3 id="intel-gpu架构">Intel GPU架构</h3>
-<p>英特尔核心显卡的大概工作流程：</p>
-<figure>
-<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112021225019.png" alt="image-20211202122530859" /><figcaption>image-20211202122530859</figcaption>
-</figure>
-<ol type="1">
-<li>Render Engine从Command Buffer获取命令进行渲染</li>
-<li>Display Engine从Frame Buffer拿pixel data发到外部的显示器</li>
-</ol>
-<p>事实上这个架构适用于绝大部分的现代GPU，但是在显存的实现方式上有所不同，英特尔核心显卡使用系统内存作为显存。系统内存通过<strong>GPU Page Table</strong>来映射到多个不同的虚拟空间。GPU的virtual memory address space分为两个部分：</p>
-<ol type="1">
-<li>2GB的全局虚拟地址空间称为<strong>全局显存（Global graphics memory)</strong>，CPU和GPU都可以访问，所有进程共享，这个2GB的全局虚拟地址空间是通过global graphics translation table (GGTT) 来完成虚拟地址到物理地址的映射的，寻址过程如下图所示，主要用来作为command buffer和frame buffer</li>
-</ol>
-<figure>
-<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112021742604.png" alt="image-20211202174238493" /><figcaption>image-20211202174238493</figcaption>
-</figure>
-<ol start="2" type="1">
-<li><strong>本地显存（Local graphics memory ）</strong>：每个VM都有2GB的虚拟地址空间。GPU通过per-process graphics translation table(PPGTT)来完成地址翻译，过程如下图所示。只能由render engine通过 local page tables进行访问；在硬件加速的过程中会产生大量的数据访问：</li>
-</ol>
-<figure>
-<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112021750596.png" alt="image-20211202175008486" /><figcaption>image-20211202175008486</figcaption>
-</figure>
-<p>再来看架构图的上半部分：CPU通过GPU指令对GPU进行编程（生产者，消费者模型）。这个过程具体为：</p>
-<figure>
-<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112021245683.png" alt="image-20211202124524527" /><figcaption>image-20211202124524527</figcaption>
-</figure>
-<ol type="1">
-<li>用户程序和图形驱动之间是高级API：OpenGL或者DirectX</li>
-<li>Primary buffer是一个ring buffer，可以将batch buffer链接在一起，在这里，primary buffer就是 ring buffer；</li>
-<li>batch buffer用来传输大部分的命令（高达98%）在每种编程模型中；</li>
-<li>Primary buffer主要是用寄存器的head和tail进行控制的</li>
-<li>CPU把命令放到tail，然后GPU从head拿命令进行执行，执行完毕后通过更新head来通知CPU</li>
-</ol>
-<h3 id="四个关键接口的使用频率">四个关键接口的使用频率</h3>
-<p>了解一下以下这四个接口的使用频率，</p>
-<ol type="1">
-<li><strong>frame buffer（帧缓冲区）</strong></li>
-<li><strong>command buffer（命令缓冲区）</strong></li>
-<li>GPU Page Table Entries（PTEs），承载了GPU page tables</li>
-<li>I/O寄存器：包括了内存映射I/O（MMIO）、Port I/O（PIO）、PCI configuration space registers三个；</li>
-</ol>
-<p>这四个接口的访问频率：</p>
-<figure>
-<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112021414326.png" alt="image-20211202141447206" /><figcaption>image-20211202141447206</figcaption>
-</figure>
-<p>从这里我们可以看出：在装载的时候frame buffer用的比较多，在运行的时候command buffer 用的比较多；</p>
-<p>所以我们可以定义性能关键资源（performance-critical resources）为：frame buffer（帧缓冲区）和command buffer（命令缓冲区）</p>
-<p>特权资源（privileged resources)是：PTEs和I/O寄存器；</p>
-<h2 id="gvirt的设计和实现">gVirt的设计和实现</h2>
-<p>复杂性体现在：</p>
-<ol type="1">
-<li>虚拟化一整个现代GPU的复杂性</li>
-<li>多个GPU共享时的性能损失</li>
-<li>隔离性的挑战：通过smart shadowing的方式来解决这个问题</li>
-</ol>
-<h3 id="架构">架构</h3>
-<figure>
-<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112021422659.png" alt="image-20211202142239585" /><figcaption>image-20211202142239585</figcaption>
-</figure>
-<h4 id="两个模块">两个模块</h4>
-<p>架构图如上图所示，简单说来，在Xen架构下，我们的gvt可以分为两个模块，一个模块位于Xen Hypervisor中，另一个位于宿主机中。</p>
-<h5 id="gvirt-stub">gVirt Stub</h5>
-<ol type="1">
-<li>位于Xen Hypervisor中，扩展了vMMU（内存虚拟化）模块，包括为虚拟机准备的EPT和为宿主机准备的PVMMU；</li>
-<li><strong>这个模块是为了实现trap and pass-through 虚拟机对GPU某些资源的访问</strong>，传统的Xen只支持要么全部trap要么全部passthrough。</li>
-<li>所谓的passthrough 是指VM可以直接访问GPU的性能关键资源，也就是frame buffer（帧缓冲区）和command buffer（命令缓冲区）。所以：<strong>VM可以直接访问frame buffer和command buffer</strong></li>
-<li>所谓的trap是指来自VM对特权资源（privileged resources)——PTEs和I/O寄存器，的访问将被捕获并转发到位于宿主机中的中介驱动程序（gVirt Mediator）进行仿真。所以：<strong>VM对PTEs和I/O寄存器的访问将被捕获。</strong></li>
-</ol>
-<h5 id="mediator">Mediator</h5>
-<ol type="1">
-<li>mediator调用hypercall去访问物理GPU</li>
-<li>mediator实现了一个GPU调度程序，以便在虚拟机之间共享物理GPU（也就是在vGPU之间进行上下文切换）</li>
-<li>要依赖于宿主机上的驱动程序</li>
-<li>这个部分被实现为一个内核模块</li>
-</ol>
-<p>以上，总的来说，通过gVirt我们可以直接使用物理GPU执行VM提交的命令，避免了模拟一个render engine的复杂性，而渲染引擎是GPU最复杂的部分；</p>
-<h4 id="调度机制">调度机制</h4>
-<p>为什么要单独实现一个GPU调度器</p>
-<ol type="1">
-<li>GPU相比CPU来说上下文切换的成本很高（700us和300ns）</li>
-<li>CPU和GPU的内核数量可能不一致</li>
-</ol>
-<p>这里就要提出一个要求：CPU和GPU要能同时访问资源，这就引出了后面的<strong>resources partitioning设计</strong>，而为了完成这个资源分区设计，gvt保留了一个gVirt_info的内存映射（MMIO）寄存器窗口，用来将资源的分区信息传递给VM。</p>
-<h4 id="关于qemu">关于Qemu</h4>
-<p>gVirt stub可以选择将模拟请求路由到Qemu还是mediator，因为这里重用了Qemu的传统VGA 模式。</p>
-<h3 id="gpu共享">GPU共享</h3>
-<p>Mediator处理GPU的中断，并且可能会生成虚拟中断发送给相应的VM。这里说起来很简单，但是需要大量的工程工作以及对GPU的深刻理解，比如LInux的图形驱动程序可以访问大约700个I/O寄存器</p>
-<h4 id="render-engine-scheduing">Render engine scheduing</h4>
-<p>首先：粗粒度；粒度多粗？16ms；为什么？因为切换成本比较高而且人类对图像的感知比较低；</p>
-<p>其次我们要了解一下：</p>
-<ol type="1">
-<li>虚拟机的命令不断提交到GPU直到时间片用完；——————这里是分配的时间片</li>
-<li>而gVirt需要等到guest ring buffer空闲后才可以进行切换，因为目前大多数GPU都是非抢占式的；——————这里是真正的执行时间</li>
-</ol>
-<p>所以这两个时间其实是不一样的，不能说时间片一用完就立即进行切换了；为了不影响公平性，实现了一个命令跟踪的方案来保证命令不堆积；</p>
-<h4 id="render-context-switch">Render context switch</h4>
-<p>渲染引擎切换的时候，gVirt需要做什么？gVirt saves and restores internal pipeline state and I/O register states, plus cache/TLB flush，我们分别来看一看：</p>
-<ol type="1">
-<li>internal pipeline state：</li>
-<li>I/O寄存器：通过在一个render context list表中保存/读取进行实现</li>
-<li>cache/TLB：就是缓存和TLB，用于加速数据访问和地址转换：这俩东西必须在上下文切换的时候使用命令进行刷新，以保证隔离和正确性；</li>
-</ol>
-<p><strong>总的来说，我们在gVirt中切换上下文文的步骤是：</strong></p>
-<ol type="1">
-<li>保存当前I/O状态；</li>
-<li>刷新当前上下文；</li>
-<li>使用附加命令保存当前上下文；</li>
-<li>使用附加命令恢复新上下文；</li>
-<li>恢复新上下文的I/O状态。</li>
-</ol>
-<p>切换的时候ring buffer怎么切换？</p>
-<figure>
-<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112021633695.png" alt="image-20211202163314570" /><figcaption>image-20211202163314570</figcaption>
-</figure>
-<h4 id="显示管理">显示管理</h4>
-<ol type="1">
-<li>重用了宿主机的驱动进行display engine的初始化</li>
-<li>初始化完成后，如果VM的分辨率一样，只有frame buffer的位置需要改变</li>
-<li>如果分辨率不一样，就用一个叫做hardware scalar的东西来进行自动缩放</li>
-<li>很多时候vm都是通过远程管理的，所以其实并不需要显示管理</li>
-</ol>
-<h3 id="直通">直通</h3>
-<p>我们通过VM可以直接访问frame buffer和command buffer来提高性能；</p>
-<ol type="1">
-<li>对于2GB大小的全局显存：使用graphics memory resource partitioning（显存分区） and address space ballooning mechanism（地址空间膨胀）.</li>
-<li>对于本地显存：给每个VM都有2G的显存大小；</li>
-</ol>
-<h4 id="全局资源分区">全局资源分区</h4>
-<ul>
-<li><p>为什么需要？</p>
-<p>这个地方是CPU和GPU同时都可以访问的，然后CPU/GPU又是分开调用的，所以这就需要为每一个VM提供自己的资源，从而实现全局资源分区。</p>
-<figure>
-<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112021656408.png" alt="image-20211202165628271" /><figcaption>image-20211202165628271</figcaption>
-</figure></li>
-<li><p>那么减少了这个全局显存，有没有什么影响呢？</p>
-<p>根据实验，是没啥影响哒！</p>
-<figure>
-<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112021658938.png" alt="image-20211202165857883" /><figcaption>image-20211202165857883</figcaption>
-</figure></li>
-</ul>
-<p>但也因此需要有额外的开销，gVirt需要在宿主机视图和虚拟机视图之间进行转换。怎么解决呢？看下面的地址空间膨胀技术！</p>
-<h4 id="地址空间膨胀">地址空间膨胀</h4>
-<figure>
-<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112021708745.png" alt="image-20211202170811688" /><figcaption>image-20211202170811688</figcaption>
-</figure>
-<p>我们引入地址空间膨胀技术，以消除地址转换开销，如图7所示。gVirt通过gVirt_info MMIO窗口向VM的图形驱动程序公开分区信息。图形驱动程序将其他虚拟机的区域标记为“ballooned”，并从其图形内存分配器中保留这些区域。通过这种设计，有俩好处：</p>
-<ol type="1">
-<li>全局图形存储空间的来宾视图与主机视图完全相同；</li>
-<li>VM驱动程序的编程地址可以直接由最终的GPU所使用</li>
-<li>可以直接使用VM的command buffer，GPU可以直接拿这个command buffer来进行执行，不用使用shadow command buffer</li>
-</ol>
-<p>但是呢使用这种方案可能会有安全隐患，会在后面通过一些措施来保证command buffer不受攻击；</p>
-<h4 id="本地显存">本地显存</h4>
-<ol type="1">
-<li>只对GPU的渲染引擎可见</li>
-<li>本地显存地址可以直接被GPU使用</li>
-</ol>
-<h3 id="gpu页表虚拟化">GPU页表虚拟化</h3>
-<p>两种方式</p>
-<ol type="1">
-<li>共享的影子全局页表</li>
-<li>每个VM都有一个影子局部页表</li>
-</ol>
-<h4 id="共享的影子全局页表">共享的影子全局页表</h4>
-<p>按照下图所示，一个共享的全局影子页表可以使得VM的显存页直接映射到宿主机的内存页上，并且多个VM公用一个影子页表。这个global page table在MMIO空间，一共有512K项，每一项都指向了4KB的内存页，所以总的来说一共有2GB的全局显存。</p>
-<blockquote>
-<p>PTE：page table entries，就是某一页的具体的某一条目</p>
-</blockquote>
-<p>在VM发出更新PTE的请求的时候，gVirt会根据address apace ballooning信息来审核PTE的值。</p>
-<figure>
-<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112021818504.png" alt="image-20211202181859363" /><figcaption>image-20211202181859363</figcaption>
-</figure>
-<h4 id="vm独占的影子本地页表shadow-local-page-table">VM独占的影子本地页表（shadow local page table）</h4>
-<p>为什么需要这个页表？为了直通本地显存的访问。给谁访问，给render engine访问。</p>
-<ol type="1">
-<li>二级页表结构</li>
-</ol>
-<p>这里看的不是很明白。。。</p>
-<h3 id="安全">安全</h3>
-<p>要满足以下标准：</p>
-<ol type="1">
-<li>禁止VM映射未经过授权的显存页；</li>
-<li>所有由VM编程的GPU指令和GPU寄存器必须被评估，以确保不包含未经授权的显存地址；</li>
-<li>gVirt必须要解决拒绝服务的攻击，比如VM可能会故意触发大量的GPU hang；</li>
-</ol>
-<h4 id="vm间隔离">VM间隔离</h4>
-<h5 id="cpu访问隔离">CPU访问隔离</h5>
-<ol type="1">
-<li>（VM）的CPU在访问特权I/O寄存器和PTE的时候会被mediator捕获和模拟，所以一个恶意的VM既不能直接更改I/O寄存器，也不能映射未经授权的显存页；</li>
-<li>同时VM对frame buffer和command buffer的访问也收到EPT的保护</li>
-<li>同时gVirt 重用了command buffer，GPU可以直接从command buffer中取出指令进行执行而不需要一个shadow command buffer，这大大加强了性能，但与此同时，会破坏隔离性，我们会在下面的指令保护小节来解决这个问题。</li>
-</ol>
-<h5 id="gpu访问隔离">GPU访问隔离</h5>
-<p>gVirt会对显存地址进行审核，这个动作是在：</p>
-<ol type="1">
-<li>如果是寄存器访问指令，那么就在trap-and-emulation的同时审查</li>
-<li>如果是GPU command，就在提交的时候进行审查</li>
-</ol>
-<h5 id="拒绝服务攻击">拒绝服务攻击</h5>
-<ol type="1">
-<li>使用device reset功能从各种GPU hang中恢复</li>
-<li>在物理GPU hang的时候，gVirt还会模拟一个GPU hang event，此时所有VM会从GPU的运行队列中移除并且再重新恢复，如果一个VM挂起的数量超过阈值，就会摧毁这个VM</li>
-</ol>
-<h4 id="指令保护">指令保护</h4>
-<p>提出问题：为了保证每个VM都能正确的访问属于自己的显存地址，gVirt会在VM提交GPU command的时候进行审查，但是实际上，一个GPU command在提交和真正被执行之间是有时间窗口的，如果VM在这个窗口内修改了command，就会导致隔离性被破坏。</p>
-<p>解决问题的思路：根据shadow page table的思路，我们也许可以使用一个shadow ring buffer来解决这个问题，虽然shadow page table对性能的影响很大，但是在我们的情况下，性能影响也许没那么大，主要是因为command buffer和page table的编程模型是不一样的，主要有以下两个方面：</p>
-<ol type="1">
-<li>ring buffer是被静态分配的一个有限的页码，大小固定，并且根据硬件规范，不允许修改已经提交到ring buffer的指令；</li>
-<li>Batch buffer的页面是按需分配的，并最后链接到ring buffer中，提交batch buffer后到最后执行之前，不太可能访问该页面，batch buffer的一次性使用的机制可以不使用阴影buffer；</li>
-</ol>
-<p>解决问题的方案：根据以上分析，我们提出一种智能shadow的方案，总的来说就是对batch buffer和ring buffer使用不一样的shadow方案。具体细节见下。</p>
-<h5 id="对ring-buffer的延迟跟踪">对ring buffer的延迟跟踪</h5>
-<p>gVirt创建了一个shadow ring buffer，VM提交一个GPU command之后，会被复制到shadow ring buffer中，shadow buffer和 ring buffer采用懒同步的方式（需要同步的时候才进行同步），shadow buffer对VM是不可见的，从而解决了安全问题；</p>
-<h5 id="对batch-buffer的写保护">对batch buffer的写保护</h5>
-<p>也就是说，对客户机提交的batch buffer，提交后不允许修改，只允许使用，写保护在GPU执行完指令后进行移除，可以通过跟踪ring buffer的head来实现。与此同时，command buffer可能没有进行内存对齐，VM可能会利用剩余的空间进行命令写入，gVirt通过跟踪每个batch buffer的已使用和未使用的空间，并模拟VM向未使用的空间进行写入来填满未使用空间以保证正确性。</p>
-<p>解决问题的结果：工作良好，平均每秒产生9K个shadow command，成本很小，batch buffer的写保护每秒保护1700个页面。</p>
-<h3 id="优化">优化</h3>
-<ol type="1">
-<li>对宿主机图形驱动进行了少量修改以减少trap频率（大约60%的访问）</li>
-<li>为什么需要修改？根据硬件规范，图形驱动程序在访问某些MMIO时必须使用特殊的编程模式，最多可访问7个附加MMIO寄存器，以防止GPU进入节能模式。在native环境里面，这可能不会产生什么影响，但是在虚拟化的环境中，每一次对寄存器的访问其实都是一次特权操作，中间需要经过mediator进行模拟，这样的过程会产生巨大的开销；</li>
-<li>所以最终的解决办法是：gVirt依赖宿主机来管理GPU电源，而VM的电源管理则被禁用。</li>
-<li>最终只对宿主机的显卡驱动进行了少量优化即可（10LOC）</li>
-</ol>
-<blockquote>
-<p>显卡驱动怎么知道自己是在本机环境中还是虚拟化环境中呢？——通过gVirt_info_MMIO的信息</p>
-</blockquote>
-<h3 id="讨论">讨论</h3>
-<h4 id="独立于体系结构">独立于体系结构</h4>
-<p>体系结构独立性：尽管gVirt目前在英特尔处理器图形上实现，但其原理和体系结构也可应用于不同的GPU。帧缓冲区、命令缓冲区、I/O寄存器和页表的概念在现代GPU中都得到了很好的抽象。一些GPU可能会使用片上图形内存，但是，gVirt中使用的图形内存资源分区和地址空间膨胀机制也可以对这些GPU进行修改。此外，页表和命令缓冲区的阴影机制也适用于不同的GPU。GPU调度程序也是通用的，而特定的上下文切换序列可能不同。</p>
-<h4 id="hypervisorxenkvm可移植">Hypervisor（Xen、KVM）可移植</h4>
-<p>虚拟机监控程序可移植性：很容易将gVirt移植到其他虚拟机监控程序。gVirt的核心组件是与虚拟机监控程序无关的。尽管当前的实现是在1型虚拟机监控程序上实现的，但我们可以轻松地将gVirt扩展到2型虚拟机监控程序，例如KVM[17]，并使用钩子来访问主机MMIO（Linux图形驱动程序）。例如，可以在主机图形驱动程序中的I/O访问接口上注册回调，以便中介可以拦截和模拟主机驱动程序对特权GPU资源的访问。</p>
-<h4 id="vm可扩展性">VM可扩展性</h4>
-<p>虽然划分图形内存资源可能会限制可扩展性（也就是VGPU）的数量，但我们认为可以用两种、方法来解决。第一种方法是更好地利用现有的图形内存，通过实现动态资源膨胀机制和额外的驱动程序协作，在VGPU之间共享图形内存。另一种方法是通过在下一代GPU中添加更多的图形内存来增加可用的图形内存资源。</p>
-<h4 id="调度依赖性">调度依赖性</h4>
-<p>一个可以优化的方向，现在gVirt组调度策略是组调度，这种调度策略总是将所有引擎一起调度。研究者认为，当VM提交的命令被gVirt check的时候，可以通过构造引擎间依赖关系图，最终GPU调度器可以根据依赖关系图动态选择每个引擎的调度策略和组调度策略。</p>
-<h2 id="评估和分析">评估和分析</h2>
-<p>trap事件可以分为四组：</p>
-<ol type="1">
-<li>power management registers (PM) accesses,</li>
-<li>Tail register accesses of ring buffer (Tail),</li>
-<li>PTE accesses (PTE),</li>
-<li>other accesses (Others).</li>
-</ol>
-<h2 id="相关工作">相关工作</h2>
-<p>Qemu：软件虚拟化</p>
-<p>API转发：研究最广泛，VMGL/XEN3D/Blink这些是安装了新的OpenGL库</p>
-<h2 id="未来的工作">未来的工作</h2>
-<p>可以发展的方向：</p>
-<ol type="1">
-<li>细粒度的Qos调度策略</li>
-<li>可移植性</li>
-<li>实时迁移</li>
-</ol>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/posts/44103.html#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -575,10 +298,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-12-01 13:17:50 / 修改时间：15:13:45" itemprop="dateCreated datePublished" datetime="2021-12-01T13:17:50+08:00">2021-12-01</time>
+              <time title="创建时间：2021-12-01 13:17:50" itemprop="dateCreated datePublished" datetime="2021-12-01T13:17:50+08:00">2021-12-01</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-03 14:29:14" itemprop="dateModified" datetime="2021-12-03T14:29:14+08:00">2021-12-03</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -719,10 +448,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-12-01 12:58:44 / 修改时间：13:42:27" itemprop="dateCreated datePublished" datetime="2021-12-01T12:58:44+08:00">2021-12-01</time>
+              <time title="创建时间：2021-12-01 12:58:44" itemprop="dateCreated datePublished" datetime="2021-12-01T12:58:44+08:00">2021-12-01</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-03 14:29:14" itemprop="dateModified" datetime="2021-12-03T14:29:14+08:00">2021-12-03</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
