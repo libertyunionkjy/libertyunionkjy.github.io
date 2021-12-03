@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2021-12-01T05:18:52.085Z</updated>
+  <updated>2021-12-03T06:28:48.432Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -17,11 +17,43 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>intel GPU虚拟化技术（gvt）论文笔记</title>
+    <link href="https://jyke.xyz/posts/44103.html"/>
+    <id>https://jyke.xyz/posts/44103.html</id>
+    <published>2021-12-03T06:23:35.000Z</published>
+    <updated>2021-12-03T06:28:48.432Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;a href=&quot;https://www.usenix.org/conference/atc14/technical-sessions/presentation/tian&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;论文地址&lt;/a&gt;&lt;/p&gt;
+&lt;h2
+        
+      
+    
+    </summary>
+    
+    
+      <category term="虚拟化" scheme="https://jyke.xyz/categories/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
+    
+    
+      <category term="虚拟化" scheme="https://jyke.xyz/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
+    
+      <category term="GPU" scheme="https://jyke.xyz/tags/GPU/"/>
+    
+      <category term="get-g" scheme="https://jyke.xyz/tags/get-g/"/>
+    
+  </entry>
+  
+  <entry>
     <title>SSM框架整合</title>
     <link href="https://jyke.xyz/posts/10555.html"/>
     <id>https://jyke.xyz/posts/10555.html</id>
     <published>2021-12-01T05:17:50.000Z</published>
-    <updated>2021-12-01T05:18:52.085Z</updated>
+    <updated>2021-12-01T07:13:45.160Z</updated>
     
     <summary type="html">
     
@@ -52,7 +84,7 @@
     <link href="https://jyke.xyz/posts/42781.html"/>
     <id>https://jyke.xyz/posts/42781.html</id>
     <published>2021-12-01T04:58:44.000Z</published>
-    <updated>2021-12-01T05:07:52.560Z</updated>
+    <updated>2021-12-01T05:42:27.657Z</updated>
     
     <summary type="html">
     
@@ -540,29 +572,6 @@
 &lt;li&gt;建立终端&lt;/li&gt;
 &lt;li&gt;用户登录&lt;/li&gt;
 &lt;/ol&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux各个目录的作用</title>
-    <link href="https://jyke.xyz/posts/13366.html"/>
-    <id>https://jyke.xyz/posts/13366.html</id>
-    <published>2020-11-17T14:53:29.000Z</published>
-    <updated>2020-11-17T15:06:11.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/30617845&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;参考链接&lt;/a&gt;&lt;/p&gt;
-&lt;h1 id=&quot;文件系统的类型&quot;&gt;文件系统的类型&lt;/h1&gt;
-&lt;p&gt;LINUX有四种基本文件系统类型：普通文件、目录文件、连接文件和特殊文件，可用file命令来识别.&lt;/p&gt;
     
     </summary>
     
