@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://jyke.xyz/posts/44103.html</loc>
+    <loc>https://jyke.xyz/posts/10555.html</loc>
     
     <lastmod>2021-12-03</lastmod>
     
@@ -11,7 +11,7 @@
   </url>
   
   <url>
-    <loc>https://jyke.xyz/posts/10555.html</loc>
+    <loc>https://jyke.xyz/posts/44103.html</loc>
     
     <lastmod>2021-12-03</lastmod>
     
@@ -507,14 +507,14 @@
   </url>
   
   <url>
-    <loc>https://jyke.xyz/tags/c-language/</loc>
+    <loc>https://jyke.xyz/tags/linux/</loc>
     <lastmod>2021-12-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://jyke.xyz/tags/linux/</loc>
+    <loc>https://jyke.xyz/tags/c-language/</loc>
     <lastmod>2021-12-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -563,13 +563,6 @@
   </url>
   
   <url>
-    <loc>https://jyke.xyz/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
-    <lastmod>2021-12-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://jyke.xyz/tags/OpenCL/</loc>
     <lastmod>2021-12-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -578,6 +571,13 @@
   
   <url>
     <loc>https://jyke.xyz/tags/DirectX/</loc>
+    <lastmod>2021-12-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://jyke.xyz/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%8E%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
     <lastmod>2021-12-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -605,13 +605,6 @@
   </url>
   
   <url>
-    <loc>https://jyke.xyz/tags/%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/</loc>
-    <lastmod>2021-12-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://jyke.xyz/tags/java/</loc>
     <lastmod>2021-12-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -620,6 +613,13 @@
   
   <url>
     <loc>https://jyke.xyz/tags/Sam/</loc>
+    <lastmod>2021-12-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://jyke.xyz/tags/%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/</loc>
     <lastmod>2021-12-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -635,14 +635,14 @@
 
   
   <url>
-    <loc>https://jyke.xyz/categories/LeetCode/</loc>
+    <loc>https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2021-12-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>https://jyke.xyz/categories/LeetCode/</loc>
     <lastmod>2021-12-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

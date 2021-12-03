@@ -46,19 +46,32 @@
     <link href="https://jyke.xyz/posts/10555.html"/>
     <id>https://jyke.xyz/posts/10555.html</id>
     <published>2021-12-01T05:17:50.000Z</published>
-    <updated>2021-12-03T06:29:14.991Z</updated>
+    <updated>2021-12-03T06:34:02.149Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;h2 id=&quot;ssmspringspringmvcmybatis&quot;&gt;SSM（Spring、SpringMVC、MyBatis）&lt;/h2&gt;
+      &lt;h2 id=&quot;ssmspringspringmvcmybatis&quot;&gt;SSM（Spring、SpringMVC、MyBatis）&lt;/h2&gt;
 &lt;h3 id=&quot;整合步骤&quot;&gt;整合步骤&lt;/h3&gt;
-&lt;ol
-        
-      
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;Mybatis配置文件的编写和相关实体类的引入&lt;/li&gt;
+&lt;li&gt;编写Spring MVC配置文件
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;配置扫描控制器&lt;/li&gt;
+&lt;li&gt;定义视图解析器&lt;/li&gt;
+&lt;li&gt;两个标准配置&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;编写Spring配置文件
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;配置组件扫描，过滤控制器&lt;/li&gt;
+&lt;li&gt;配置数据源&lt;/li&gt;
+&lt;li&gt;整合Mybatis
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;目的：（1）Spring管理所有组件，mapper的实现类；（2）Spring来管理事务&lt;/li&gt;
+&lt;li&gt;结果：mybatis-config.xml的大部分功能被替代了&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;引入事务管理器&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
     
     </summary>
     
