@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2021-12-03T06:32:32.620Z</updated>
+  <updated>2021-12-06T07:53:14.943Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>钩子函数</title>
+    <link href="https://jyke.xyz/posts/56602.html"/>
+    <id>https://jyke.xyz/posts/56602.html</id>
+    <published>2021-12-06T07:30:57.000Z</published>
+    <updated>2021-12-06T07:53:14.943Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;什么是钩子函数&quot;&gt;什么是钩子函数？&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;钩子函数也叫回调函数&lt;/strong&gt;，是通过函数指针来实现的，那我们来看看什么是函数指针。&lt;/p&gt;
+&lt;p&gt;首先看看以下例子：&lt;/p&gt;
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; *p;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; a，b；&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//我们可以让指针p先后指向a, b，这样，p就先后代表了不同变量的地址&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;p = &amp;amp;a;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;p = &amp;amp;b;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="c" scheme="https://jyke.xyz/categories/c/"/>
+    
+    
+      <category term="c" scheme="https://jyke.xyz/tags/c/"/>
+    
+  </entry>
   
   <entry>
     <title>intel GPU虚拟化技术（gvt）论文笔记</title>
@@ -557,35 +581,6 @@
       <category term="OpenCL" scheme="https://jyke.xyz/tags/OpenCL/"/>
     
       <category term="DirectX" scheme="https://jyke.xyz/tags/DirectX/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux启动过程分析</title>
-    <link href="https://jyke.xyz/posts/25242.html"/>
-    <id>https://jyke.xyz/posts/25242.html</id>
-    <published>2020-11-17T14:55:21.000Z</published>
-    <updated>2020-11-17T15:06:11.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;linux启动过程分析&quot;&gt;Linux启动过程分析&lt;/h1&gt;
-&lt;p&gt;以RedHat启动方式分析（Ubuntu的启动过程不太一样），可以分为5个阶段：&lt;/p&gt;
-&lt;ol type=&quot;1&quot;&gt;
-&lt;li&gt;引导内核&lt;/li&gt;
-&lt;li&gt;运行init&lt;/li&gt;
-&lt;li&gt;系统初始化&lt;/li&gt;
-&lt;li&gt;建立终端&lt;/li&gt;
-&lt;li&gt;用户登录&lt;/li&gt;
-&lt;/ol&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
     
   </entry>
   
