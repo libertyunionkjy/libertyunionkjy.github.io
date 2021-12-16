@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2021-12-06T07:53:33.134Z</updated>
+  <updated>2021-12-16T04:50:07.574Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -15,6 +15,41 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>KVM原理简介</title>
+    <link href="https://jyke.xyz/posts/17969.html"/>
+    <id>https://jyke.xyz/posts/17969.html</id>
+    <published>2021-12-16T04:45:36.000Z</published>
+    <updated>2021-12-16T04:50:07.574Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;简介&quot;&gt;简介&lt;/h2&gt;
+&lt;p&gt;本文总结了&lt;a href=&quot;https://book.douban.com/subject/30544350/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;《KVM实战：原理、进阶与性能调优》&lt;/a&gt;一书中的KVM原理简介部分，这一部分主要介绍了KVM虚拟化的&lt;strong&gt;基本原理&lt;/strong&gt;，从硬件到软件、从底层到上层都做了一些介绍，包括：&lt;strong&gt;硬件虚拟化技术简介、KVM软件架构概况、KVM内核模块、QEMU用户态设备模拟、与KVM结合的vhost-net等组件、KVM的管理工具等。&lt;/strong&gt;由于KVM是基于硬件辅助的虚拟化软件，故在第一节又分别介绍了CPU虚拟化、内存虚拟化、I/O虚拟化以及Intel 的虚拟化技术发展情况，以帮助读者理解虚拟化原理。&lt;/p&gt;
+&lt;p&gt;如果你想：&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;大概了解KVM虚拟化的基本原理；&lt;/li&gt;
+&lt;li&gt;大致了解KVM和QEMU是如何配合工作的；&lt;/li&gt;
+&lt;li&gt;在当今的云计算场景下，有哪些和KVM配合使用的工具；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;那么相信此文会对您有所帮助！:)&lt;/p&gt;
+&lt;p&gt;为了更好地明白此文，您需要对以下知识需要有了解：&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;虚拟内存；&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+      <category term="虚拟化" scheme="https://jyke.xyz/categories/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
+    
+    
+      <category term="虚拟化" scheme="https://jyke.xyz/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
+    
+      <category term="KVM" scheme="https://jyke.xyz/tags/KVM/"/>
+    
+  </entry>
   
   <entry>
     <title>钩子函数</title>
@@ -548,39 +583,6 @@
       <category term="算法" scheme="https://jyke.xyz/tags/%E7%AE%97%E6%B3%95/"/>
     
       <category term="剑指Offer" scheme="https://jyke.xyz/tags/%E5%89%91%E6%8C%87Offer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>OpenCL, OpenGL, DirectX</title>
-    <link href="https://jyke.xyz/posts/9976.html"/>
-    <id>https://jyke.xyz/posts/9976.html</id>
-    <published>2020-11-17T14:57:07.000Z</published>
-    <updated>2020-11-17T15:06:11.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;opencl&quot;&gt;OpenCL&lt;/h1&gt;
-&lt;blockquote&gt;
-&lt;p&gt;是由苹果（Apple）公司发起，业界众多著名厂商共同制作的面向异构系统通用目的并行编程的开放式、免费标准，也是一个统一的编程环境&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;OpenCL实际上是针对异构系统进行并行编程的一个全新的API，OpenCL可以利用GPU进行一些并行计算的工作。&lt;/li&gt;
-&lt;li&gt;OpenGL是针对图形的，而OpenCL则是针对并行计算的API。&lt;/li&gt;
-&lt;li&gt;它是一个连接硬件和软件的API接口，OpenCL的作用就是通过调用处理器和GPU的计算资源，释放硬件潜力，让程序运行得更快更好。&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="OpenGL" scheme="https://jyke.xyz/tags/OpenGL/"/>
-    
-      <category term="OpenCL" scheme="https://jyke.xyz/tags/OpenCL/"/>
-    
-      <category term="DirectX" scheme="https://jyke.xyz/tags/DirectX/"/>
     
   </entry>
   

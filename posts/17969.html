@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="简介 本文总结了《KVM实战：原理、进阶与性能调优》一书中的KVM原理简介部分，这一部分主要介绍了KVM虚拟化的基本原理，从硬件到软件、从底层到上层都做了一些介绍，包括：硬件虚拟化技术简介、KVM软件架构概况、KVM内核模块、QEMU用户态设备模拟、与KVM结合的vhost-net等组件、KVM的管理工具等。由于KVM是基于硬件辅助的虚拟化软件，故在第一节又分别介绍了CPU虚拟化、内存虚拟化、I&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KVM原理简介">
+<meta property="og:url" content="https://jyke.xyz/posts/17969.html">
+<meta property="og:site_name" content="柯柯的博客">
+<meta property="og:description" content="简介 本文总结了《KVM实战：原理、进阶与性能调优》一书中的KVM原理简介部分，这一部分主要介绍了KVM虚拟化的基本原理，从硬件到软件、从底层到上层都做了一些介绍，包括：硬件虚拟化技术简介、KVM软件架构概况、KVM内核模块、QEMU用户态设备模拟、与KVM结合的vhost-net等组件、KVM的管理工具等。由于KVM是基于硬件辅助的虚拟化软件，故在第一节又分别介绍了CPU虚拟化、内存虚拟化、I&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112161035686.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112161048438.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112161053886.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112161111954.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112161119847.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112161155922.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112161157447.png">
+<meta property="article:published_time" content="2021-12-16T04:45:36.000Z">
+<meta property="article:modified_time" content="2021-12-16T04:50:07.574Z">
+<meta property="article:author" content="Keke">
+<meta property="article:tag" content="虚拟化">
+<meta property="article:tag" content="KVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112161035686.png">
+
+<link rel="canonical" href="https://jyke.xyz/posts/17969.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>KVM原理简介 | 柯柯的博客</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-166231991-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="柯柯的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">柯柯的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">KK's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/17969.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          KVM原理简介
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-12-16 12:45:36 / 修改时间：12:50:07" itemprop="dateCreated datePublished" datetime="2021-12-16T12:45:36+08:00">2021-12-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">虚拟化</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/posts/17969.html" class="post-meta-item leancloud_visitors" data-flag-title="KVM原理简介" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/17969.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/17969.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="简介">简介</h2>
+<p>本文总结了<a href="https://book.douban.com/subject/30544350/" target="_blank" rel="noopener">《KVM实战：原理、进阶与性能调优》</a>一书中的KVM原理简介部分，这一部分主要介绍了KVM虚拟化的<strong>基本原理</strong>，从硬件到软件、从底层到上层都做了一些介绍，包括：<strong>硬件虚拟化技术简介、KVM软件架构概况、KVM内核模块、QEMU用户态设备模拟、与KVM结合的vhost-net等组件、KVM的管理工具等。</strong>由于KVM是基于硬件辅助的虚拟化软件，故在第一节又分别介绍了CPU虚拟化、内存虚拟化、I/O虚拟化以及Intel 的虚拟化技术发展情况，以帮助读者理解虚拟化原理。</p>
+<p>如果你想：</p>
+<ol type="1">
+<li>大概了解KVM虚拟化的基本原理；</li>
+<li>大致了解KVM和QEMU是如何配合工作的；</li>
+<li>在当今的云计算场景下，有哪些和KVM配合使用的工具；</li>
+</ol>
+<p>那么相信此文会对您有所帮助！:)</p>
+<p>为了更好地明白此文，您需要对以下知识需要有了解：</p>
+<ol type="1">
+<li>虚拟内存；</li>
+</ol>
+<a id="more"></a>
+<h2 id="硬件虚拟化">硬件虚拟化</h2>
+<h3 id="cpu虚拟化">CPU虚拟化</h3>
+<p>CPU虚拟化最关键的技术是CPU中为了支持CPU虚拟化而产生的VMX技术，在VMX技术中，有两种VMX操作模式：</p>
+<ol type="1">
+<li>VMX root operation（根模式）：hypervisor就运行在这个模式</li>
+<li>VMX non-root operation（非根模式）：guest就运行在这个模式（包括guest上的操作系统和运行在操作系统上的软件</li>
+</ol>
+<p>具体的运行周期可以参考下图：guest运行到一些特殊的敏感指令时，会触发VM Exit，从而从非根模式退回到根模式中。</p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112161035686.png" alt="image-20211216103504588" /><figcaption>image-20211216103504588</figcaption>
+</figure>
+<ol type="1">
+<li><p>一个逻辑CPU怎么在VMX的根模式和VMX的非根模式中进行切换呢？——通过VMCS的数据结构；</p></li>
+<li><p>hypervisor会为guest中的每一个逻辑CPU维护一个VMCS数据结构；</p></li>
+</ol>
+<blockquote>
+<p>由于发生一次VM Exit的代价是比较高的(可能会消耗成百上千个CPU 执行周期，而平时很多指令是几个CPU执行周期就能完成)，所以对于VM Exit的分析是虚拟化中性能分析和调优的一个关键点。</p>
+</blockquote>
+<h3 id="内存虚拟化">内存虚拟化</h3>
+<ol type="1">
+<li><p>对于内存虚拟化，内存虚拟化的目的是什么？</p>
+<p>内存虚拟化的目的是给虚拟<strong>客户机操作系统</strong>提供一个从0地址开始的连续物理内存空间，同时在多个客户机之间实现隔离和调度。</p></li>
+<li><p>内存虚拟化中的四个地址</p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112161048438.png" alt="image-20211216104812345" /><figcaption>image-20211216104812345</figcaption>
+</figure>
+<blockquote>
+<ol type="1">
+<li>客户机虚拟地址，GVA(Guest Virtual Address)</li>
+<li>客户机物理地址，GPA(Guest Physical Address)</li>
+<li>宿主机虚拟地址，HVA(Host Virtual Address)</li>
+<li>宿主机物理地址，HPA(Host Physical Address)</li>
+</ol>
+</blockquote></li>
+<li><p>所以，内存虚拟化的最终目的就是要把GVA转化为HPA</p></li>
+<li><p>关于影子页表，影子页表的机制很简单，就是一个GVA到HPA的页表，但是可以想象的是维护影子页表的开销和复杂度是非常高的，而且需要为每一个guest都维护一份影子页表，占用的空间也是问题</p></li>
+<li><p>Intel CPU在硬件设计上就引入了EPT(Extended Page Tables，扩展页表)，从而将客 户机虚拟地址到宿主机物理地址的转换通过硬件来实现。分为两步：</p>
+<ol type="1">
+<li>首先，通过客户机CR3寄存器将客户机虚拟地址转化为客户机物理地址</li>
+<li>然后通过查询EPT来实现客户机物理地址到宿主机物理地址的转化</li>
+</ol>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112161053886.png" alt="image-20211216105340822" /><figcaption>image-20211216105340822</figcaption>
+</figure></li>
+<li><p>Intel CPU在内存虚拟化方面，为了提高效率还引入了VPID（Virtual-Processor Identifer）以区分不同的guest中的不同逻辑CPU，带来了什么好处？以前在切换逻辑CPU的时候，每次都要刷新TLB，这样子会对内存访问的效率造成很大的影响，而现在可以通过VPID识别不同的逻辑CPU，hypervisor再为每一个逻辑CPU保存一份TLB的副本，然后进行逻辑CPU切换时直接通过VPID拿出对应的TLB来使用即可。<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112161111954.png" alt="image-20211216111107826" /></p></li>
+</ol>
+<h3 id="io虚拟化">I/O虚拟化</h3>
+<p>除了CPU虚拟化和内存虚拟化以外，为了支持guest的正常运行，还需要I/O虚拟化，一般来说有下面四种I/O虚拟化方式：</p>
+<ol type="1">
+<li>设备模拟：纯软件模拟，比如使用QEMU模拟一个Intel网卡，guest完全和这个模拟出来的网卡进行交互</li>
+<li>前后端驱动：在hypervisor与guest之间定义一种全新的适合于虚拟化环境的交互接口，比如常见的virtio协议就是在客户机中暴露为virtio-net、virtio-blk等网络和磁盘设备，在QEMU中实现相应的virtio后端驱动。</li>
+<li>设备直通：设备直接分配在Intel平台上就是VT-d(Virtualization Technology For Directed I/O)特 性，一般在系统BIOS中可以看到相关的参数设置。Intel VT-d为虚拟机监控器提供了几个重要的能力：I/O设备分配、DMA重定向、中断重定向、中断投递等。</li>
+<li>设备共享分配：如SR-IOV，SR-IOV这种特性可 以看作VT-d的一个特殊例子，所以SR-IOV除了设备本身要支持该特性，同时也需要硬件 平台打开VT-d特性支持。</li>
+</ol>
+<p>以上四种方式的优缺点参考下图：</p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112161119847.png" alt="image-20211216111957779" /><figcaption>image-20211216111957779</figcaption>
+</figure>
+<p>设备直接分配在Intel平台上就是VT-d(Virtualization Technology For Directed I/O)特 性，一般在系统BIOS中可以看到相关的参数设置。Intel VT-d为虚拟机监控器提供了几个重要的能力：I/O设备分配、DMA重定向、中断重定向、中断投递等。</p>
+<h3 id="intel虚拟化技术小结">Intel虚拟化技术小结</h3>
+<p>Intel硬件虚拟化技术大致分为如下3个类别(这个顺序也基本上是相应技术出现的时间先后顺序)。</p>
+<ol type="1">
+<li>VT-x技术：是指Intel处理器中进行的一些虚拟化技术支持，包括CPU中引入的最 基础的VMX技术，使得KVM等硬件虚拟化基础的出现成为可能。同时也包括内存虚拟化 的硬件支持EPT、VPID等技术。</li>
+<li>VT-d技术：是指Intel的芯片组的虚拟化技术支持，通过Intel IOMMU可以实现对 设备直接分配的支持。</li>
+<li>VT-c技术：是指Intel的I/O设备相关的虚拟化技术支持，主要包含两个技术:一个是借助虚拟机设备队列(VMDq)最大限度提高I/O吞吐率，VMDq由Intel网卡中的专用硬件来完成；另一个是借助虚拟机直接互连(VMDc)大幅提升虚拟化性能，VMDc主要就是基于SR-IOV标准将单个Intel网卡产生多个VF设备，用来直接分配给客户机。</li>
+</ol>
+<h2 id="kvm架构">KVM架构</h2>
+<p>KVM虚拟化的核心主要由以下两个模块组成:</p>
+<ol type="1">
+<li>KVM内核模块，它属于<strong>标准Linux内核的一部分</strong>，是一个专门提供虚拟化功能的 模块，主要负责CPU和内存的虚拟化，包括:客户机的创建、虚拟内存的分配、CPU执行 模式的切换、vCPU寄存器的访问、vCPU的执行。</li>
+<li>QEMU用户态工具，它是一个<strong>普通的Linux进程</strong>，为客户机提供设备模拟的功能， 包括模拟BIOS、PCI/PCIE总线、磁盘、网卡、显卡、声卡、键盘、鼠标等。同时它<strong>通过 ioctl系统调用与内核态的KVM模块进行交互</strong>。</li>
+</ol>
+<p>在KVM虚拟化架构下，每个客户机就是一个QEMU进程，在一个宿主机上 有多少个虚拟机就会有多少个QEMU进程;客户机中的<strong>每一个虚拟CPU对应QEMU进程中 的一个执行线程</strong>；一个宿主机中只有一个KVM内核模块，所有客户机都与这个内核模块进行交互。</p>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112161155922.png" alt="image-20211216115551801" /><figcaption>image-20211216115551801</figcaption>
+</figure>
+<h2 id="kvm内核模块">KVM内核模块</h2>
+<figure>
+<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg/images/202112161157447.png" alt="image-20211216115712394" /><figcaption>image-20211216115712394</figcaption>
+</figure>
+<p>KVM在内核中分为两个模块，如上图所示：</p>
+<ol type="1">
+<li>KVM模块：处理器架构无关；</li>
+<li>KVM_intel模块：处理器架构相关；</li>
+</ol>
+<p><strong>KVM的主要作用</strong>：初始化CPU硬件，打开虚拟化模式，然后将虚拟机运行在虚拟化模式下；</p>
+<p><strong>KVM被内核加载的时候做了什么事：</strong>以KVM在Intel公司的CPU上运行为例，在被内核加载的时候， KVM模块会先初始化内部的数据结构;做好准备之后，KVM模块检测系统当前的CPU， 然后打开CPU控制寄存器CR4中的虚拟化模式开关，并通过执行VMXON指令将宿主操作系统(包括KVM模块本身)置于CPU执行模式的虚拟化模式中的根模式；最后，KVM模 块创建特殊设备文件<strong>/dev/kvm并等待来自用户空间的命令</strong>。接下来，虚拟机的创建和运 将是一个用户空间的应用程序(QEMU)和KVM模块相互配合的过程。</p>
+<h3 id="devkvm字符设备">/dev/kvm字符设备</h3>
+<p>/dev/kvm这个设备可以被当作一个标准的字符设备，KVM模块与用户空间QEMU的通信接口主要是一系列针对这个特殊设备文件的loctl调用。</p>
+<ol type="1">
+<li><p><strong>创建虚拟机</strong></p>
+<p>“创建虚拟机”可以理解成KVM为了某个特定的虚拟客户机(用户空间程序创建并初始化)创建对应的内核数据结构。同时，KVM还会返回一个文件句柄来代表所创建的虚拟机。</p></li>
+<li><p><strong>虚拟机的管理</strong></p>
+<p>针对该文件句柄的ioctl调用可以对虚拟机做相应的管理，比如创建用户空间虚拟地址和客户机物理地址及真实内存物理地址的映射关系，再比如创建多个可供运行的虚拟处理器(vCPU)。</p></li>
+<li><p><strong>执行vCPU</strong></p>
+<p>可以通过ioctl系统调用对vCPU进行管理，其中最重要的就是“执行vCPU"，通过它，用户空间准备 好的虚拟机在KVM模块的支持下，被置于虚拟化模式中的非根模式下，开始执行二进制 指令。在非根模式下，所有敏感的二进制指令都会被处理器捕捉到，处理器在保存现场之 后自动切换到根模式，由KVM决定如何进一步处理(要么由KVM模块直接处理，要么返 回用户空间交由用户空间程序处理)。</p></li>
+</ol>
+<p>KVM还负责内存虚拟化，vCPU对设备的访问主要是通过I/O指令和MMIO，其中I/O指令会被处理器直接截获，MMIO会通过配置内存虚拟化来捕捉。但是，外设的模拟一般不由KVM模块负责。 一般来说，只有对性能要求比较高的虚拟设备才会由KVM内核模块来直接负责，比如虚 拟中断控制器和虚拟时钟，这样可以大量减少处理器模式切换的开销。而大部分的输入输出设备交给用户态程序QEMU来负责。</p>
+<h2 id="关于qemu">关于QEMU</h2>
+<ol type="1">
+<li>QEMU是一个纯软件实现的hypervisor，通过二进制翻译的方式实现对虚拟机CPU指令的模拟；</li>
+<li>QEMU本身是完全可以单纯作为一个hypervisor的</li>
+<li>在KVM/QEMU的方式下，QEMU承担了设备模拟的工作，此时hypervisor是Linux内核中的KVM</li>
+<li>QEMU已经merge了KVM，现在的QEMU原生支持KVM，但是同样的，需要有硬件支持</li>
+</ol>
+<h2 id="其他的一些组件">其他的一些组件</h2>
+<p>在KVM虚拟化的软件栈中，毋庸置疑的是KVM内核模块与QEMU用户态程序是处于最核心的位置，有了它们就可通过qemu命令行操作实现完整的虚拟机功能。然而，在实际的云计算的虚拟化场景中，为了更高的性能或者管理的方便性，还有很多的软件可以作为KVM虚拟化实施中的组件， 这里简单介绍其中的几个。</p>
+<ol type="1">
+<li><p>vhost-net</p>
+<p>vhost-net是Linux内核中的一个模块，它用于替代QEMU中的virtio-net用户态的virtio网 络的后端实现。使用 时，还支持网卡的多队列，整体来说会让网络性能得到较大</p></li>
+<li><p>Open vSwitch</p>
+<p>可以在KVM中实现软件定义网络（SDK）；</p></li>
+<li><p>DPDK</p>
+<p>在 KVM架构中，为了达到非常高的网络处理能力(特别是小包处理能力)，可以选择 DPDK与QEMU中的vhost-user结合起来使用。</p></li>
+<li><p>SPDK</p>
+<p>在KVM中需要非常高的存储I/O性能时，可以将QEMU与SPDK结合使用。</p></li>
+<li><p>Ceph</p>
+<p>在OpenStack的云平台解决方案中，Ceph是一个非常常用的存储后 端。</p></li>
+<li><p>libguestfs</p>
+<p>libguestfs不需要启动KVM客户机就可以对磁盘镜像进行管理，功能强大且非常灵活，是管理KVM磁盘镜像的首选工具。</p></li>
+</ol>
+<h2 id="参考文献">参考文献</h2>
+<p><a href="https://book.douban.com/subject/30544350/" target="_blank" rel="noopener">KVM实战：原理、进阶与性能调优</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag"># 虚拟化</a>
+              <a href="/tags/KVM/" rel="tag"># KVM</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/56602.html" rel="prev" title="钩子函数">
+      <i class="fa fa-chevron-left"></i> 钩子函数
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#硬件虚拟化"><span class="nav-number">2.</span> <span class="nav-text">硬件虚拟化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cpu虚拟化"><span class="nav-number">2.1.</span> <span class="nav-text">CPU虚拟化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存虚拟化"><span class="nav-number">2.2.</span> <span class="nav-text">内存虚拟化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#io虚拟化"><span class="nav-number">2.3.</span> <span class="nav-text">I&#x2F;O虚拟化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#intel虚拟化技术小结"><span class="nav-number">2.4.</span> <span class="nav-text">Intel虚拟化技术小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kvm架构"><span class="nav-number">3.</span> <span class="nav-text">KVM架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kvm内核模块"><span class="nav-number">4.</span> <span class="nav-text">KVM内核模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#devkvm字符设备"><span class="nav-number">4.1.</span> <span class="nav-text">&#x2F;dev&#x2F;kvm字符设备</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于qemu"><span class="nav-number">5.</span> <span class="nav-text">关于QEMU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他的一些组件"><span class="nav-number">6.</span> <span class="nav-text">其他的一些组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">7.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Keke"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Keke</p>
+  <div class="site-description" itemprop="description">记录学习的地方</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://libertyunionkjy@gmail.com/" title="E-Mail → https:&#x2F;&#x2F;libertyunionkjy@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Keke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"LUfk9hhalFl8bvU1sch5iOtc-9Nh9j0Va","app_key":"pI9Q11Bxqxk1Q5eJLKIG1gim","server_url":null,"security":false};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el         : '#valine-comments',
+      path       : location.pathname,
+    }, {"enable":true,"appId":"tnKOKDSuvxOLRFeojycmFGDV-MdYXbMMI","appKey":"Q4ro4ajDoVK1ScWWSlGCxY3G","notify":true,"verify":false,"placeholder":"快来评论吧！柯柯给你举高高ヽ(✿ﾟ▽ﾟ)ノ","avatar":"monsterid","meta":["nick","mail","link"],"pageSize":10,"language":"zh-cn","visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
