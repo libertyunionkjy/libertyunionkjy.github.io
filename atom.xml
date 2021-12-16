@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2021-12-16T04:50:07.574Z</updated>
+  <updated>2021-12-16T05:06:26.026Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -17,11 +17,40 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>再探虚拟内存</title>
+    <link href="https://jyke.xyz/posts/5863.html"/>
+    <id>https://jyke.xyz/posts/5863.html</id>
+    <published>2021-12-16T04:55:01.000Z</published>
+    <updated>2021-12-16T05:06:26.026Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文是笔者读《深入理解操作系统》的虚拟内存部分的读书笔记。本文总结了书中提到的虚拟内存的这几个方面：&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;虚拟内存的作用作用；&lt;/li&gt;
+&lt;li&gt;引入虚拟内存后，地址翻译的过程&lt;/li&gt;
+&lt;li&gt;TLB和cache的结合使用&lt;/li&gt;
+&lt;li&gt;多级页表的引入&lt;/li&gt;
+&lt;li&gt;Linux中虚拟内存的组织方式&lt;/li&gt;
+&lt;li&gt;内存映射和共享对象/私有对象&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+      <category term="操作系统" scheme="https://jyke.xyz/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+    
+      <category term="操作系统" scheme="https://jyke.xyz/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
+  
+  <entry>
     <title>KVM原理简介</title>
     <link href="https://jyke.xyz/posts/17969.html"/>
     <id>https://jyke.xyz/posts/17969.html</id>
     <published>2021-12-16T04:45:36.000Z</published>
-    <updated>2021-12-16T04:50:07.574Z</updated>
+    <updated>2021-12-16T04:50:43.338Z</updated>
     
     <summary type="html">
     
@@ -560,29 +589,6 @@
     
     
       <category term="Shell" scheme="https://jyke.xyz/tags/Shell/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>剑指Offer刷题记录</title>
-    <link href="https://jyke.xyz/posts/41647.html"/>
-    <id>https://jyke.xyz/posts/41647.html</id>
-    <published>2020-11-17T15:02:02.000Z</published>
-    <updated>2020-11-26T17:23:09.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;二维数组中的查找&quot;&gt;04.&lt;a href=&quot;https://leetcode-cn.com/problems/er-wei-shu-zu-zhong-de-cha-zhao-lcof/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;二维数组中的查找&lt;/a&gt;&lt;/h2&gt;
-    
-    </summary>
-    
-    
-      <category term="算法" scheme="https://jyke.xyz/categories/%E7%AE%97%E6%B3%95/"/>
-    
-    
-      <category term="算法" scheme="https://jyke.xyz/tags/%E7%AE%97%E6%B3%95/"/>
-    
-      <category term="剑指Offer" scheme="https://jyke.xyz/tags/%E5%89%91%E6%8C%87Offer/"/>
     
   </entry>
   
