@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2021-12-16T05:06:26.026Z</updated>
+  <updated>2021-12-16T05:22:04.013Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -21,13 +21,13 @@
     <link href="https://jyke.xyz/posts/5863.html"/>
     <id>https://jyke.xyz/posts/5863.html</id>
     <published>2021-12-16T04:55:01.000Z</published>
-    <updated>2021-12-16T05:06:26.026Z</updated>
+    <updated>2021-12-16T05:22:04.013Z</updated>
     
     <summary type="html">
     
       &lt;p&gt;本文是笔者读《深入理解操作系统》的虚拟内存部分的读书笔记。本文总结了书中提到的虚拟内存的这几个方面：&lt;/p&gt;
 &lt;ol type=&quot;1&quot;&gt;
-&lt;li&gt;虚拟内存的作用作用；&lt;/li&gt;
+&lt;li&gt;虚拟内存的作用；&lt;/li&gt;
 &lt;li&gt;引入虚拟内存后，地址翻译的过程&lt;/li&gt;
 &lt;li&gt;TLB和cache的结合使用&lt;/li&gt;
 &lt;li&gt;多级页表的引入&lt;/li&gt;
