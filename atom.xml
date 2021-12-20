@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2021-12-20T04:25:13.894Z</updated>
+  <updated>2021-12-20T09:44:10.685Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -21,11 +21,18 @@
     <link href="https://jyke.xyz/posts/20167.html"/>
     <id>https://jyke.xyz/posts/20167.html</id>
     <published>2021-12-20T04:20:21.000Z</published>
-    <updated>2021-12-20T04:25:13.894Z</updated>
+    <updated>2021-12-20T09:44:10.685Z</updated>
     
     <summary type="html">
     
-      &lt;p&gt;很基本的汇编语法基础，在学习linux kernel的过程中经常会出现一些汇编代码，特在此记录一些基础用法，以便查阅。
+      &lt;p&gt;很基本的汇编语法基础，在学习linux kernel的过程中经常会出现一些汇编代码，特在此记录一些基础用法，以便查阅。&lt;/p&gt;
+&lt;p&gt;本文主要总结了以下几个部分的知识：&lt;/p&gt;
+&lt;ol type=&quot;1&quot;&gt;
+&lt;li&gt;为了理解汇编语句而需要了解的CPU寄存器；&lt;/li&gt;
+&lt;li&gt;简单汇编语句的语法规则；&lt;/li&gt;
+&lt;li&gt;函数调用在汇编层面的实现以及如何实现的函数调用堆栈；&lt;/li&gt;
+&lt;li&gt;C语言中嵌入式汇编代码的基本语法&lt;/li&gt;
+&lt;/ol&gt;
     
     </summary>
     
