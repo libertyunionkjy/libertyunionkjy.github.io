@@ -22,22 +22,20 @@
     var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="OpenCL  是由苹果（Apple）公司发起，业界众多著名厂商共同制作的面向异构系统通用目的并行编程的开放式、免费标准，也是一个统一的编程环境   OpenCL实际上是针对异构系统进行并行编程的一个全新的API，OpenCL可以利用GPU进行一些并行计算的工作。 OpenGL是针对图形的，而OpenCL则是针对并行计算的API。 它是一个连接硬件和软件的API接口，OpenCL的作用就是通过调用">
+  <meta name="description" content="很基本的汇编语法基础，在学习linux kernel的过程中经常会出现一些汇编代码，特在此记录一些基础用法，以便查阅。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OpenCL, OpenGL, DirectX">
-<meta property="og:url" content="https://jyke.xyz/posts/9976.html">
+<meta property="og:title" content="汇编语法基础">
+<meta property="og:url" content="https://jyke.xyz/posts/20167.html">
 <meta property="og:site_name" content="柯柯的博客">
-<meta property="og:description" content="OpenCL  是由苹果（Apple）公司发起，业界众多著名厂商共同制作的面向异构系统通用目的并行编程的开放式、免费标准，也是一个统一的编程环境   OpenCL实际上是针对异构系统进行并行编程的一个全新的API，OpenCL可以利用GPU进行一些并行计算的工作。 OpenGL是针对图形的，而OpenCL则是针对并行计算的API。 它是一个连接硬件和软件的API接口，OpenCL的作用就是通过调用">
+<meta property="og:description" content="很基本的汇编语法基础，在学习linux kernel的过程中经常会出现一些汇编代码，特在此记录一些基础用法，以便查阅。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-17T14:57:07.000Z">
-<meta property="article:modified_time" content="2020-11-17T15:06:11.000Z">
+<meta property="article:published_time" content="2021-12-20T04:20:21.000Z">
+<meta property="article:modified_time" content="2021-12-20T04:25:13.894Z">
 <meta property="article:author" content="Keke">
-<meta property="article:tag" content="OpenGL">
-<meta property="article:tag" content="OpenCL">
-<meta property="article:tag" content="DirectX">
+<meta property="article:tag" content="汇编">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://jyke.xyz/posts/9976.html">
+<link rel="canonical" href="https://jyke.xyz/posts/20167.html">
 
 
 <script id="page-configurations">
@@ -50,7 +48,7 @@
   };
 </script>
 
-  <title>OpenCL, OpenGL, DirectX | 柯柯的博客</title>
+  <title>汇编语法基础 | 柯柯的博客</title>
   
     <script>
       function sendPageView() {
@@ -188,7 +186,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/9976.html">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/20167.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -201,7 +199,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          OpenCL, OpenGL, DirectX
+          汇编语法基础
         </h1>
 
         <div class="post-meta">
@@ -212,7 +210,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-11-17 22:57:07 / 修改时间：23:06:11" itemprop="dateCreated datePublished" datetime="2020-11-17T22:57:07+08:00">2020-11-17</time>
+              <time title="创建时间：2021-12-20 12:20:21 / 修改时间：12:25:13" itemprop="dateCreated datePublished" datetime="2021-12-20T12:20:21+08:00">2021-12-20</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -220,12 +218,12 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">学习</span></a>
+                  <a href="/categories/%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">汇编</span></a>
                 </span>
             </span>
 
           
-            <span id="/posts/9976.html" class="post-meta-item leancloud_visitors" data-flag-title="OpenCL, OpenGL, DirectX" title="阅读次数">
+            <span id="/posts/20167.html" class="post-meta-item leancloud_visitors" data-flag-title="汇编语法基础" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -240,8 +238,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/posts/9976.html#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/posts/9976.html" itemprop="commentCount"></span>
+    <a title="valine" href="/posts/20167.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/20167.html" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -256,45 +254,73 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="opencl">OpenCL</h1>
-<blockquote>
-<p>是由苹果（Apple）公司发起，业界众多著名厂商共同制作的面向异构系统通用目的并行编程的开放式、免费标准，也是一个统一的编程环境</p>
-</blockquote>
-<ul>
-<li>OpenCL实际上是针对异构系统进行并行编程的一个全新的API，OpenCL可以利用GPU进行一些并行计算的工作。</li>
-<li>OpenGL是针对图形的，而OpenCL则是针对并行计算的API。</li>
-<li>它是一个连接硬件和软件的API接口，OpenCL的作用就是通过调用处理器和GPU的计算资源，释放硬件潜力，让程序运行得更快更好。</li>
-</ul>
-<a id="more"></a>
-<h1 id="opengl">OpenGL</h1>
-<p>OpenGL是个专业的图形程序接口，是一个底层图形库。全称是Open Graphics Library。</p>
-<p>DirectX在家用市场领先，但是在专业领域OpenGL是个不能被取代的主角。</p>
-<h1 id="directx">DirectX</h1>
-<p>他是一个API。按照性质分类，这些API可以分为显示部分、声音部分、输入部分和网络部分。</p>
-<h1 id="三者之间的区别">三者之间的区别：</h1>
-<p>DirectX仅支持Windows。</p>
-<p>OpenGL和Apple:</p>
-<p>​ 90年代末Apple放弃了自己的QuickDraw 3D，将OpenGL作为Mac OS X的官方3D库。Apple的系统给OpenGL程序带来了不少拥护者。之后OpenGL正式被Linux采用，现在主流的游戏平台，包括PSP，PS3 和Wii都支持该技术。但是微软的Xbox360例外，它采用了自己的DirectX 图形库，而将OpenGL排除在外。</p>
-<p>​ 如今OpenGL对DirectX来说比以前更有竞争力了。Apple的OpenCL能更紧密地与OpenGL代码协同工作，能带来更广泛的支持。 Apple还将OpenCL作为一个免费的，开源的标准，让任何人都能参与到该平台中来。 　　OpenGL和OpenCL设计的相似性，使开发者更易于开发。比如在OpenCL下进行数据虚拟化计算，可以把相同的对象在OpenGL上进行图形渲染。同时OpenGL下的图形渲染可以在OpenCL下进行处理和转换。 　　OpenCL得到了GPU厂商NVIDIA和AMD的支持，同时支持Apple，SONY,任天堂的平台，还支持Linux和Windows，而且任何公司的开发者都可以参与到该技术的发展中来。</p>
-<h1 id="cuda">CUDA</h1>
-<p>CUDA是一个基于Nvidia GPU的并行计算的架构。 CUDA最主要的包含两个方面：</p>
+        <p>很基本的汇编语法基础，在学习linux kernel的过程中经常会出现一些汇编代码，特在此记录一些基础用法，以便查阅。 <a id="more"></a></p>
+<h3 id="att汇编和intel汇编">AT&amp;T汇编和Intel汇编</h3>
+<p>汇编语言分为AT&amp;T汇编和Intel汇编，Linux内核采用的汇编格式时AT&amp;T汇编；</p>
+<p>两种格式的对比：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># AT&amp;T汇编：</span><br><span class="line">movl %edx,%eax</span><br><span class="line"></span><br><span class="line"># Intel汇编：</span><br><span class="line">MOV EAX,EDX，</span><br></pre></td></tr></table></figure>
+<h3 id="cpu的寄存器">CPU的寄存器</h3>
+<h4 id="位cpu">16位CPU</h4>
+<p>以8086的16位CPU为例，寄存器分为：</p>
 <ol type="1">
-<li>ISA指令集架构；</li>
-<li>硬件计算引擎；实际上是硬件和指令集。</li>
+<li>通用寄存器
+<ol type="1">
+<li>数据寄存器：AX、BX、CX、DX</li>
+<li>指针寄存器：SP、BP</li>
+<li>变址寄存器：SI、DI</li>
+</ol></li>
+<li>控制寄存器
+<ol type="1">
+<li><strong>指令指针寄存器</strong>：IP</li>
+<li>标志寄存器：Flags</li>
+</ol></li>
+<li>段寄存器
+<ol type="1">
+<li>代码段寄存器</li>
+<li>数据段寄存器</li>
+<li>堆栈段寄存器</li>
+<li>附加段寄存器</li>
+</ol></li>
 </ol>
-<p>也就是说我们可以把CUDA看做是与X86或者cell类似的架构，但是是基于是GPU，而不是传统的CPU</p>
-<h1 id="relationship-between-opencl-and-cuda">Relationship Between OpenCL And CUDA</h1>
-<ul>
-<li><p>CUDA和OpenCL的关系并不是冲突关系，而是<strong>包容关系</strong>。OpenCL是一个API，在第一个级别，CUDA架构是更高一个级别，在这个架构上不管是OpenCL还是DX11这样的API，还是像C语言、Fortran、DX11计算，都可以支持。作为程序开发员来讲，一般他们只懂这些语言或者API，可以采用多种语言开发自己的程序，不管他选择什么语言，只要是希望调用GPU的计算能，在这个架构上都可以用CUDA来编程。</p></li>
-<li><p>关于OpenCL与CUDA之间的技术区别，<strong>主要体现在实现方法上</strong>。基于C语言的CUDA被包装成一种容易编写的代码，因此即使是不熟悉芯片构造的科研人员，也可能利用CUDA工具编写出实用的程序。而OpenCL虽然句法上与CUDA接近，但是它更加强调底层操作，因此难度较高，但正因为如此，OpenCL才能跨平台运行。</p></li>
-<li><p>CUDA是一个并行计算的架构，包含有一个指令集架构和相应的硬件引擎。OpenCL是一个并行计算的应用程序编程接口（API），在NVIDIA CUDA架构上OpenCL是除了C for CUDA外新增的一个CUDA程序开发途径。</p></li>
-<li><p>如果你想获得更多的对硬件上的控制权的话，你可以使用OpenCL这个API来进行编程，如果对API不是太了解，也可以用CUDA C语言来编程，这是两种不同编程的方式，他们有他们相同点和不同点。</p>
+<h4 id="位cpu-1">32位CPU</h4>
+<p>32位CPU的寄存器的名称基本是以大写字母E开头；</p>
+<h4 id="位cpu-2">64位CPU</h4>
+<p>64位CPU增加了8个通用寄存器（R8-R15），所以总共16个通用寄存器，这些通用寄存器的作用约定大致如下：</p>
+<ol type="1">
+<li>RAX作为函数的返回值使用；</li>
+<li>RSP栈指针寄存器，指向栈顶；</li>
+<li>RDI、RSI、RDX、RCX、R8、R9用作函数参数；</li>
+<li>RBX、RBP、R10、R11、R12、R13、R14、R15用作数据存储</li>
+</ol>
+<p>一般来说，64位CPU的寄存器名一般以大写字母R开头；</p>
+<p>64位CPU向后兼容；</p>
+<h3 id="基本汇编的语法规则">基本汇编的语法规则</h3>
+<h4 id="最常见的指令mov指令">最常见的指令——mov指令</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 把rax寄存器中的值移到rdx寄存器中</span><br><span class="line">movq %rax，%rdx</span><br><span class="line"># 8位</span><br><span class="line">movb</span><br><span class="line"># 16位</span><br><span class="line">movw</span><br><span class="line"># 32位</span><br><span class="line">movl</span><br><span class="line"># 64位</span><br><span class="line">movq</span><br></pre></td></tr></table></figure>
+<h4 id="汇编中的操作数">汇编中的操作数</h4>
+<p>操作数分为立即数、寄存器、存储器三种：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 立即数,$后面跟常数</span><br><span class="line">$8</span><br><span class="line"># 寄存器，%后面跟着寄存器的名字</span><br><span class="line">%rax</span><br><span class="line"># 存储器，根据计算出的有效地址来访问存储器的某个位置</span><br></pre></td></tr></table></figure>
+<h4 id="寻址方式">寻址方式</h4>
+<h5 id="寄存器寻址">寄存器寻址</h5>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">movq %rax，%rdx</span><br></pre></td></tr></table></figure>
+<h5 id="立即寻址">立即寻址</h5>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 把0x123这个十六进制的数值直接放到RDX寄存器中</span><br><span class="line">movq $0x123， %rdx</span><br></pre></td></tr></table></figure>
+<h5 id="直接寻址">直接寻址</h5>
+<p>直接寻址(direct)是直接用一个数值，开头没有<span class="math inline">\(符号。开头有\)</span>符号的数值表示这是一个立即数;没有$ 符号表示这是一个地址。例如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 把十六进制的0x123内存地址所指向的那块内存里存储的数据放到EDX寄存器里</span><br><span class="line">movl 0x123， %edx</span><br></pre></td></tr></table></figure>
+<h5 id="间接寻址">间接寻址</h5>
+<p>间接寻址( indirect)就是寄存器加个小括号。举例说明，%ebx这个寄存器中存的值是一个内存地 址，加个小括号表示这个内存地址所存储的数据，我们把它放到EDX寄存器中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">movl (%ebx), %edx</span><br></pre></td></tr></table></figure>
+<h5 id="变址寻址">变址寻址</h5>
+<p>在间接寻址的基础上，在原地址上面加上一个立即数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">movl 4(%ebx), %edx</span><br></pre></td></tr></table></figure>
+<h4 id="堆栈操作_push和pop">堆栈操作_push和pop</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 入栈</span><br><span class="line">pushl %eax</span><br><span class="line"># 等于以下两个命令结合</span><br><span class="line">subl $4， %esp</span><br><span class="line">movl %eax， (%esp)</span><br><span class="line"># 出栈</span><br><span class="line">popl %eax</span><br><span class="line"># 等于以下两个命令结合</span><br><span class="line">movl (%esp), %eax</span><br><span class="line">addl $4, %esp</span><br></pre></td></tr></table></figure>
+<h4 id="函数的调用和返回call命令">函数的调用和返回——call命令</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 从内存的0x12345处取指令执行</span><br><span class="line">call 0x12345</span><br><span class="line"># 等于以下两条指令</span><br><span class="line">pushl %eip</span><br><span class="line">movl $0x12345, %eip</span><br><span class="line"># 返回</span><br><span class="line">ret</span><br><span class="line"># 等于以下两条指令</span><br><span class="line">popl %eip</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>OpenCL和CUDA C语言进行开发的时候，在并行计算这块，他们的概念是差不多的，这两种程序在程序上是有很大的相似度，所以程序之间的相互移植相对来说也是比较容易。</p>
-</blockquote></li>
-<li><p>CUDA C语言与OpenCL的定位不同，或者说是用人群不同。CUDA C是一种高级语言，那些对硬件了解不多的非专业人士也能轻松上手；而OpenCL则是针对硬件的应用程序开发接口，它能给程序员更多对硬件的控制权，相应的上手及开发会比较难一些。</p></li>
-<li><p>程序员的使用习惯也是非常重要的一方面，那些在<code>X86 CPU</code>平台使用C语言的人员，会很容易接受基于CUDA GPU平台的C语言；而习惯于使用OpenGL图形开发的人员，看到OpenCL会更加亲切一些，在其基础上开发与图形、视频有关的计算程序会非常容易。</p></li>
-</ul>
+<p>注意这里其实eip寄存器是不允许被程序修改的，所以下面的两条指令是不存在的；后面涉及到eip寄存器的指令同理；</p>
+</blockquote>
 
     </div>
 
@@ -304,9 +330,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
-              <a href="/tags/OpenCL/" rel="tag"># OpenCL</a>
-              <a href="/tags/DirectX/" rel="tag"># DirectX</a>
+              <a href="/tags/%E6%B1%87%E7%BC%96/" rel="tag"># 汇编</a>
           </div>
 
         
@@ -315,13 +339,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/posts/25242.html" rel="prev" title="Linux启动过程分析">
-      <i class="fa fa-chevron-left"></i> Linux启动过程分析
+    <a href="/posts/5863.html" rel="prev" title="再探虚拟内存">
+      <i class="fa fa-chevron-left"></i> 再探虚拟内存
     </a></div>
-      <div class="post-nav-item">
-    <a href="/posts/41647.html" rel="next" title="剑指Offer刷题记录">
-      剑指Offer刷题记录 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -381,7 +402,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#opencl"><span class="nav-number">1.</span> <span class="nav-text">OpenCL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#opengl"><span class="nav-number">2.</span> <span class="nav-text">OpenGL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#directx"><span class="nav-number">3.</span> <span class="nav-text">DirectX</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三者之间的区别"><span class="nav-number">4.</span> <span class="nav-text">三者之间的区别：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cuda"><span class="nav-number">5.</span> <span class="nav-text">CUDA</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#relationship-between-opencl-and-cuda"><span class="nav-number">6.</span> <span class="nav-text">Relationship Between OpenCL And CUDA</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#att汇编和intel汇编"><span class="nav-number">1.</span> <span class="nav-text">AT&amp;T汇编和Intel汇编</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cpu的寄存器"><span class="nav-number">2.</span> <span class="nav-text">CPU的寄存器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#位cpu"><span class="nav-number">2.1.</span> <span class="nav-text">16位CPU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#位cpu-1"><span class="nav-number">2.2.</span> <span class="nav-text">32位CPU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#位cpu-2"><span class="nav-number">2.3.</span> <span class="nav-text">64位CPU</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本汇编的语法规则"><span class="nav-number">3.</span> <span class="nav-text">基本汇编的语法规则</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#最常见的指令mov指令"><span class="nav-number">3.1.</span> <span class="nav-text">最常见的指令——mov指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#汇编中的操作数"><span class="nav-number">3.2.</span> <span class="nav-text">汇编中的操作数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#寻址方式"><span class="nav-number">3.3.</span> <span class="nav-text">寻址方式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#寄存器寻址"><span class="nav-number">3.3.1.</span> <span class="nav-text">寄存器寻址</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#立即寻址"><span class="nav-number">3.3.2.</span> <span class="nav-text">立即寻址</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#直接寻址"><span class="nav-number">3.3.3.</span> <span class="nav-text">直接寻址</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#间接寻址"><span class="nav-number">3.3.4.</span> <span class="nav-text">间接寻址</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#变址寻址"><span class="nav-number">3.3.5.</span> <span class="nav-text">变址寻址</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#堆栈操作_push和pop"><span class="nav-number">3.4.</span> <span class="nav-text">堆栈操作_push和pop</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数的调用和返回call命令"><span class="nav-number">3.5.</span> <span class="nav-text">函数的调用和返回——call命令</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

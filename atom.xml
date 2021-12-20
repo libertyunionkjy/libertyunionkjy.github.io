@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2021-12-16T05:22:04.013Z</updated>
+  <updated>2021-12-20T04:25:13.894Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>汇编语法基础</title>
+    <link href="https://jyke.xyz/posts/20167.html"/>
+    <id>https://jyke.xyz/posts/20167.html</id>
+    <published>2021-12-20T04:20:21.000Z</published>
+    <updated>2021-12-20T04:25:13.894Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;很基本的汇编语法基础，在学习linux kernel的过程中经常会出现一些汇编代码，特在此记录一些基础用法，以便查阅。
+    
+    </summary>
+    
+    
+      <category term="汇编" scheme="https://jyke.xyz/categories/%E6%B1%87%E7%BC%96/"/>
+    
+    
+      <category term="汇编" scheme="https://jyke.xyz/tags/%E6%B1%87%E7%BC%96/"/>
+    
+  </entry>
   
   <entry>
     <title>再探虚拟内存</title>
@@ -561,34 +582,6 @@
       <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
     
       <category term="kernel" scheme="https://jyke.xyz/tags/kernel/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Shell学习笔记</title>
-    <link href="https://jyke.xyz/posts/59949.html"/>
-    <id>https://jyke.xyz/posts/59949.html</id>
-    <published>2020-11-17T15:05:16.000Z</published>
-    <updated>2020-11-17T15:06:11.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;最基本的两个问题&quot;&gt;最基本的两个问题&lt;/h1&gt;
-&lt;h2 id=&quot;shell是什么&quot;&gt;shell是什么？&lt;/h2&gt;
-&lt;p&gt;shell是一个用C语言编写的程序，是用户使用Linux的桥梁。他提供了一个界面，用户通过这个界面访问操作系统服务。&lt;/p&gt;
-&lt;p&gt;而Shell脚本（Shell Script）是一种为shell编写的脚本程序。也就是我们通常说的Shell脚本编程。&lt;/p&gt;
-&lt;h2 id=&quot;bash是什么&quot;&gt;bash是什么？&lt;/h2&gt;
-&lt;p&gt;shell编程和其他的编程一样，需要文本编辑器和脚本解释器。&lt;/p&gt;
-&lt;p&gt;而Bash是Linux的一种Shell类型，是解释脚本文件的一个shell程序。&lt;/p&gt;
-&lt;p&gt;Linux的Shell种类众多，常见的有：&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="学习" scheme="https://jyke.xyz/categories/%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="Shell" scheme="https://jyke.xyz/tags/Shell/"/>
     
   </entry>
   
