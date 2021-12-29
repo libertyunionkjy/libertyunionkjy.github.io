@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2021-12-20T09:44:10.685Z</updated>
+  <updated>2021-12-29T08:08:20.825Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>从.c文件到程序的执行，中间发生了什么？</title>
+    <link href="https://jyke.xyz/posts/8966.html"/>
+    <id>https://jyke.xyz/posts/8966.html</id>
+    <published>2021-12-29T07:56:59.000Z</published>
+    <updated>2021-12-29T08:08:20.825Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;引子&quot;&gt;引子&lt;/h2&gt;
+&lt;p&gt;本篇文章是作者阅读&lt;a href=&quot;https://book.douban.com/subject/30350365/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;《庖丁解牛Linux内核分析》&lt;/a&gt;一书中的第七章————“可执行程序的工作原理”的读书笔记，这篇文章要解决的两个问题是： * 一个.c源代码文件是如何编译成可执行文件的？ * 当我们在shell中执行一个可执行程序时，发生了什么？&lt;/p&gt;
+&lt;p&gt;为了解决这两个问题，本文首先介绍了ELF文件格式，其次完整地概括了程序的编译过程，最后总结了可执行程序在Linux中的装载过程。
+    
+    </summary>
+    
+    
+      <category term="linux kernel" scheme="https://jyke.xyz/categories/linux-kernel/"/>
+    
+    
+      <category term="linux kernel" scheme="https://jyke.xyz/tags/linux-kernel/"/>
+    
+  </entry>
   
   <entry>
     <title>汇编语法基础</title>
@@ -206,7 +229,7 @@
     <link href="https://jyke.xyz/posts/42781.html"/>
     <id>https://jyke.xyz/posts/42781.html</id>
     <published>2021-12-01T04:58:44.000Z</published>
-    <updated>2021-12-03T06:29:14.987Z</updated>
+    <updated>2021-12-23T03:13:04.612Z</updated>
     
     <summary type="html">
     
@@ -559,36 +582,6 @@
       <category term="OpenGL" scheme="https://jyke.xyz/tags/OpenGL/"/>
     
       <category term="mesa" scheme="https://jyke.xyz/tags/mesa/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux内核的下载与编译安装</title>
-    <link href="https://jyke.xyz/posts/39689.html"/>
-    <id>https://jyke.xyz/posts/39689.html</id>
-    <published>2020-12-08T15:31:56.000Z</published>
-    <updated>2020-12-08T15:36:31.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;linux内核的下载与编译安装&quot;&gt;Linux内核的下载与编译安装&lt;/h1&gt;
-&lt;h2 id=&quot;两种方式获取源码&quot;&gt;两种方式获取源码&lt;/h2&gt;
-&lt;p&gt;首先进入&lt;a href=&quot;https://www.kernel.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;内核官方网站&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;方式一：下载tarall并解压&lt;/p&gt;
-&lt;p&gt;方式二：使用Git获取最新的源码：&lt;a href=&quot;https://blog.csdn.net/wukongmingjing/article/details/81353040&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;参考&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;内核源码一般置于/usr/src/*中，但是请不要把这些目录中的linux kernel源码用于开发&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-      <category term="linux" scheme="https://jyke.xyz/categories/linux/"/>
-    
-    
-      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
-    
-      <category term="kernel" scheme="https://jyke.xyz/tags/kernel/"/>
     
   </entry>
   

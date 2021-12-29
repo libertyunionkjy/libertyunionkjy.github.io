@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="引子 本篇文章是作者阅读《庖丁解牛Linux内核分析》一书中的第七章————“可执行程序的工作原理”的读书笔记，这篇文章要解决的两个问题是： * 一个.c源代码文件是如何编译成可执行文件的？ * 当我们在shell中执行一个可执行程序时，发生了什么？ 为了解决这两个问题，本文首先介绍了ELF文件格式，其次完整地概括了程序的编译过程，最后总结了可执行程序在Linux中的装载过程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从.c文件到程序的执行，中间发生了什么？">
+<meta property="og:url" content="https://jyke.xyz/posts/8966.html">
+<meta property="og:site_name" content="柯柯的博客">
+<meta property="og:description" content="引子 本篇文章是作者阅读《庖丁解牛Linux内核分析》一书中的第七章————“可执行程序的工作原理”的读书笔记，这篇文章要解决的两个问题是： * 一个.c源代码文件是如何编译成可执行文件的？ * 当我们在shell中执行一个可执行程序时，发生了什么？ 为了解决这两个问题，本文首先介绍了ELF文件格式，其次完整地概括了程序的编译过程，最后总结了可执行程序在Linux中的装载过程。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112281226173.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112281332276.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112281341845.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112281407486.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112281423448.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112281505230.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112281524885.png">
+<meta property="article:published_time" content="2021-12-29T07:56:59.000Z">
+<meta property="article:modified_time" content="2021-12-29T08:08:20.825Z">
+<meta property="article:author" content="Keke">
+<meta property="article:tag" content="linux kernel">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112281226173.png">
+
+<link rel="canonical" href="https://jyke.xyz/posts/8966.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>从.c文件到程序的执行，中间发生了什么？ | 柯柯的博客</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-166231991-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="柯柯的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">柯柯的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">KK's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/8966.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从.c文件到程序的执行，中间发生了什么？
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-12-29 15:56:59 / 修改时间：16:08:20" itemprop="dateCreated datePublished" datetime="2021-12-29T15:56:59+08:00">2021-12-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux-kernel/" itemprop="url" rel="index"><span itemprop="name">linux kernel</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/posts/8966.html" class="post-meta-item leancloud_visitors" data-flag-title="从.c文件到程序的执行，中间发生了什么？" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/8966.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/8966.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="引子">引子</h2>
+<p>本篇文章是作者阅读<a href="https://book.douban.com/subject/30350365/" target="_blank" rel="noopener">《庖丁解牛Linux内核分析》</a>一书中的第七章————“可执行程序的工作原理”的读书笔记，这篇文章要解决的两个问题是： * 一个.c源代码文件是如何编译成可执行文件的？ * 当我们在shell中执行一个可执行程序时，发生了什么？</p>
+<p>为了解决这两个问题，本文首先介绍了ELF文件格式，其次完整地概括了程序的编译过程，最后总结了可执行程序在Linux中的装载过程。 <a id="more"></a> ## ELF文件格式</p>
+<h3 id="是什么">是什么</h3>
+<ul>
+<li>目标文件是什么？目标是指目标平台，一个目标文件已经适应了某一种特定体系结构的CPU指令。</li>
+<li>ELF是一种目标文件的格式</li>
+<li>ELF文件有三种类型：
+<ul>
+<li>可重定位目标文件：每一个源代码文件就会生成一个可重定位文件，就是我们经常看到的.o文件，目的是为了和其他的目标文件一起创建一个可执行文件/动态链接库文件。所有的.o文件最后会链接成为一个文件，就是Linux内核。
+<ul>
+<li>静态链接库文件就是可重定位文件的打包，也是一种可重定位文件，一般以.a作为文件名后缀</li>
+</ul></li>
+<li>可执行文件：由多个可重定位文件结合生成，完成了所有重定位工作和符号解析的文件。（动态链接库符号是在运行时解析的）</li>
+<li>动态链接库文件：也就是共享目标文件，是一种已经经过链接处理可以直接加载运行的库文件。可以理解为”没有main的可执行文件”。只有一堆函数可以供其他程序调用。Linux中动态链接库文件的后缀为.so。（shared object）</li>
+</ul></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">A[&quot;可重定位文件(.o)&quot;]</span><br><span class="line">B[&quot;可执行文件&quot;]</span><br><span class="line">C[&quot;动态链接库文件(.so)&quot;]</span><br><span class="line">D[&quot;另一个动态链接库文件(.so)&quot;]</span><br><span class="line">A --&gt;|多个.o| B</span><br><span class="line">B --&gt;|运行时使用| C</span><br><span class="line">B --&gt;|运行时使用| D</span><br><span class="line">A --&gt;|链接| C</span><br><span class="line">A --&gt;|链接| D</span><br><span class="line">C --&gt;|使用| D</span><br></pre></td></tr></table></figure>
+<h3 id="作用">作用</h3>
+<ul>
+<li>对于可重定位文件来说，作用是为了给编译器和链接器提供信息，以便于编译和链接</li>
+<li><p>对于可执行文件来说，作用是为了给加载器提供信息，以便于加载执行</p></li>
+<li><p>ELF文件格式：分为主体和描述信息，大致描述如下：<img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112281226173.png" /></p></li>
+</ul>
+<h2 id="程序的编译过程">程序的编译过程</h2>
+<p>以<code>hello.c</code>文件进行举例说明</p>
+<h3 id="预处理">预处理</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -E hello.c -o hello.i</span><br></pre></td></tr></table></figure>
+<ol type="1">
+<li>删除所有的注释</li>
+<li>删除所有的#define，展开宏定义</li>
+<li>处理条件预编译指令</li>
+<li>处理#include预编译指令，将被包含的文件插入进来，递归进行</li>
+<li>添加行号和文件名标识</li>
+<li>预处理过后的文件可以使用任意的文本编辑器打开查看</li>
+</ol>
+<h3 id="编译">编译</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc –S hello.i –o hello.s -m32</span><br></pre></td></tr></table></figure>
+<ol type="1">
+<li>检查语法的规范性</li>
+<li>把代码翻译成汇编语言</li>
+<li>生成的目标文件依然可以用任意文本编辑器打开查看</li>
+</ol>
+<blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112281332276.png" /></p>
+<blockquote>
+<p>以.开头的是伪指令</p>
+</blockquote>
+</blockquote>
+<h3 id="汇编">汇编</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc –c hello.s –o hello.o.m32 -m32</span><br></pre></td></tr></table></figure>
+<ol type="1">
+<li>.o文件就是ELF格式文件</li>
+<li>生成的目标文件至少有3个节区（.bss/.data/.text)</li>
+<li>查看目标文件需要使用<code>readelf</code>指令</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> readelf -S helloworld.o</span></span><br><span class="line">There are 14 section headers, starting at offset 0x310:</span><br><span class="line">Section Headers:</span><br><span class="line">  [Nr] Name              Type             Address           Offset</span><br><span class="line">  ......</span><br><span class="line">  [ 1] .text             PROGBITS         0000000000000000  00000040</span><br><span class="line">       0000000000000017  0000000000000000  AX       0     0     1</span><br><span class="line">  ......</span><br><span class="line">  [ 3] .data             PROGBITS         0000000000000000  00000057</span><br><span class="line">       0000000000000000  0000000000000000  WA       0     0     1</span><br><span class="line">  [ 4] .bss              NOBITS           0000000000000000  00000057</span><br><span class="line">       0000000000000000  0000000000000000  WA       0     0     1</span><br><span class="line"> ......</span><br><span class="line">Key to Flags:</span><br><span class="line">  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),</span><br><span class="line">  L (link order), O (extra OS processing required), G (group), T (TLS),</span><br><span class="line">  C (compressed), x (unknown), o (OS specific), E (exclude),</span><br><span class="line">  l (large), p (processor specific)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解释一下上面的输出，以.text行为例：</p>
+<ol type="1">
+<li>Type列代表该节存储的是代码</li>
+<li>Address全0，是因为生成的是可重定位目标文件，还不是可执行文件，所以没有设置对应的虚拟地址，在链接部分完成后会改变为虚拟地址</li>
+<li>off为在.o文件中的偏移</li>
+<li>key to flags是对标识的说明，A（alloc）代表需要加载到内存中，X标识表示对应的内存部分需要可执行权限</li>
+</ol>
+</blockquote>
+<p>除了以上提到的三个节以外，还有一些常见节：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112281341845.png"/></p>
+<h3 id="链接">链接</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc hello.o.m32 -o hello.m32.static -m32 -static</span><br></pre></td></tr></table></figure>
+<ol type="1">
+<li>链接就是把各种代码和数据部分收集起来成为一个单一文件的过程，本质上是各个ELF文件中的节的拼接</li>
+<li>这个单一文件可以被加载/复制到内存中执行</li>
+<li>对应一个最简单的helloworld.c文件，就是把<code>helloworld.o</code>文件和<code>libc</code>库文件进行链接的过程</li>
+<li>.o到可执行文件的一个重要变化是，.text的Addr有了值。多出来的节是从外部库中添加过来的，编译器进行了整合，并安排了地址布局。</li>
+<li>还有一个重要的变化是：多了一个段头表</li>
+<li>可执行文件的加载执行，其实是操作系统按照段头的指示，将执行文件按照安排好的布局加载到内存，再跳转到其中的代码段。</li>
+</ol>
+<h2 id="程序的链接过程">程序的链接过程</h2>
+<p>程序的编译过程中，最复杂的部分是链接过程，程序的链接从过程上分类：</p>
+<ol type="1">
+<li>符号解析</li>
+<li>重定位</li>
+</ol>
+<p>从链接的时机分类：</p>
+<ol type="1">
+<li>动态链接</li>
+<li>静态链接</li>
+</ol>
+<h3 id="符号解析">符号解析</h3>
+<h4 id="符号">符号</h4>
+<p>什么是符号，符号包含全局变量和全局函数，在我们的例子中，printf就是一个符号。符号分为三种</p>
+<ol type="1">
+<li>本地模块定义，可以被其他模块饮用的<strong>全局符号</strong></li>
+<li>其他模块定义，被本地模块引用的<strong>外部符号</strong></li>
+<li>本地模块定义，只被本地模块引用的<strong>本地符号</strong></li>
+</ol>
+<h4 id="符号表">符号表</h4>
+<p>符号表是编译器生成的，具体怎么来的按下不表，我们只需要知道其作用为：</p>
+<blockquote>
+<p>找到未知函数在其他库文件中的代码段的具体位置，以helloworld为例，就是为了找到printf函数在libc库中的具体代码位置</p>
+</blockquote>
+<p>查看符号表的方法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readelf -s xxx.o</span><br></pre></td></tr></table></figure>
+<p>链接前后的符号表对比：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112281407486.png" /></p>
+<h3 id="重定位">重定位</h3>
+<p>目的：重定位是一个把程序的逻辑地址空间变成实际内存的物理地址空间的过程，这里的物理地址空间也就是进程的虚拟地址空间，为了达成这个目标，需要对程序的指令和数据进行修改。</p>
+<p>重定位的过程：</p>
+<ol type="1">
+<li>聚合：将所有的类型相同的节聚合成一个新的聚合节，并赋值新的地址，这个过程完成后，程序中的每个指令和全局变量都有唯一的运行时地址</li>
+<li>修改：修改.text（代码段）和.data（数据段）中对每个符号的引用，使得指向正确的运行时地址。</li>
+</ol>
+<p>重定位表：</p>
+<ol type="1">
+<li><p>重定位表中的每一条记录对应一个需要重定位的符号</p></li>
+<li><p>每个包含需要重定位符号的段都有一个重定位表</p></li>
+<li><p>查看重定位表：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">readelf -r xxx.o</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112281423448.png" /></p>
+<blockquote>
+<p>可重定位表和符号表的区别：</p>
+<ol type="1">
+<li>可重定位表指示了什么符号需要被替换</li>
+<li>符号表指示了需要替换进去的符号的实际地址</li>
+</ol>
+</blockquote>
+<h3 id="动态链接">动态链接</h3>
+<p>在链接的时候，记录一系列符号和参数，在程序运行或加载的时候把信息传递给操作系统，由操作系统负责把需要的动态库加载到内存，最终程序在执行的时候去共享内存中执行代码。</p>
+<p>优点：</p>
+<ol type="1">
+<li>多个程序共享一段代码</li>
+</ol>
+<p>缺点：</p>
+<ol type="1">
+<li>运行时加载，可能会影响程序前期执行性能</li>
+<li>对库依赖比较高，在升级的时候容易出现版本兼容问题</li>
+</ol>
+<p>分类：</p>
+<ol type="1">
+<li>装载时动态链接</li>
+<li>执行时动态链接</li>
+</ol>
+<h3 id="静态链接">静态链接</h3>
+<p>在链接阶段把需要的执行代码直接复制到最终可执行文件中。</p>
+<p>优点：</p>
+<ol type="1">
+<li>装载速度快，执行速度快</li>
+<li>对环境依赖低</li>
+</ol>
+<p>缺点：</p>
+<ol type="1">
+<li>浪费内存</li>
+<li>链接出来的程序比较大</li>
+</ol>
+<h2 id="程序的装载过程">程序的装载过程</h2>
+<p>不管是直接执行一个可执行文件<code>./hello</code>还是执行命令<code>ls -l</code>，我们大部分都是通过shell程序来启动一个可执行程序的，本节我们主要探讨一个问题：shell程序是怎么把一个进程启动起来的？</p>
+<h3 id="引子-1">引子</h3>
+<p>我们执行<code>ls -l</code>和<code>./hello</code>有什么区别？其实我们在shell中执行这两个命令时，总本质上来说都是没有区别的，一个是执行了ls程序，一个是执行了hello程序，只不过前者我们传递了参数，后者我们没有传递参数。最终程序都会从<code>main()</code>处开始执行。总的来说，一个程序有三种<code>main</code>函数的形式：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112281505230.png" /></p>
+<p>那从输入<code>./hello</code>到执行程序的main函数，这其中shell做了什么事呢？shell在其中做的事就是通过<code>fork()</code>系统调用新建一个进程，并且通过<code>execve()</code>系统调用帮我们启动程序和传递参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">A[&quot;shell&quot;]</span><br><span class="line">B[&quot;fork()&quot;]</span><br><span class="line">C[&quot;execve()&quot;]</span><br><span class="line">A --&gt; B --&gt; 新建进程</span><br><span class="line">A --&gt; C --&gt; 传递参数并启动进程</span><br></pre></td></tr></table></figure>
+<p>execve函数原型</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">execve</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *filename, <span class="keyword">char</span> *<span class="keyword">const</span> argv[],<span class="keyword">char</span> *<span class="keyword">const</span> envp[])</span></span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>filename：文件名</p>
+<p>argv：命令行参数</p>
+<p>envp：环境变量</p>
+</blockquote>
+<h3 id="执行环境上下文">执行环境上下文</h3>
+<p>那么，新的进程是怎么拿到shell传过来的命令行参数和环境变量参数的呢？</p>
+<p>fork()系统调用会生成子进程的PCB和<strong>用户态堆栈，这些参数就是放在堆栈中的</strong>，如图所示，然后会跳转到main函数执行：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112281524885.png" /></p>
+<p>说明：</p>
+<ol type="1">
+<li>返回地址是在用户态堆栈的栈顶，当执行完以上操作后，就会从返回地址指向的指令开始执行</li>
+<li>以上所说的过程是针对静态链接的程序而言的，动态链接的程序在完成用户态堆栈的建立后会做一些特殊处理</li>
+</ol>
+<h3 id="动态链接程序的特殊处理">动态链接程序的特殊处理</h3>
+<blockquote>
+<p>ld：动态链接器</p>
+</blockquote>
+<ol type="1">
+<li>动态链接版本的可执行文件会比静态链接的多处.interp这个节点以及其他ld需要用到的节</li>
+<li>动态链接版本的可执行文件从内核态返回时，首先执行的是.interp节区指向的动态链接器</li>
+<li>ld的责任就是解析依赖关系，并根据依赖关系装载所有需要的动态链接库，然后ld会把CPU的控制权交给可执行程序</li>
+<li>从以上的过程我们可以发现，动态链接的过程主要是动态链接器在起作用而不是内核</li>
+</ol>
+<blockquote>
+<p>查看一个动态链接的可执行程序的依赖关系：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ ldd /bin/ls</span><br><span class="line">	linux-vdso.so.1 (0x00007fffc5373000)</span><br><span class="line">	libselinux.so.1 =&gt; /lib/x86_64-linux-gnu/libselinux.so.1 (0x00007f15aee2a000)</span><br><span class="line">	libc.so.6 =&gt; /lib/x86_64-linux-gnu/libc.so.6 (0x00007f15aec38000)</span><br><span class="line">	libpcre2-8.so.0 =&gt; /lib/x86_64-linux-gnu/libpcre2-8.so.0 (0x00007f15aeba8000)</span><br><span class="line">	libdl.so.2 =&gt; /lib/x86_64-linux-gnu/libdl.so.2 (0x00007f15aeba2000)</span><br><span class="line">	/lib64/ld-linux-x86-64.so.2 (0x00007f15aee97000)</span><br><span class="line">	libpthread.so.0 =&gt; /lib/x86_64-linux-gnu/libpthread.so.0 (0x00007f15aeb7f000)</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="fork和execve系统调用的内核处理过程">fork和execve系统调用的内核处理过程</h2>
+<h3 id="概述">概述</h3>
+<p>execve系统调用的作用是：用加载的程序把当前正在执行的进程覆盖掉，当系统调用返回的时候也就返回到新的可执行程序的起点。</p>
+<p>execve系统调用对应的内核处理函数为sys_execve()，对应的调用关系为：</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sys_execve() </span><br><span class="line"><span class="function">	-&gt;</span> do_execve() ：读取文件头部判断可执行文件的类型</span><br><span class="line"><span class="function">		-&gt;</span> do_execve_common() </span><br><span class="line"><span class="function">			-&gt;</span> exec_binprm() </span><br><span class="line"><span class="function">				-&gt;</span> search_binary_handler() ：搜索和匹配合适的可执行文件装载处理过程</span><br><span class="line"><span class="function">					-&gt;</span> load_elf_binary() ：负责装载ELF文件</span><br><span class="line"><span class="function">						-&gt;</span> start_thread()：创建新进程的堆栈，其中有pt_regs（内核堆栈）栈底指针，修改了EIP寄存器</span><br></pre></td></tr></table></figure>
+<p>对于返回到用户态后的起点位置，静态链接和动态链接是不一样的：</p>
+<ul>
+<li>静态链接：elf_entry指向可执行文件的头部，一般是main函数，是新程序执行的起点。</li>
+<li>动态链接：elf_entry指向ld（动态链接器）的起点load_elf_interp。</li>
+</ul>
+<h3 id="fork和execve的区别和联系">fork和execve的区别和联系</h3>
+<h4 id="fork">fork</h4>
+<p>因为正常的一个系统调用都是陷入内核态，再返回到用户态，然后继续执行系统调用后的下一条指令。fork和其他系统调用不同之处是它在陷入内核态之后有两次返回，第一次返回到原来的父进程的位置继续向下执行，这和其他的系统调用是一样的。在子进程中fork也返回了一次，会返回到一个特定的点 <code>ret_from_fork</code> 通过内核构造的堆栈环境，它可以正常返回到用户态，所以它稍微特殊一点。</p>
+<h4 id="execve">execve</h4>
+<p>同样， execve也比较特殊。当前的可执行程序在执行，执行到 execve时陷入内核态，在内核里面用execve加载的可执行文件把当前进程的可执行程序给覆盖掉了。当 execve的 系统调用返回时，返回的已经不是原来的那个可执行程序了，而是新的可执行程序。</p>
+<h4 id="start_thread函数">start_thread()函数</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">///src/arch/x86/kernel/process_32.c</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">start_thread</span><span class="params">(struct pt_regs *regs, <span class="keyword">unsigned</span> <span class="keyword">long</span> new_ip, <span class="keyword">unsigned</span> <span class="keyword">long</span> new_sp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	set_user_gs(regs, <span class="number">0</span>);</span><br><span class="line">	regs-&gt;fs		= <span class="number">0</span>;</span><br><span class="line">	regs-&gt;ds		= __USER_DS;</span><br><span class="line">	regs-&gt;es		= __USER_DS;</span><br><span class="line">	regs-&gt;ss		= __USER_DS;</span><br><span class="line">	regs-&gt;cs		= __USER_CS;</span><br><span class="line">	regs-&gt;ip		= new_ip;</span><br><span class="line">	regs-&gt;sp		= new_sp;</span><br><span class="line">	regs-&gt;flags		= X86_EFLAGS_IF;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="参考文献">参考文献</h2>
+<p><a href="https://book.douban.com/subject/30350365/" target="_blank" rel="noopener">庖丁解牛Linux内核分析</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux-kernel/" rel="tag"># linux kernel</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/20167.html" rel="prev" title="汇编语法基础">
+      <i class="fa fa-chevron-left"></i> 汇编语法基础
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引子"><span class="nav-number">1.</span> <span class="nav-text">引子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#是什么"><span class="nav-number">1.1.</span> <span class="nav-text">是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#作用"><span class="nav-number">1.2.</span> <span class="nav-text">作用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序的编译过程"><span class="nav-number">2.</span> <span class="nav-text">程序的编译过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#预处理"><span class="nav-number">2.1.</span> <span class="nav-text">预处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译"><span class="nav-number">2.2.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#汇编"><span class="nav-number">2.3.</span> <span class="nav-text">汇编</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链接"><span class="nav-number">2.4.</span> <span class="nav-text">链接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序的链接过程"><span class="nav-number">3.</span> <span class="nav-text">程序的链接过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#符号解析"><span class="nav-number">3.1.</span> <span class="nav-text">符号解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#符号"><span class="nav-number">3.1.1.</span> <span class="nav-text">符号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#符号表"><span class="nav-number">3.1.2.</span> <span class="nav-text">符号表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重定位"><span class="nav-number">3.2.</span> <span class="nav-text">重定位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态链接"><span class="nav-number">3.3.</span> <span class="nav-text">动态链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态链接"><span class="nav-number">3.4.</span> <span class="nav-text">静态链接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序的装载过程"><span class="nav-number">4.</span> <span class="nav-text">程序的装载过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#引子-1"><span class="nav-number">4.1.</span> <span class="nav-text">引子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行环境上下文"><span class="nav-number">4.2.</span> <span class="nav-text">执行环境上下文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动态链接程序的特殊处理"><span class="nav-number">4.3.</span> <span class="nav-text">动态链接程序的特殊处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fork和execve系统调用的内核处理过程"><span class="nav-number">5.</span> <span class="nav-text">fork和execve系统调用的内核处理过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">5.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fork和execve的区别和联系"><span class="nav-number">5.2.</span> <span class="nav-text">fork和execve的区别和联系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#fork"><span class="nav-number">5.2.1.</span> <span class="nav-text">fork</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#execve"><span class="nav-number">5.2.2.</span> <span class="nav-text">execve</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#start_thread函数"><span class="nav-number">5.2.3.</span> <span class="nav-text">start_thread()函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Keke"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Keke</p>
+  <div class="site-description" itemprop="description">记录学习的地方</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://libertyunionkjy@gmail.com/" title="E-Mail → https:&#x2F;&#x2F;libertyunionkjy@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Keke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"LUfk9hhalFl8bvU1sch5iOtc-9Nh9j0Va","app_key":"pI9Q11Bxqxk1Q5eJLKIG1gim","server_url":null,"security":false};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el         : '#valine-comments',
+      path       : location.pathname,
+    }, {"enable":true,"appId":"tnKOKDSuvxOLRFeojycmFGDV-MdYXbMMI","appKey":"Q4ro4ajDoVK1ScWWSlGCxY3G","notify":true,"verify":false,"placeholder":"快来评论吧！柯柯给你举高高ヽ(✿ﾟ▽ﾟ)ノ","avatar":"monsterid","meta":["nick","mail","link"],"pageSize":10,"language":"zh-cn","visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
