@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2021-12-29T08:08:20.825Z</updated>
+  <updated>2021-12-29T08:16:07.438Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -21,12 +21,16 @@
     <link href="https://jyke.xyz/posts/8966.html"/>
     <id>https://jyke.xyz/posts/8966.html</id>
     <published>2021-12-29T07:56:59.000Z</published>
-    <updated>2021-12-29T08:08:20.825Z</updated>
+    <updated>2021-12-29T08:16:07.438Z</updated>
     
     <summary type="html">
     
       &lt;h2 id=&quot;引子&quot;&gt;引子&lt;/h2&gt;
-&lt;p&gt;本篇文章是作者阅读&lt;a href=&quot;https://book.douban.com/subject/30350365/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;《庖丁解牛Linux内核分析》&lt;/a&gt;一书中的第七章————“可执行程序的工作原理”的读书笔记，这篇文章要解决的两个问题是： * 一个.c源代码文件是如何编译成可执行文件的？ * 当我们在shell中执行一个可执行程序时，发生了什么？&lt;/p&gt;
+&lt;p&gt;本篇文章是作者阅读&lt;a href=&quot;https://book.douban.com/subject/30350365/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;《庖丁解牛Linux内核分析》&lt;/a&gt;一书中的第七章————“可执行程序的工作原理”的读书笔记，这篇文章要解决的两个问题是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一个.c源代码文件是如何编译成可执行文件的？&lt;/li&gt;
+&lt;li&gt;当我们在shell中执行一个可执行程序时，发生了什么？&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;为了解决这两个问题，本文首先介绍了ELF文件格式，其次完整地概括了程序的编译过程，最后总结了可执行程序在Linux中的装载过程。
     
     </summary>
