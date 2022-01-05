@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112311553724.png">
 <meta property="article:published_time" content="2022-01-05T07:49:13.000Z">
-<meta property="article:modified_time" content="2022-01-05T07:51:21.916Z">
+<meta property="article:modified_time" content="2022-01-05T07:54:51.986Z">
 <meta property="article:author" content="Keke">
 <meta property="article:tag" content="linux kernel">
 <meta name="twitter:card" content="summary">
@@ -212,7 +212,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-01-05 15:49:13 / 修改时间：15:51:21" itemprop="dateCreated datePublished" datetime="2022-01-05T15:49:13+08:00">2022-01-05</time>
+              <time title="创建时间：2022-01-05 15:49:13 / 修改时间：15:54:51" itemprop="dateCreated datePublished" datetime="2022-01-05T15:49:13+08:00">2022-01-05</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -313,8 +313,12 @@
 <ul>
 <li><p>默认的文件集合由<code>kobject</code>中的<code>ktype</code>字段提供</p></li>
 <li><p><code>struct attribute **default_attrs</code>这个属性负责把<code>kobject</code>的内核数据映射成为文件</p></li>
-<li><p>```c struct attribute { const char <em>name; /</em>名称<em>/ umode_t mode; /</em>权限<em>/ #ifdef CONFIG_DEBUG_LOCK_ALLOC bool ignore_lockdep:1; struct lock_class_key </em>key; struct lock_class_key skey; #endif }; <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* `<span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">sysfs_ops</span></span> *sysfs_ops;`定了了对属性的操作</span><br><span class="line"></span><br><span class="line">* ```c</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">sysfs_ops</span></span> &#123;</span><br><span class="line">    <span class="comment">//读sysfs文件的时候被调用</span></span><br><span class="line">  	ssize_t	(*show)(<span class="class"><span class="keyword">struct</span> <span class="title">kobject</span></span> *, <span class="class"><span class="keyword">struct</span> <span class="title">attribute</span></span> *, <span class="built_in">char</span> *);</span><br><span class="line">    <span class="comment">//写sysfs文件的时候被调用</span></span><br><span class="line">  	ssize_t	(*store)(<span class="class"><span class="keyword">struct</span> <span class="title">kobject</span></span> *, <span class="class"><span class="keyword">struct</span> <span class="title">attribute</span></span> *, <span class="keyword">const</span> <span class="built_in">char</span> *, size_t);</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure></p></li>
 </ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">attribute</span> &#123;</span></span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">char</span>		*name;      <span class="comment">/*名称*/</span></span><br><span class="line">	<span class="keyword">umode_t</span>			mode;         <span class="comment">/*权限*/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_DEBUG_LOCK_ALLOC</span></span><br><span class="line">	<span class="keyword">bool</span>			ignore_lockdep:<span class="number">1</span>;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">lock_class_key</span>	*<span class="title">key</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">lock_class_key</span>	<span class="title">skey</span>;</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>const struct sysfs_ops *sysfs_ops;</code>定了了对属性的操作</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sysfs_ops</span> &#123;</span></span><br><span class="line">  <span class="comment">//读sysfs文件的时候被调用</span></span><br><span class="line">	<span class="keyword">ssize_t</span>	(*show)(struct kobject *, struct attribute *, <span class="keyword">char</span> *);</span><br><span class="line">  <span class="comment">//写sysfs文件的时候被调用</span></span><br><span class="line">	<span class="keyword">ssize_t</span>	(*store)(struct kobject *, struct attribute *, <span class="keyword">const</span> <span class="keyword">char</span> *, <span class="keyword">size_t</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <h4 id="创建新属性和删除属性">创建新属性和删除属性</h4>
 <ol type="1">
 <li>一般来说，默认属性是充足的，少部分情况下需要添加属性，使用<code>sysfs_create_file</code>函数</li>
