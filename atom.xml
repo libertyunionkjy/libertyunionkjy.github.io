@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2021-12-29T08:20:12.641Z</updated>
+  <updated>2022-01-05T07:51:21.916Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Linux设备模型</title>
+    <link href="https://jyke.xyz/posts/42100.html"/>
+    <id>https://jyke.xyz/posts/42100.html</id>
+    <published>2022-01-05T07:49:13.000Z</published>
+    <updated>2022-01-05T07:51:21.916Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;linux设备模型&quot;&gt;Linux设备模型&lt;/h1&gt;
+&lt;p&gt;本文简要分析了linux设备文件系统&lt;code&gt;sysfs&lt;/code&gt;的原理。
+    
+    </summary>
+    
+    
+      <category term="linux kernel" scheme="https://jyke.xyz/categories/linux-kernel/"/>
+    
+    
+      <category term="linux kernel" scheme="https://jyke.xyz/tags/linux-kernel/"/>
+    
+  </entry>
   
   <entry>
     <title>从.c文件到程序的执行，中间发生了什么？</title>
@@ -555,37 +577,6 @@
     
     
       <category term="虚拟化" scheme="https://jyke.xyz/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Ubuntu20.04下安装mesa</title>
-    <link href="https://jyke.xyz/posts/30959.html"/>
-    <id>https://jyke.xyz/posts/30959.html</id>
-    <published>2020-12-08T15:34:54.000Z</published>
-    <updated>2020-12-08T15:36:31.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;在ubuntu20.04上安装mesa&quot;&gt;在Ubuntu20.04上安装Mesa&lt;/h1&gt;
-&lt;h2 id=&quot;安装meson&quot;&gt;安装Meson&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;https://mesonbuild.com/Quick-guide.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Quickstart Guide&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;环境准备&quot;&gt;环境准备&lt;/h3&gt;
-&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;apt-get install python3 python3-pip python3-setuptools python3-wheel ninja-build&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;安装Ninja&lt;/p&gt;
-&lt;figure class=&quot;highlight shell&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;pip3 install ninja&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-      <category term="linux" scheme="https://jyke.xyz/categories/linux/"/>
-    
-    
-      <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
-    
-      <category term="OpenGL" scheme="https://jyke.xyz/tags/OpenGL/"/>
-    
-      <category term="mesa" scheme="https://jyke.xyz/tags/mesa/"/>
     
   </entry>
   

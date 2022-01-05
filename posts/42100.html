@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jyke.xyz","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Linux设备模型 本文简要分析了linux设备文件系统sysfs的原理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux设备模型">
+<meta property="og:url" content="https://jyke.xyz/posts/42100.html">
+<meta property="og:site_name" content="柯柯的博客">
+<meta property="og:description" content="Linux设备模型 本文简要分析了linux设备文件系统sysfs的原理。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112311553724.png">
+<meta property="article:published_time" content="2022-01-05T07:49:13.000Z">
+<meta property="article:modified_time" content="2022-01-05T07:51:21.916Z">
+<meta property="article:author" content="Keke">
+<meta property="article:tag" content="linux kernel">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112311553724.png">
+
+<link rel="canonical" href="https://jyke.xyz/posts/42100.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Linux设备模型 | 柯柯的博客</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-166231991-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="柯柯的博客" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">柯柯的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">KK's Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jyke.xyz/posts/42100.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="Keke">
+      <meta itemprop="description" content="记录学习的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="柯柯的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux设备模型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-01-05 15:49:13 / 修改时间：15:51:21" itemprop="dateCreated datePublished" datetime="2022-01-05T15:49:13+08:00">2022-01-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux-kernel/" itemprop="url" rel="index"><span itemprop="name">linux kernel</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/posts/42100.html" class="post-meta-item leancloud_visitors" data-flag-title="Linux设备模型" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/posts/42100.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/posts/42100.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="linux设备模型">Linux设备模型</h1>
+<p>本文简要分析了linux设备文件系统<code>sysfs</code>的原理。 <a id="more"></a></p>
+<h2 id="kobject">kobject</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// /src/include/linux/kobject.h</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">kobject</span> &#123;</span></span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">char</span>		*name;   <span class="comment">// 目录名称</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span>	<span class="title">entry</span>;</span> </span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">kobject</span>		*<span class="title">parent</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">kset</span>		*<span class="title">kset</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">kobj_type</span>	*<span class="title">ktype</span>;</span> <span class="comment">// ！重要</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">kernfs_node</span>	*<span class="title">sd</span>;</span> <span class="comment">/* sysfs directory entry */</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">kref</span>		<span class="title">kref</span>;</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_DEBUG_KOBJECT_RELEASE</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">delayed_work</span>	<span class="title">release</span>;</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> state_initialized:<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> state_in_sysfs:<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> state_add_uevent_sent:<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> state_remove_uevent_sent:<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> uevent_suppress:<span class="number">1</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一个kobject对应的就是/sys/底下的一个目录，不一定是/sys/xx/，也可能是/sys/devices/xx，总之对应的就是一个目录</li>
+</ul>
+<h3 id="为什么要这个结构体">为什么要这个结构体？</h3>
+<p>把外围设备的共有特性抽象出来，方便驱动程序的开发。</p>
+<h3 id="最重要的ktype属性">最重要的ktype属性</h3>
+<p><img src="https://cdn.jsdelivr.net/gh/libertyunionkjy/jykeImg@master/images/202112311553724.png" /></p>
+<p>我们看<code>ktype</code>的结构属性：</p>
+<ol type="1">
+<li><code>ktype</code>属性嵌入到kobject当中，目的是描述kobject的一些共有的特性</li>
+<li><code>attribute</code>存储了这个kobject的特性，attribute中的每一个特定都对应一个文件</li>
+<li><code>release</code>函数的作用是在kobject的引用计数为0的时候，系统自动会调用自定义的release()来释放kobject对象。</li>
+<li>我们可以通过<code>sysfs_ops</code>提供的操作函数改变attribute的值</li>
+<li><code>attribute</code></li>
+</ol>
+<h2 id="从kobject到kset">从kobject到kset</h2>
+<p><code>kset</code>是由一组<code>kobject</code>作为链表节点组成的双向链表。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">kset</span> &#123;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">list_head</span> <span class="title">list</span>;</span></span><br><span class="line">	<span class="keyword">spinlock_t</span> list_lock; <span class="comment">// 自旋锁</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">kobject</span> <span class="title">kobj</span>;</span></span><br><span class="line">	<span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">kset_uevent_ops</span> *<span class="title">uevent_ops</span>;</span> <span class="comment">// 用于处理集合中的kobject对象的热拔插</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol type="1">
+<li>单一一个<code>kset</code>中的一组<code>kobject</code>是相关的，比如一组块设备</li>
+<li>和ktype相似，都是把一些相关的<code>kobkect</code>联系到一起
+<ol type="1">
+<li>区别在于具有相同<code>ktype</code>的<code>kobject</code>可以被分到不同的<code>kset</code></li>
+<li><code>ktype</code>是少数，<code>kset</code>要多一些</li>
+</ol></li>
+<li><code>kset</code>中嵌入的<code>kobject</code>作为这一组的基类</li>
+</ol>
+<h2 id="管理和操作kobject">管理和操作<code>kobject</code></h2>
+<h3 id="初始化">初始化</h3>
+<p>使用kobject的第一步是初始化，函数是<code>kobject_init</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">kobject_init</span><span class="params">(struct kobject *kobj, struct kobj_type *ktype)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> *err_str;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!kobj) &#123;</span><br><span class="line">		err_str = <span class="string">"invalid kobject pointer!"</span>;</span><br><span class="line">		<span class="keyword">goto</span> error;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (!ktype) &#123;</span><br><span class="line">		err_str = <span class="string">"must have a ktype to be initialized properly!\n"</span>;</span><br><span class="line">		<span class="keyword">goto</span> error;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (kobj-&gt;state_initialized) &#123;</span><br><span class="line">		<span class="comment">/* do not error out as sometimes we can recover */</span></span><br><span class="line">		pr_err(<span class="string">"kobject (%p): tried to init an initialized object, something is seriously wrong.\n"</span>,</span><br><span class="line">		       kobj);</span><br><span class="line">		dump_stack();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	kobject_init_internal(kobj);</span><br><span class="line">	kobj-&gt;ktype = ktype;</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">error:</span><br><span class="line">	pr_err(<span class="string">"kobject (%p): %s\n"</span>, kobj, err_str);</span><br><span class="line">	dump_stack();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中<code>kobject_init_internal</code>为</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">kobject_init_internal</span><span class="params">(struct kobject *kobj)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (!kobj)</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	kref_init(&amp;kobj-&gt;kref);</span><br><span class="line">	INIT_LIST_HEAD(&amp;kobj-&gt;entry);</span><br><span class="line">	kobj-&gt;state_in_sysfs = <span class="number">0</span>;</span><br><span class="line">	kobj-&gt;state_add_uevent_sent = <span class="number">0</span>;</span><br><span class="line">	kobj-&gt;state_remove_uevent_sent = <span class="number">0</span>;</span><br><span class="line">	kobj-&gt;state_initialized = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>推荐——</strong>我们可以直接调用<code>kobject_create</code>来处理：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> struct kobject *<span class="title">kobject_create</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">kobject</span> *<span class="title">kobj</span>;</span></span><br><span class="line"></span><br><span class="line">	kobj = kzalloc(<span class="keyword">sizeof</span>(*kobj), GFP_KERNEL); <span class="comment">// 分配存储空间并清零</span></span><br><span class="line">	<span class="keyword">if</span> (!kobj)</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">	kobject_init(kobj, &amp;dynamic_kobj_ktype);</span><br><span class="line">	<span class="keyword">return</span> kobj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="引用计数的操作">引用计数的操作</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 增加引用计数</span></span><br><span class="line">kobject_get(struct kobject *kobj)</span><br><span class="line"><span class="comment">// 减少引用计数</span></span><br><span class="line">kobject_put(struct kobject *kobj)</span><br></pre></td></tr></table></figure>
+<h2 id="sysfs">sysfs</h2>
+<p>每一个<code>kobject</code>对应的是<code>/sys/</code>目录或者其子目录底下的一个目录。我们怎么把<code>kobject</code>导入到<code>/sys/</code>中呢？</p>
+<h3 id="sysfs中添加和删除kobject">sysfs中添加和删除kobject</h3>
+<p>我们使用<code>kobject_add</code>函数来完成添加<code>kobject</code>到<code>/sys</code>系统中：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">kobject_add</span><span class="params">(struct kobject *kobj, struct kobject *parent, <span class="keyword">const</span> <span class="keyword">char</span> *fmt, ...)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	va_list args;</span><br><span class="line">	<span class="keyword">int</span> retval;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!kobj)</span><br><span class="line">		<span class="keyword">return</span> -EINVAL;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!kobj-&gt;state_initialized) &#123;</span><br><span class="line">		pr_err(<span class="string">"kobject '%s' (%p): tried to add an uninitialized object, something is seriously wrong.\n"</span>,kobject_name(kobj), kobj);</span><br><span class="line">		dump_stack();</span><br><span class="line">		<span class="keyword">return</span> -EINVAL;</span><br><span class="line">	&#125;</span><br><span class="line">	va_start(args, fmt);</span><br><span class="line">	retval = kobject_add_varg(kobj, parent, fmt, args);</span><br><span class="line">	va_end(args);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> retval;</span><br><span class="line">&#125;</span><br><span class="line">EXPORT_SYMBOL(kobject_add);</span><br></pre></td></tr></table></figure>
+<p>删除一个<code>kobject</code>对应的目录：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __kobject_del(struct kobject *kobj)</span><br></pre></td></tr></table></figure>
+<p>Create a struct kobject dynamically and register it with sysfs.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">struct kobject *<span class="title">kobject_create_and_add</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name, struct kobject *parent)</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="向sys中添加文件">向<code>/sys/</code>中添加文件</h3>
+<p>我们已经知道了怎么把<code>kobject</code>映射为一个目录，那么如何为每个目录创建文件呢？</p>
+<h4 id="默认属性">默认属性</h4>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">kobj_type</span> &#123;</span></span><br><span class="line">	<span class="keyword">void</span> (*<span class="built_in">release</span>)(struct kobject *kobj);</span><br><span class="line">	<span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">sysfs_ops</span> *<span class="title">sysfs_ops</span>;</span>   <span class="comment">/*定义了对属性的操作*/</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">attribute</span> **<span class="title">default_attrs</span>;</span>	   <span class="comment">/*定义默认属性*/</span></span><br><span class="line">	<span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">attribute_group</span> **<span class="title">default_groups</span>;</span></span><br><span class="line">	<span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">kobj_ns_type_operations</span> *(*<span class="title">child_ns_type</span>)(<span class="title">struct</span> <span class="title">kobject</span> *<span class="title">kobj</span>);</span></span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">void</span> *(*<span class="keyword">namespace</span>)(struct kobject *kobj);</span><br><span class="line">	<span class="keyword">void</span> (*get_ownership)(struct kobject *kobj, <span class="keyword">kuid_t</span> *uid, <span class="keyword">kgid_t</span> *gid);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>默认的文件集合由<code>kobject</code>中的<code>ktype</code>字段提供</p></li>
+<li><p><code>struct attribute **default_attrs</code>这个属性负责把<code>kobject</code>的内核数据映射成为文件</p></li>
+<li><p>```c struct attribute { const char <em>name; /</em>名称<em>/ umode_t mode; /</em>权限<em>/ #ifdef CONFIG_DEBUG_LOCK_ALLOC bool ignore_lockdep:1; struct lock_class_key </em>key; struct lock_class_key skey; #endif }; <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* `<span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">sysfs_ops</span></span> *sysfs_ops;`定了了对属性的操作</span><br><span class="line"></span><br><span class="line">* ```c</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">sysfs_ops</span></span> &#123;</span><br><span class="line">    <span class="comment">//读sysfs文件的时候被调用</span></span><br><span class="line">  	ssize_t	(*show)(<span class="class"><span class="keyword">struct</span> <span class="title">kobject</span></span> *, <span class="class"><span class="keyword">struct</span> <span class="title">attribute</span></span> *, <span class="built_in">char</span> *);</span><br><span class="line">    <span class="comment">//写sysfs文件的时候被调用</span></span><br><span class="line">  	ssize_t	(*store)(<span class="class"><span class="keyword">struct</span> <span class="title">kobject</span></span> *, <span class="class"><span class="keyword">struct</span> <span class="title">attribute</span></span> *, <span class="keyword">const</span> <span class="built_in">char</span> *, size_t);</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure></p></li>
+</ul>
+<h4 id="创建新属性和删除属性">创建新属性和删除属性</h4>
+<ol type="1">
+<li>一般来说，默认属性是充足的，少部分情况下需要添加属性，使用<code>sysfs_create_file</code>函数</li>
+<li>删除属性使用<code>sysfs_remove_file</code>函数</li>
+</ol>
+<h3 id="内核事件层">内核事件层</h3>
+<p>内核事件层是指内核到用户的消息通知系统。这个系统就是建立在kobject基础之上的。</p>
+<p>内核事件层把事件模拟为信号，每一个时间有明确的事件源，就是<code>kobject</code>对象，所以每一个事件源都对应一个<code>sysfs</code>路径。为了从用户空间接收事件，用户空间实现了一个后台服务用于监听套接字。</p>
+<p>在内核空间向用户空间发送信号使用函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">kobject_uevent</span><span class="params">(struct kobject *kobj, <span class="keyword">enum</span> kobject_action action)</span></span>;</span><br></pre></td></tr></table></figure>
+<ol type="1">
+<li>第一个参数是事件源</li>
+<li>第二个参数是事件的动作</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux-kernel/" rel="tag"># linux kernel</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/8966.html" rel="prev" title="从.c文件到程序的执行，中间发生了什么？">
+      <i class="fa fa-chevron-left"></i> 从.c文件到程序的执行，中间发生了什么？
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linux设备模型"><span class="nav-number">1.</span> <span class="nav-text">Linux设备模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#kobject"><span class="nav-number">1.1.</span> <span class="nav-text">kobject</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要这个结构体"><span class="nav-number">1.1.1.</span> <span class="nav-text">为什么要这个结构体？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最重要的ktype属性"><span class="nav-number">1.1.2.</span> <span class="nav-text">最重要的ktype属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从kobject到kset"><span class="nav-number">1.2.</span> <span class="nav-text">从kobject到kset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理和操作kobject"><span class="nav-number">1.3.</span> <span class="nav-text">管理和操作kobject</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化"><span class="nav-number">1.3.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#引用计数的操作"><span class="nav-number">1.3.2.</span> <span class="nav-text">引用计数的操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sysfs"><span class="nav-number">1.4.</span> <span class="nav-text">sysfs</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sysfs中添加和删除kobject"><span class="nav-number">1.4.1.</span> <span class="nav-text">sysfs中添加和删除kobject</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#向sys中添加文件"><span class="nav-number">1.4.2.</span> <span class="nav-text">向&#x2F;sys&#x2F;中添加文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#默认属性"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">默认属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建新属性和删除属性"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">创建新属性和删除属性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内核事件层"><span class="nav-number">1.4.3.</span> <span class="nav-text">内核事件层</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Keke"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">Keke</p>
+  <div class="site-description" itemprop="description">记录学习的地方</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://libertyunionkjy@gmail.com/" title="E-Mail → https:&#x2F;&#x2F;libertyunionkjy@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Keke</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
+    }
+
+    function addCount(Counter) {
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          if (results.length > 0) {
+            var counter = results[0];
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
+          } else {
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"LUfk9hhalFl8bvU1sch5iOtc-9Nh9j0Va","app_key":"pI9Q11Bxqxk1Q5eJLKIG1gim","server_url":null,"security":false};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
+        addCount(Counter);
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
+        showTime(Counter);
+      }
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/canvas_lines.min.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    new Valine(Object.assign({
+      el         : '#valine-comments',
+      path       : location.pathname,
+    }, {"enable":true,"appId":"tnKOKDSuvxOLRFeojycmFGDV-MdYXbMMI","appKey":"Q4ro4ajDoVK1ScWWSlGCxY3G","notify":true,"verify":false,"placeholder":"快来评论吧！柯柯给你举高高ヽ(✿ﾟ▽ﾟ)ノ","avatar":"monsterid","meta":["nick","mail","link"],"pageSize":10,"language":"zh-cn","visitor":false,"comment_count":true,"recordIP":false,"serverURLs":null}
+    ));
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
