@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jyke.xyz/"/>
-  <updated>2022-01-05T07:54:51.986Z</updated>
+  <updated>2022-01-06T09:15:59.302Z</updated>
   <id>https://jyke.xyz/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Linux内核同步</title>
+    <link href="https://jyke.xyz/posts/47999.html"/>
+    <id>https://jyke.xyz/posts/47999.html</id>
+    <published>2022-01-06T09:13:11.000Z</published>
+    <updated>2022-01-06T09:15:59.302Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;本文首先介绍了Linux内核中解决并发问题的意义和思路，然后介绍了Linux内核中提供的多种同步机制的原理和使用。
+    
+    </summary>
+    
+    
+      <category term="linux kernel" scheme="https://jyke.xyz/categories/linux-kernel/"/>
+    
+    
+      <category term="linux kernel" scheme="https://jyke.xyz/tags/linux-kernel/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux设备模型</title>
@@ -553,30 +574,6 @@
     
     
       <category term="linux" scheme="https://jyke.xyz/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>VFIO入门</title>
-    <link href="https://jyke.xyz/posts/11156.html"/>
-    <id>https://jyke.xyz/posts/11156.html</id>
-    <published>2021-03-25T15:58:15.000Z</published>
-    <updated>2021-03-25T16:03:56.000Z</updated>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/bfbb5095d8fd&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;参考链接&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;前提知识&quot;&gt;前提知识&lt;/h2&gt;
-&lt;h3 id=&quot;lspci命令&quot;&gt;lspci命令&lt;/h3&gt;
-&lt;p&gt;加入系统装有1G的RAM，1G以后的物理内存地址空间都是外部设备IO在系统内存地址空间上的映射。/proc/iomem描述了系统中所有的设备I/O在内存地址空间上的映射。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="虚拟化" scheme="https://jyke.xyz/categories/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
-    
-    
-      <category term="虚拟化" scheme="https://jyke.xyz/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/"/>
     
   </entry>
   
